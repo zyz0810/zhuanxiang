@@ -75,7 +75,26 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      let role = ['admin']
+      console.log('路由')
+      // console.log( this.$route.path)
+      console.log('路由5555')
+      let role = ['system']
+      // if((this.$route.path).includes("system")){
+      //   role = ['system']
+      // } else if((this.$route.path).includes("dataExchange")){
+      //   role = ['dataExchange']
+      // } else if((this.$route.path).includes("dataAcquisition")){
+      //   role = ['dataAcquisition']
+      // } else if((this.$route.path).includes("personnel")){
+      //   role = ['personnel']
+      // } else if((this.$route.path).includes("car")){
+      //   role = ['car']
+      // } else if((this.$route.path).includes("video")){
+      //   role = ['video']
+      // }else{
+      //   role = ['system']
+      // }
+
       commit('SET_ROLES', role);
       resolve(role);
       // getInfo().then(response => {

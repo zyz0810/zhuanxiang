@@ -86,15 +86,178 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+
+
+
   {
-    path: '/',
+    path: '/system/organization',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: '组织结构',
+    alwaysShow: true,
+    meta: {
+      title: '组织结构',
+      icon: 'iconfont icon-xiangqing',
+      roles: [
+        'system',
+      ]
+    },
+    children: [{
+      path: 'manage',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'manageList',
+      meta: {
+        title: '组织管理',
+        roles: [
+          'system',
+        ]
+      }
+    },{
+      path: 'platform',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'platform',
+      meta: {
+        title: '分平台管理',
+        roles: [
+          'system',
+        ]
+      }
+    }],
+  },
+  {
+    path: '/system/jurisdiction',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: '权限管理',
+    alwaysShow: true,
+    meta: {
+      title: '权限管理',
+      icon: 'iconfont icon-xiangqing',
+      roles: [
+        'system',
+      ]
+    },
+    children: [{
+      path: 'category',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'categoryList',
+      meta: {
+        title: '权限类目',
+        roles: [
+          'system',
+        ]
+      }
+    },{
+      path: 'role',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'roleList',
+      meta: {
+        title: '角色管理',
+        roles: [
+          'system',
+        ]
+      }
+    },{
+      path: 'nav',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'navList',
+      meta: {
+        title: '菜单管理',
+        roles: [
+          'system',
+        ]
+      }
+    },{
+      path: 'authorize',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'authorize',
+      meta: {
+        title: '应用授权',
+        roles: [
+          'system',
+        ]
+      }
+    }],
+  },
+  {
+    path: '/system/logAlarm',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: '日志告警',
+    alwaysShow: true,
+    meta: {
+      title: '日志告警',
+      icon: 'iconfont icon-xiangqing',
+      roles: [
+        'system',
+      ]
+    },
+    children: [{
+      path: 'log',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'logList',
+      meta: {
+        title: '日志',
+        roles: [
+          'system',
+        ]
+      }
+    },{
+      path: 'alarm',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'alarm',
+      meta: {
+        title: '告警',
+        roles: [
+          'system',
+        ]
+      }
+    }],
+  },
+  {
+    path: '/system/dictionary',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: '数据字典',
+    alwaysShow: true,
+    meta: {
+      title: '数据字典',
+      icon: 'iconfont icon-xiangqing',
+      roles: [
+        'system',
+      ]
+    },
+    children: [{
+      path: 'data',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'dataList',
+      meta: {
+        title: '数据字典',
+        roles: [
+          'system',
+        ]
+      }
+    },{
+      path: 'type',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'typeList',
+      meta: {
+        title: '类型管理',
+        roles: [
+          'system',
+        ]
+      }
+    }],
+  },
+  {
+    path: '/system/function',
     component: Layout,
     redirect: '/testing/monitor',
-    // name: '实时监测',
+    // name: '功能设置',
     meta: {
-      // title: '实时监测',
+      // title: '功能设置',
       icon: 'iconfont icon-xiangqing',
-      roles: ['admin'],
+      roles: ['system'],
     },
     children: [
       {
@@ -102,150 +265,334 @@ export const asyncRoutes = [
         component: () => import('@/views/testing/monitor/list'),
         name: 'modelList',
         meta: {
-          title: '实时监测',
-          roles: ['admin'],
+          title: '功能设置',
+          roles: ['system'],
         }
       }
     ]
   },
   {
-    path: '/workOrder',
-    component: Layout,
-    redirect: '/workOrder/police',
-    // name: '预警审核',
-    meta: {
-      // title: '预警审核',
-      icon: 'iconfont icon-xiangqing',
-      roles: [
-        'admin',
-      ]
-    },
-    children: [
-      {
-        path: 'police',
-        component: () => import('@/views/workOrder/police/list'),
-        name: '预警审核',
-        meta: {
-          title: '预警审核',
-          roles: [
-            'admin',
-          ]
-        }
-      },
-      {
-        path: 'police/view',
-        hidden:true,
-        component: () => import('@/views/workOrder/police/components/view'),
-        name: '预警审核',
-        meta: {
-          title: '预警审核',
-          activeMenu: '/workOrder/police',
-          roles: [
-            'admin',
-          ]
-        }
-      },
-    ]
-  },
-  {
-    path: '/system',
+    path: '/system/user',
     component: Layout,
     redirect: 'noRedirect',
-    name: '系统管理',
+    name: '个人中心',
     alwaysShow: true,
     meta: {
-      title: '系统管理',
+      title: '个人中心',
       icon: 'iconfont icon-xiangqing',
       roles: [
-        'admin',
+        'system',
       ]
+    },
+    children: [{
+      path: 'data',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'userData',
+      meta: {
+        title: '个人资料',
+        roles: [
+          'system',
+        ]
+      }
+    },{
+      path: 'password',
+      component: () => import('@/views/statistics/intelligence/list'),
+      name: 'password',
+      meta: {
+        title: '修改密码',
+        roles: [
+          'system',
+        ]
+      }
+    }],
+  },
+
+
+
+  {
+    path: '/dataExchange',
+    component: Layout,
+    redirect: '/testing/monitor',
+    // name: '数据交换',
+    meta: {
+      // title: '数据交换',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['dataExchange'],
     },
     children: [
       {
-        path: 'organization',
-        component: blank,
-        redirect: 'noRedirect',
-        name: '组织结构',
-        alwaysShow: true,
+        path: 'exchangeApi',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'exchangeApiList',
         meta: {
-          title: '组织结构',
-          icon: 'iconfont icon-xiangqing',
-          roles: [
-            'admin',
-          ]
-        },
-        children: [{
-          path: 'manage',
-          component: () => import('@/views/statistics/intelligence/list'),
-          name: 'manageList',
-          meta: {
-            title: '组织管理',
-            roles: [
-              'admin',
-            ]
-          }
-        },{
-          path: 'platform',
-          component: () => import('@/views/statistics/intelligence/list'),
-          name: 'platform',
-          meta: {
-            title: '分平台管理',
-            roles: [
-              'admin',
-            ]
-          }
-        }],
-      },
-      {
-        path: 'data',
-        component: () => import('@/views/statistics/data/list'),
-        name: 'dataList',
-        meta: {
-          title: '设备检索',
-          roles: [
-            'admin',
-          ]
-        }
-      },{
-        path: 'data1',
-        component: () => import('@/views/statistics/data/list'),
-        name: 'dataList',
-        meta: {
-          title: '重复事件查询',
-          roles: [
-            'admin',
-          ]
+          title: '交换接口管理',
+          roles: ['dataExchange'],
         }
       },
     ]
   },
   {
-    path: '/devOps',
+    path: '/dataExchange',
     component: Layout,
-    redirect: 'noRedirect',
-    // name: '示范小区',
+    redirect: '/testing/monitor',
+    // name: '数据交换',
     meta: {
-      // title: '示范小区',
-      icon: 'iconfont icon-xingxing',
-      roles: [
-        'admin',
-      ]
+      // title: '数据交换',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['dataExchange'],
+    },
+    children: [
+
+      {
+        path: 'database',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'databaseList',
+        meta: {
+          title: '交换数据库管理',
+          roles: ['dataExchange'],
+        }
+      },
+
+    ]
+  },
+  {
+    path: '/dataExchange',
+    component: Layout,
+    redirect: '/testing/monitor',
+    // name: '数据交换',
+    meta: {
+      // title: '数据交换',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['dataExchange'],
     },
     children: [
       {
-        path: 'verify',
-        component: () => import('@/views/devOps/verify/list'),
-        name: 'verifyList',
+        path: 'api',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'apiList',
         meta: {
-          title: '示范小区',
-          roles: [
-            'admin',
-          ]
+          title: '开发接口管理',
+          roles: ['dataExchange'],
+        }
+      },
+    ]
+  },
+  {
+    path: '/dataExchange',
+    component: Layout,
+    redirect: '/testing/monitor',
+    // name: '数据交换',
+    meta: {
+      // title: '数据交换',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['dataExchange'],
+    },
+    children: [
+
+      {
+        path: 'log',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'logList',
+        meta: {
+          title: '交换日志管理',
+          roles: ['dataExchange'],
+        }
+      },
+
+    ]
+  },
+  {
+    path: '/dataExchange',
+    component: Layout,
+    redirect: '/testing/monitor',
+    // name: '数据交换',
+    meta: {
+      // title: '数据交换',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['dataExchange'],
+    },
+    children: [
+
+      {
+        path: 'monitor',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'monitorList',
+        meta: {
+          title: '交换监控管理',
+          roles: ['dataExchange'],
+        }
+      }
+    ]
+  },
+
+
+
+{
+  path: '/dataAcquisition',
+  component: Layout,
+  redirect: '/testing/monitor',
+  // name: '数据交换',
+  meta: {
+  // title: '数据交换',
+  icon: 'iconfont icon-xiangqing',
+    roles: ['dataAcquisition'],
+},
+  children: [
+
+    {
+      path: 'grid',
+      component: () => import('@/views/testing/monitor/list'),
+      name: 'gridList',
+      meta: {
+        title: '网格对象',
+        roles: ['dataAcquisition'],
+      }
+    }
+  ]
+},
+  {
+    path: '/dataAcquisition',
+    component: Layout,
+    redirect: '/testing/monitor',
+    // name: '数据交换',
+    meta: {
+      // title: '数据交换',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['dataAcquisition'],
+    },
+    children: [
+      {
+        path: 'gridManage',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'gridManageList',
+        meta: {
+          title: '网格管理',
+          roles: ['dataAcquisition'],
+        }
+      }
+    ]
+  },
+  {
+    path: '/dataAcquisition',
+    component: Layout,
+    redirect: '/testing/monitor',
+    name: '信息采集',
+    meta: {
+      title: '信息采集',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['dataAcquisition'],
+    },
+    children: [
+      {
+        path: 'shop',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'shopList',
+        meta: {
+          title: '店铺采集',
+          roles: ['dataAcquisition'],
+        }
+      },{
+        path: 'workSite',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'workSiteList',
+        meta: {
+          title: '工地采集',
+          roles: ['dataAcquisition'],
+        }
+      }
+    ]
+  },
+  {
+    path: '/dataAcquisition',
+    component: Layout,
+    redirect: '/testing/monitor',
+    // name: '数据交换',
+    meta: {
+      // title: '数据交换',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['dataAcquisition'],
+    },
+    children: [
+      {
+        path: 'driveInput',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'driveInput',
+        meta: {
+          title: '驾驶舱录入',
+          roles: ['dataAcquisition'],
+        }
+      }
+    ]
+  },
+
+  {
+    path: '/personnel',
+    component: Layout,
+    redirect: '/testing/monitor',
+    // name: '数据交换',
+    meta: {
+      // title: '数据交换',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['personnel'],
+    },
+    children: [
+      {
+        path: 'personnelList',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'personnelList',
+        meta: {
+          title: '人员管理',
+          roles: ['personnel'],
         }
       },
     ]
   },
 
+  {
+    path: '/car',
+    component: Layout,
+    redirect: '/testing/monitor',
+    // name: '数据交换',
+    meta: {
+      // title: '数据交换',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['car'],
+    },
+    children: [
+      {
+        path: 'carList',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'carList',
+        meta: {
+          title: '车辆管理',
+          roles: ['car'],
+        }
+      },
+    ]
+  },
+
+  {
+    path: '/video',
+    component: Layout,
+    redirect: '/testing/monitor',
+    // name: '数据交换',
+    meta: {
+      // title: '数据交换',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['video'],
+    },
+    children: [
+      {
+        path: 'videoList',
+        component: () => import('@/views/testing/monitor/list'),
+        name: 'videoList',
+        meta: {
+          title: '视频管理',
+          roles: ['video'],
+        }
+      },
+    ]
+  },
 ]
 
 const createRouter = () =>
