@@ -149,7 +149,7 @@ div:focus {
 }
 
 .baseColor {
-  color: #409EFF;
+  color: $baseColor;
 }
 
 .gray01 {
@@ -191,7 +191,9 @@ aside {
 
 //main-container全局样式
 .app-container {
-  padding: 20px;
+  padding: 0 20px 20px;
+  margin: 0 20px;
+  background: #fff;
 }
 
 .components-container {
@@ -417,11 +419,11 @@ body .el-table th.gutter {
     }
   }
 }
-.el-table{
-  border-top: 1px solid #dfe6ec;
-  border-left: 1px solid #dfe6ec;
-  border-right: 1px solid #dfe6ec;
-}
+//.el-table{
+//  border-top: 1px solid #dfe6ec;
+//  border-left: 1px solid #dfe6ec;
+//  border-right: 1px solid #dfe6ec;
+//}
 .el-table thead {
   color: #000;
 }
@@ -1047,4 +1049,27 @@ input[type="number"] {
 }
 .txt_shadow{
   text-shadow: 0 0 8px rgba(237,254,255,1);
+}
+.el-breadcrumb__inner,.el-breadcrumb__separator{
+  color: $baseColor !important;
+}
+.btn_purple{
+  background: rgb(171,94,164);
+  border-color: rgb(171,94,164);
+}
+.btn_blue01{
+  background: rgb(68,181,175);
+  border-color: rgb(68,181,175);
+}
+.btn_blue02{
+  background: rgb(4,105,195);
+  border-color: rgb(4,105,195);
+}
+.btn_yellow{
+  background: rgb(255,184,74);
+  border-color: rgb(255,184,74);
+}
+.btn_red{
+  background: rgb(230,0,11);
+  border-color: rgb(230,0,11);
 }

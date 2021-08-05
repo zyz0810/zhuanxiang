@@ -101,7 +101,7 @@ export const asyncRoutes = [
     },
     children: [{
       path: 'manage',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/organization/manage/list'),
       name: 'manageList',
       meta: {
         title: '组织管理',
@@ -111,7 +111,7 @@ export const asyncRoutes = [
       }
     },{
       path: 'platform',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/organization/plantform/list'),
       name: 'platform',
       meta: {
         title: '分平台管理',
@@ -249,18 +249,18 @@ export const asyncRoutes = [
   {
     path: '/system/function',
     component: Layout,
-    redirect: '/testing/monitor',
-    // name: '功能设置',
+    // redirect: '/testing/monitor',
+    name: '功能设置',
     meta: {
-      // title: '功能设置',
+      title: '功能设置',
       icon: 'iconfont icon-xiangqing',
       roles: ['system'],
     },
     children: [
       {
-        path: 'testing/monitor',
-        component: () => import('@/views/testing/monitor/list'),
-        name: 'modelList',
+        path: 'set',
+        component: () => import('@/views/system/function/set'),
+        name: 'functionSet',
         meta: {
           title: '功能设置',
           roles: ['system'],
@@ -283,7 +283,7 @@ export const asyncRoutes = [
     },
     children: [{
       path: 'data',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/user/data'),
       name: 'userData',
       meta: {
         title: '个人资料',
@@ -293,7 +293,7 @@ export const asyncRoutes = [
       }
     },{
       path: 'password',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/user/password'),
       name: 'password',
       meta: {
         title: '修改密码',
@@ -447,7 +447,7 @@ export const asyncRoutes = [
   {
     path: '/dataAcquisition',
     component: Layout,
-    redirect: '/testing/monitor',
+    // redirect: '/testing/monitor',
     // name: '数据交换',
     meta: {
       // title: '数据交换',
@@ -457,7 +457,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'gridManage',
-        component: () => import('@/views/testing/monitor/list'),
+        component: () => import('@/views/dataAcquisition/gridManage/list'),
         name: 'gridManageList',
         meta: {
           title: '网格管理',
