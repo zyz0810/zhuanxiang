@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      title: '运营中心后台',
+      title: this.getTxt(),
       logo: logo
     }
   },
@@ -49,6 +49,25 @@ export default {
         this.title = '车辆管理'
       } else if((route.path).includes("video")){
         this.title = '视频管理'
+      }
+    }
+  },
+  methods:{
+    getTxt(){
+      if((this.$route.path).includes("system")){
+        return '系统设置'
+      } else if((this.$route.path).includes("dataExchange")){
+        return '数据交换'
+      } else if((this.$route.path).includes("dataAcquisition")){
+        return '数据采集'
+      } else if((this.$route.path).includes("personnel")){
+        return '人员管理'
+      } else if((this.$route.path).includes("car")){
+        return '车辆管理'
+      } else if((this.$route.path).includes("video")){
+        return '视频管理'
+      }else{
+        return ''
       }
     }
   },

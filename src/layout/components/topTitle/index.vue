@@ -12,7 +12,7 @@
 <!--  </div>-->
   <el-header>
     <el-row class="flex flex-vertical">
-      <el-col :span="10" class="f22 clr_white bold">滨江区城市管理局指挥一体化平台</el-col>
+      <el-col :span="10" class="f26 txt_linear bold">滨江区城市管理局指挥一体化平台</el-col>
       <el-col :span="14" class="top_right">
         <div class="right-menu">
           <!--<template v-if="device!=='mobile'">-->
@@ -32,12 +32,12 @@
             <!--<span class="bold" style="margin: 0 5px; font-size: 18px">{{name}}</span>-->
             <!--<i class="el-icon-caret-bottom" />-->
           <!--</div>-->
-          <el-select v-model="citySelected" placeholder="请选择" @change="chooseCity">
-            <el-option v-for="item in cityList" :label="item.province+item.city+item.area" :value="item.id">
-            </el-option>
-            <!--<el-option v-for="item in cityList" :label="item.mobile" :value="item.id" :key="item.id">-->
-            <!--</el-option>-->
-          </el-select>
+<!--          <el-select v-model="citySelected" placeholder="请选择" @change="chooseCity">-->
+<!--            <el-option v-for="item in cityList" :label="item.province+item.city+item.area" :value="item.id">-->
+<!--            </el-option>-->
+<!--            &lt;!&ndash;<el-option v-for="item in cityList" :label="item.mobile" :value="item.id" :key="item.id">&ndash;&gt;-->
+<!--            &lt;!&ndash;</el-option>&ndash;&gt;-->
+<!--          </el-select>-->
 
                     <!--<el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">-->
                       <!--<div class="avatar-wrapper">-->
@@ -270,6 +270,7 @@ export default {
     // }
   },
   mounted() {
+
   },
 }
 </script>

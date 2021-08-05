@@ -14,6 +14,18 @@ export function removeToken() {
   return Cookies.remove(TokenKey)
 }
 
+// export function getToken() {
+//   return localStorage.getItem('TokenKey')
+// }
+//
+// export function setToken(value) {
+//   return localStorage.setItem("TokenKey", value);
+// }
+//
+// export function removeToken() {
+//   return localStorage.removeItem('TokenKey')
+// }
+
 const IdKey = 'id';
 export function getId() {
   return Cookies.get(IdKey)
@@ -39,16 +51,19 @@ export function setName(token) {
 export function removeName() {
   return Cookies.remove(NameKey)
 }
-const NameHospital = 'hospital_id';
-export function getHospital() {
-  return Cookies.get(NameHospital)
+const Role = 'role';
+export function getRole() {
+  return JSON.parse(localStorage.getItem(Role))
+  // return Cookies.get(Role)
 }
-export function setHospital(token) {
-  return Cookies.set(NameHospital, token)
+export function setRole(role) {
+  return localStorage.setItem(Role,JSON.stringify(role))
+  // return Cookies.set(Role, JSON.stringify(role))
 }
 
-export function removeHospital() {
-  return Cookies.remove(NameHospital)
+export function removeRole() {
+  return localStorage.removeItem(Role)
+  // return Cookies.remove(Role)
 }
 
 const adminMobile = 'admin_Mobile';

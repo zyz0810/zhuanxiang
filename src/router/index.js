@@ -86,9 +86,6 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-
-
-
   {
     path: '/system/organization',
     component: Layout,
@@ -306,13 +303,10 @@ export const asyncRoutes = [
       }
     }],
   },
-
-
-
   {
     path: '/dataExchange',
     component: Layout,
-    redirect: '/testing/monitor',
+    redirect: '/dataExchange/exchangeApi',
     // name: '数据交换',
     meta: {
       // title: '数据交换',

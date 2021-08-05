@@ -1,6 +1,6 @@
 import { login, logout, getInfo } from '@/api/user'
 import { findMenuByRole } from '@/api/menu'
-import { getToken, setToken, removeToken,getId,setId,removeId,getName,setName,removeName,getMobile,setMobile,removeMobile,setCity,removeCity,setCitySelected,removeCitySelected} from '@/utils/auth'
+import { getToken, setToken, removeToken,getRole,removeRole,setId,removeId,getName,setName,removeName,getMobile,setMobile,removeMobile,setCity,removeCity,setCitySelected,removeCitySelected} from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 import store from '@/store'
@@ -75,26 +75,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      console.log('路由')
-      // console.log( this.$route.path)
-      console.log('路由5555')
-      let role = ['system']
-      // if((this.$route.path).includes("system")){
-      //   role = ['system']
-      // } else if((this.$route.path).includes("dataExchange")){
-      //   role = ['dataExchange']
-      // } else if((this.$route.path).includes("dataAcquisition")){
-      //   role = ['dataAcquisition']
-      // } else if((this.$route.path).includes("personnel")){
-      //   role = ['personnel']
-      // } else if((this.$route.path).includes("car")){
-      //   role = ['car']
-      // } else if((this.$route.path).includes("video")){
-      //   role = ['video']
-      // }else{
-      //   role = ['system']
-      // }
-
+      let role = getRole()
       commit('SET_ROLES', role);
       resolve(role);
       // getInfo().then(response => {
@@ -166,6 +147,7 @@ const actions = {
         // removeId();
         removeName();
         removeMobile();
+        removeRole();
         // reset visited views and cached views
         // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
         dispatch('tagsView/delAllViews', null, { root: true })
@@ -180,6 +162,7 @@ const actions = {
         removeToken();
         removeCitySelected();
         removeCity();
+        removeRole();
         sessionStorage.setItem("Admin-Token", '');
         resetRouter();
         // removeId();
@@ -204,6 +187,7 @@ const actions = {
       sessionStorage.setItem("Admin-Token", '');
       // removeId();
       removeName();
+      removeRole();
       resolve()
     })
   },

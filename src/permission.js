@@ -3,7 +3,7 @@ import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getToken } from '@/utils/auth' // get token from cookie
+import { getToken,setRole } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
@@ -16,6 +16,22 @@ router.beforeEach(async(to, from, next) => {
 
   // set page title
   document.title = getPageTitle(to.meta.title)
+  if((to.path).includes("system")){
+    setRole(['system']);
+  } else if((to.path).includes("dataExchange")){
+    setRole(['dataExchange']);
+  } else if((to.path).includes("dataAcquisition")){
+    setRole(['dataAcquisition']);
+  } else if((to.path).includes("personnel")){
+    setRole(['personnel']);
+  } else if((to.path).includes("car")){
+    setRole(['car']);
+  } else if((to.path).includes("video")){
+    setRole(['video']);
+  }else{
+    setRole([]);
+  }
+
 
   // determine whether the user has logged in
   // const hasToken = getToken()
@@ -35,6 +51,7 @@ router.beforeEach(async(to, from, next) => {
         try {
           const roles = await store.dispatch('user/getInfo')
           console.log(roles)
+          console.log('取消囔囔非得')
           const accessRoutes = await store.dispatch(
             'permission/generateRoutes',
             roles
