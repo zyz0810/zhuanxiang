@@ -136,7 +136,7 @@ export const asyncRoutes = [
     },
     children: [{
       path: 'category',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/jurisdiction/category/list'),
       name: 'categoryList',
       meta: {
         title: '权限类目',
@@ -146,7 +146,7 @@ export const asyncRoutes = [
       }
     },{
       path: 'role',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/jurisdiction/role/list'),
       name: 'roleList',
       meta: {
         title: '角色管理',
@@ -156,7 +156,7 @@ export const asyncRoutes = [
       }
     },{
       path: 'nav',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/jurisdiction/nav/list'),
       name: 'navList',
       meta: {
         title: '菜单管理',
@@ -166,7 +166,7 @@ export const asyncRoutes = [
       }
     },{
       path: 'authorize',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/jurisdiction/authorize/list'),
       name: 'authorize',
       meta: {
         title: '应用授权',
@@ -191,7 +191,7 @@ export const asyncRoutes = [
     },
     children: [{
       path: 'log',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/logAlarm/log/list'),
       name: 'logList',
       meta: {
         title: '日志',
@@ -201,7 +201,7 @@ export const asyncRoutes = [
       }
     },{
       path: 'alarm',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/logAlarm/alarm/list'),
       name: 'alarm',
       meta: {
         title: '告警',
@@ -226,7 +226,7 @@ export const asyncRoutes = [
     },
     children: [{
       path: 'data',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/dictionary/data/list'),
       name: 'dataList',
       meta: {
         title: '数据字典',
@@ -236,7 +236,7 @@ export const asyncRoutes = [
       }
     },{
       path: 'type',
-      component: () => import('@/views/statistics/intelligence/list'),
+      component: () => import('@/views/system/dictionary/type/list'),
       name: 'typeList',
       meta: {
         title: '类型管理',
@@ -306,7 +306,7 @@ export const asyncRoutes = [
   {
     path: '/dataExchange',
     component: Layout,
-    redirect: '/dataExchange/exchangeApi',
+    // redirect: '/dataExchange/exchangeApi',
     // name: '数据交换',
     meta: {
       // title: '数据交换',
@@ -316,7 +316,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'exchangeApi',
-        component: () => import('@/views/testing/monitor/list'),
+        component: () => import('@/views/dataExchange/exchangeApi/list'),
         name: 'exchangeApiList',
         meta: {
           title: '交换接口管理',
@@ -328,7 +328,7 @@ export const asyncRoutes = [
   {
     path: '/dataExchange',
     component: Layout,
-    redirect: '/testing/monitor',
+    // redirect: '/testing/monitor',
     // name: '数据交换',
     meta: {
       // title: '数据交换',
@@ -336,10 +336,9 @@ export const asyncRoutes = [
       roles: ['dataExchange'],
     },
     children: [
-
       {
         path: 'database',
-        component: () => import('@/views/testing/monitor/list'),
+        component: () => import('@/views/dataExchange/dataExchange/list'),
         name: 'databaseList',
         meta: {
           title: '交换数据库管理',
@@ -362,7 +361,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'api',
-        component: () => import('@/views/testing/monitor/list'),
+        component: () => import('@/views/dataExchange/api/list'),
         name: 'apiList',
         meta: {
           title: '开发接口管理',
@@ -385,7 +384,7 @@ export const asyncRoutes = [
 
       {
         path: 'log',
-        component: () => import('@/views/testing/monitor/list'),
+        component: () => import('@/views/dataExchange/log/list'),
         name: 'logList',
         meta: {
           title: '交换日志管理',
@@ -409,7 +408,7 @@ export const asyncRoutes = [
 
       {
         path: 'monitor',
-        component: () => import('@/views/testing/monitor/list'),
+        component: () => import('@/views/dataExchange/monitor/list'),
         name: 'monitorList',
         meta: {
           title: '交换监控管理',
@@ -424,7 +423,7 @@ export const asyncRoutes = [
 {
   path: '/dataAcquisition',
   component: Layout,
-  redirect: '/testing/monitor',
+  // redirect: '/testing/monitor',
   // name: '数据交换',
   meta: {
   // title: '数据交换',
@@ -435,7 +434,7 @@ export const asyncRoutes = [
 
     {
       path: 'grid',
-      component: () => import('@/views/testing/monitor/list'),
+      component: () => import('@/views/dataAcquisition/grid/list'),
       name: 'gridList',
       meta: {
         title: '网格对象',
@@ -479,7 +478,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'shop',
-        component: () => import('@/views/testing/monitor/list'),
+        component: () => import('@/views/dataAcquisition/shop/list'),
         name: 'shopList',
         meta: {
           title: '店铺采集',
@@ -487,7 +486,7 @@ export const asyncRoutes = [
         }
       },{
         path: 'workSite',
-        component: () => import('@/views/testing/monitor/list'),
+        component: () => import('@/views/dataAcquisition/workSite/list'),
         name: 'workSiteList',
         meta: {
           title: '工地采集',
@@ -522,7 +521,7 @@ export const asyncRoutes = [
   {
     path: '/personnel',
     component: Layout,
-    redirect: '/testing/monitor',
+    // redirect: '/testing/monitor',
     // name: '数据交换',
     meta: {
       // title: '数据交换',
@@ -532,7 +531,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'personnelList',
-        component: () => import('@/views/testing/monitor/list'),
+        component: () => import('@/views/personnel/personnelList/list'),
         name: 'personnelList',
         meta: {
           title: '人员管理',
