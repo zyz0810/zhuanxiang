@@ -12,7 +12,7 @@
     @open="open"
     v-dragDialog
   >
-    <div slot="title" class="dialog-title clr_white">
+    <div slot="title" class="dialog-title">
       {{title}}
     </div>
     <slot></slot>

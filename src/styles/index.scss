@@ -585,7 +585,8 @@ img {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 20px 0;
+  padding: 10px 20px;
+  border-top: 1px solid #d2d2d2;
 }
 
 //修改表单样式2
@@ -737,12 +738,14 @@ input[type="number"] {
 }
 
 .el-dialog__header {
-  background: $menuBg;
+  //background: $menuBg;
+  color: #666666;
   height: 54px;
+  border-bottom: 1px solid #d2d2d2;
 }
-.el-dialog__close{
-  color: #fff !important;
-}
+//.el-dialog__close{
+//  color: #fff !important;
+//}
 .el-button [class*="icon-"]+span {
   margin-left: 5px;
 }
@@ -764,6 +767,7 @@ input[type="number"] {
 
 .el-dialog__body{
   overflow: auto;
+  padding: 20px 0 0;
 }
 
 // 表格单选
@@ -1058,28 +1062,40 @@ input[type="number"] {
   color: $baseColor !important;
 }
 .btn_purple{
-  background: rgb(171,94,164);
-  border-color: rgb(171,94,164);
+  &,&:focus,&:hover{
+    background: rgb(171,94,164);
+    border-color: rgb(171,94,164);
+  }
 }
 .btn_blue01{
-  background: rgb(68,181,175);
-  border-color: rgb(68,181,175);
+  &,&:focus,&:hover {
+    background: rgb(68, 181, 175);
+    border-color: rgb(68, 181, 175);
+  }
 }
 .btn_blue02{
-  background: rgb(4,105,195);
-  border-color: rgb(4,105,195);
+  &,&:focus,&:hover {
+    background: rgb(4, 105, 195);
+    border-color: rgb(4, 105, 195);
+  }
 }
 .btn_yellow{
-  background: rgb(255,184,74);
-  border-color: rgb(255,184,74);
+  &,&:focus,&:hover {
+    background: rgb(255, 184, 74);
+    border-color: rgb(255, 184, 74);
+  }
 }
 .btn_red{
-  background: rgb(230,0,11);
-  border-color: rgb(230,0,11);
+  &,&:focus,&:hover {
+    background: rgb(230, 0, 11);
+    border-color: rgb(230, 0, 11);
+  }
 }
 .btn_green{
-  background: rgb(0,152,0);
-  border-color: rgb(0,152,0);
+  &,&:focus,&:hover {
+    background: rgb(0, 152, 0);
+    border-color: rgb(0, 152, 0);
+  }
 }
 .el-divider--horizontal{
   margin-top: 0;

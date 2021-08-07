@@ -5,34 +5,53 @@
     width="50%"
     @close="close"
     top="20vh"
-    title="用户信息"
+    title="编辑分平台名称"
     class="dialogContainer"
     @open="open"
   >
     <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" style="width: 400px; margin-left:50px;">
 
-      <el-form-item label="所属分组" prop="city_id">
-<!--        <el-input v-model.trim="temp.name" placeholder="请输入所属分组" autocomplete="off" clearable/>-->
-        <el-select v-model="temp.city_id" multiple  placeholder="选择区" @change="$forceUpdate()">
+      <el-form-item label="父类型" prop="city_id">
+        <!--        <el-input v-model.trim="temp.name" placeholder="请输入所属分组" autocomplete="off" clearable/>-->
+        <el-select v-model="temp.city_id"  placeholder="选择父类型">
           <el-option v-for="option in cityList" :label="option.province+option.city+option.area" :value="option.id" :key="option.id"></el-option>
         </el-select>
       </el-form-item>
-<!--      <el-form-item label="分组ID" prop="name">-->
-<!--        <el-input v-model.trim="temp.name" placeholder="请输入分组ID" autocomplete="off" clearable/>-->
-<!--      </el-form-item>-->
-      <el-form-item label="用户名" prop="name">
+      <el-form-item label="应用类型" prop="city_id">
+        <!--        <el-input v-model.trim="temp.name" placeholder="请输入所属分组" autocomplete="off" clearable/>-->
+        <el-select v-model="temp.city_id"  placeholder="选择应用类型">
+          <el-option v-for="option in cityList" :label="option.province+option.city+option.area" :value="option.id" :key="option.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="分平台名称" prop="city_id">
+        <!--        <el-input v-model.trim="temp.name" placeholder="请输入所属分组" autocomplete="off" clearable/>-->
+        <el-select v-model="temp.city_id" multiple  placeholder="选择分平台名称">
+          <el-option v-for="option in cityList" :label="option.province+option.city+option.area" :value="option.id" :key="option.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="角色" prop="city_id">
+        <!--        <el-input v-model.trim="temp.name" placeholder="请输入所属分组" autocomplete="off" clearable/>-->
+        <el-select v-model="temp.city_id" multiple  placeholder="选择角色" @change="$forceUpdate()">
+          <el-option v-for="option in cityList" :label="option.province+option.city+option.area" :value="option.id" :key="option.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="首页地址" prop="name">
         <el-input v-model.trim="temp.name" placeholder="请输入用户名" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="密码" prop="password">
+      <el-form-item label="排序" prop="password">
         <el-input v-model.trim="temp.password" placeholder="请输入密码" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="手机号码" prop="mobile">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入手机号码" autocomplete="off" clearable/>
+      <el-form-item label="平台照片" prop="mobile">
+        <SingleImage
+          :tempUrl="temp.imgUrl"
+          v-on:imgSrc="hasImgSrc"
+        ></SingleImage>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()" :loading="paraLoading">确 定</el-button>
-      <el-button type="primary" class="btn_gray" @click="showViewDialog = false">取 消</el-button>
+      <el-button @click="showViewDialog = false">取 消</el-button>
+      <el-button type="primary" class="btn_blue02" @click="dialogStatus==='create'?createData():updateData()" :loading="paraLoading">确 定</el-button>
+
     </div>
 
 
@@ -45,12 +64,14 @@
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import Pagination from "@/components/Pagination/index"; // waves directive
+  import SingleImage from "@/components/Upload/SingleImage.vue"; // waves directive
   export default {
     name: 'parameterView',
     directives: { waves },
     components: {
       draggable,
-      Pagination
+      Pagination,
+      SingleImage
     },
     props: {
       showDialog: {
@@ -97,12 +118,14 @@
       },
     },
     methods: {
+      hasImgSrc(val) {
+        this.form.imgUrl = val;
+      },
       open(){
         this.dialogStatus = this.paraData.operatorType
         if(this.paraData.operatorType != 'create'){
-          this.getView();
+          // this.getView();
         }
-        this.getCity();
       },
       close(){
         this.cityList=[];
@@ -121,11 +144,7 @@
           this.temp = { id, city_id, name, password,mobile}
         });
       },
-      getCity(){
-        cityList({page:1,pageSize:9999,}).then(res=>{
-          this.cityList = res.data.data;
-        });
-      },
+
 
 
       createData() {

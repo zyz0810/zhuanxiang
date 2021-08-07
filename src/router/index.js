@@ -351,7 +351,7 @@ export const asyncRoutes = [
   {
     path: '/dataExchange',
     component: Layout,
-    redirect: '/testing/monitor',
+    // redirect: '/testing/monitor',
     // name: '数据交换',
     meta: {
       // title: '数据交换',
@@ -373,7 +373,7 @@ export const asyncRoutes = [
   {
     path: '/dataExchange',
     component: Layout,
-    redirect: '/testing/monitor',
+    // redirect: '/testing/monitor',
     // name: '数据交换',
     meta: {
       // title: '数据交换',
@@ -397,7 +397,7 @@ export const asyncRoutes = [
   {
     path: '/dataExchange',
     component: Layout,
-    redirect: '/testing/monitor',
+    // redirect: '/testing/monitor',
     // name: '数据交换',
     meta: {
       // title: '数据交换',
@@ -468,7 +468,7 @@ export const asyncRoutes = [
   {
     path: '/dataAcquisition',
     component: Layout,
-    redirect: '/testing/monitor',
+    // redirect: '/testing/monitor',
     name: '信息采集',
     meta: {
       title: '信息采集',
@@ -498,7 +498,7 @@ export const asyncRoutes = [
   {
     path: '/dataAcquisition',
     component: Layout,
-    redirect: '/testing/monitor',
+    // redirect: '/testing/monitor',
     // name: '数据交换',
     meta: {
       // title: '数据交换',
@@ -544,7 +544,7 @@ export const asyncRoutes = [
   {
     path: '/car',
     component: Layout,
-    redirect: '/testing/monitor',
+    // redirect: '/testing/monitor',
     // name: '数据交换',
     meta: {
       // title: '数据交换',
@@ -567,7 +567,7 @@ export const asyncRoutes = [
   {
     path: '/video',
     component: Layout,
-    redirect: '/testing/monitor',
+    // redirect: '/testing/monitor',
     // name: '数据交换',
     meta: {
       // title: '数据交换',

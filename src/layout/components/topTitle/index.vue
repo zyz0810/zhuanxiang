@@ -61,9 +61,12 @@
           <div class="avatar-wrapper clr_white ml_20 flex flex-vertical">
             <!--<img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">-->
             <img :src="headImg" class="user-avatar" />
-            <span style="margin: 0 5px; font-size: 14px; display: inline-block;">{{name}}</span>
+            <p>
+              <span class="block f14" style="margin: 0 5px 5px;">{{name}}</span>
+              <span class="block f12" style="margin: 5px 5px 0;color: #5fb5ec;">超级管理员</span>
+            </p>
           </div>
-          <div class="ml_20 clr_white" @click="logout"><i class="el-icon-switch-button bold f30" style="margin-left: 5px"></i></div>
+          <div class="ml_20 clr_white" @click="logout"><i class="el-icon-switch-button bold f20" style="margin-left: 5px"></i></div>
         </div>
         <my-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="80%">
           <ul class="street">
@@ -381,7 +384,7 @@ export default {
           cursor: pointer;
           width: 40px;
           height: 40px;
-          border-radius: 10px;
+          border-radius: 50%;
         }
 
         .el-icon-caret-bottom {

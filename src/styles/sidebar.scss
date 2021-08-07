@@ -42,7 +42,7 @@
     &.has-logo {
       .el-scrollbar {
         padding-top: 20px;
-        height: calc(100% - 200px);
+        height: calc(100% - 280px);
       }
     }
 
@@ -68,6 +68,7 @@
       border: none;
       height: 100%;
       width: 100% !important;
+      padding-left: 10px;
       background: transparent !important;
     }
 
@@ -92,8 +93,8 @@
       &.is-active{
         //color: rgba(243,237,145,1) !important;
         background-color: #3358a5 !important;
-        border-top-left-radius:20px;
-        border-bottom-left-radius:20px;
+        border-top-left-radius:50px;
+        border-bottom-left-radius:50px;
 
       }
       &:hover {
@@ -106,8 +107,8 @@
       }
       &.is-active{
         background-color: #3358a5 !important;
-        border-top-left-radius:20px;
-        border-bottom-left-radius:20px;
+        border-top-left-radius:50px;
+        border-bottom-left-radius:50px;
       }
     }
   }

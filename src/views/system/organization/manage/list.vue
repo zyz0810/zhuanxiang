@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
-    <div class="bg_white p20">
+    <div class="bg_white">
       <div class="mb_10">
-        <el-button class="btn_purple" type="primary"  @click="">添加</el-button>
+        <el-button class="btn_purple" type="primary"  @click="handleView('create')">添加</el-button>
         <el-button class="btn_blue01" type="primary"  @click="">批量导入</el-button>
         <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
       </div>
@@ -228,7 +228,7 @@
       handleView(row){
         this.showViewDialog = true
         this.viewData = {
-          id:row.id
+          // id:row.id
         }
       },
       handleHistory(row){

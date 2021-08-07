@@ -6,16 +6,20 @@
         <h1 v-else class="sidebar-title">{{ title }}111 </h1>
       </router-link>
 
-      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
+      <!--<router-link v-else key="expand" class="sidebar-logo-link" to="/">-->
+        <!--<img v-if="logo" :src="logo" class="sidebar-logo block">-->
+        <!--<p class="sidebar-title"><span class="f18">{{title}}</span></p>-->
+      <!--</router-link>-->
+      <div v-else  class="sidebar-logo-link">
         <img v-if="logo" :src="logo" class="sidebar-logo block">
-        <p class="sidebar-title"><span class="f18">{{title}}</span></p>
-      </router-link>
+        <p class="sidebar-title f16">{{title}}</p>
+      </div>
     </transition>
   </div>
 </template>
 
 <script>
-  import logo from '@/assets/image/point04.png'
+  import logo from '@/assets/image/logo_img.png'
 export default {
   name: 'SidebarLogo',
   props: {
@@ -89,17 +93,19 @@ export default {
   width: 100%;
   height: 200px;
   line-height: 50px;
-  background: #3358a5;
+  background: url("./../../../assets/image/logo_bg.png")  left bottom no-repeat;
+  background-size: 100% auto;
   text-align: center;
   overflow: hidden;
 
   & .sidebar-logo-link {
-    height: 100%;
+    height: 155px;
     width: 100%;
-
+    padding-top: 20px;
+    background: #3258a6;
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 66px;
+      height: 66px;
       vertical-align: middle;
       margin: 0 auto;
     }
@@ -108,9 +114,9 @@ export default {
       display: inline-block;
       margin: 0;
       color: #fff;
-      font-weight: 600;
+      /*font-weight: 600;*/
       line-height: 50px;
-      font-size: 14px;
+      /*font-size: 14px;*/
       letter-spacing: 3px;
       /*font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;*/
       vertical-align: middle;
