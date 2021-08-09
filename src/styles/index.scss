@@ -194,6 +194,9 @@ aside {
   padding: 20px;
   margin: 0 20px;
   background: #fff;
+  height: calc(100vh - 135px);
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 .components-container {
@@ -1099,4 +1102,10 @@ input[type="number"] {
 }
 .el-divider--horizontal{
   margin-top: 0;
+}
+.height_100{
+  height: 100%;
+}
+.w_800{
+  width: 800px;
 }

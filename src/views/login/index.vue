@@ -150,11 +150,11 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           // this.loading = true
-          this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+          this.$router.push({ path: this.redirect || '/system/organization/manage', query: this.otherQuery })
           this.loading = false
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              this.$router.push({ path: this.redirect || '/system/organization/manage', query: this.otherQuery })
               this.loading = false
             })
             .catch((e) => {

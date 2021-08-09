@@ -628,6 +628,9 @@ aside a:hover {
 
 .app-container {
   padding: 20px;
+  height: calc(100vh - 135px);
+  overflow: auto;
+  box-sizing: border-box;
 }
 
 .components-container {
