@@ -18,6 +18,15 @@
           <el-form-item label="红灯件情况" prop="mobile">
             <el-input v-model.trim="temp.mobile" placeholder="请输入负责人电话" autocomplete="off" clearable/>
           </el-form-item>
+          <el-form-item label="录入时间" prop="mobile">
+            <el-date-picker
+              v-model="value1"
+              type="datetimerange"
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期">
+            </el-date-picker>
+          </el-form-item>
           <el-form-item label="" class="f14 baseColor text-right" ><span @click="handleHistory">历史数据</span></el-form-item>
           <el-form-item label="" prop="mobile" class="text-center">
             <el-button class="btn_blue02" type="primary" @click="">确定</el-button>
