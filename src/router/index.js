@@ -534,6 +534,16 @@ export const asyncRoutes = [
           roles: ['dataAcquisition'],
           activeMenu:'/dataAcquisition/driveInput',
         }
+      },{
+        path: 'examine',
+        component: () => import('@/views/dataAcquisition/driveInput/examine/list'),
+        name: 'letter',
+        hidden: true,
+        meta: {
+          title: '行政审批',
+          roles: ['dataAcquisition'],
+          activeMenu:'/dataAcquisition/driveInput',
+        }
       }
     ]
   },

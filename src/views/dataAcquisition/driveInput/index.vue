@@ -3,6 +3,7 @@
     <ul class="drive_ul">
       <li><router-link to='/dataAcquisition/digital'>数字城管</router-link></li>
       <li><router-link to='/dataAcquisition/letter'>信访投诉</router-link></li>
+      <li><router-link to='/dataAcquisition/examine'>行政审批</router-link></li>
     </ul>
   </div>
 </template>
