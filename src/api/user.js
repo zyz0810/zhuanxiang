@@ -3,7 +3,7 @@ import Qs from 'qs'
 export function login(data) {
   return request({
     // url: 'api-auth/oauth/platform/login',
-    url: '/api/login/index',
+    url: '/admin/login/index',
     method: 'post',
     // data
     data: Qs.stringify(data)
@@ -15,7 +15,7 @@ export function login(data) {
  */
 export function logout(data) {
   return request({
-    url: '/api/user/logout',
+    url: '/admin/user/logout',
     // url: 'api/logout',
     method: 'post',
     data: Qs.stringify(data)
@@ -47,81 +47,68 @@ export function logout(data) {
 //     data: Qs.stringify(data)
 //   })
 // }
-/* 用户查询列表
- * limit 分页结束位置
- * page  分页起始位置
- * enabled  是否禁用
- * mobile  手机号
- * username  用户username
+
+
+
+/* 人员-列表
+ * department_id  部门ID
+ * real_name 人员名称
+ * page
+ * pageSize
  */
 export function userList(data) {
   return request({
-    url:'api/user/userList',
+    url:'/admin/user/list',
     method: 'post',
     data: Qs.stringify(data)
   })
 }
-/* 用户详情
- * id 用户id
+/* 人员-添加
+ * department_id  部门ID
+ * gender 性别(1:男;2:女)
+ * user_name 登录名
+ * real_name
  */
-export function userDetail(data) {
+export function userAdd(data) {
   return request({
-    url:'api/user/userDetail',
+    url:'/admin/user/add',
     method: 'post',
     data: Qs.stringify(data)
   })
 }
-
-
-/* 新增、修改系统用户
- * enabled 是否启用
- // * id  用户id
- * mobile 手机号
- * sex 	性别
- * username 用户username
- * headImgUrl 头像地址
- * roleId  角色多个用,隔开
- */
-export function addUser(data) {
-  return request({
-    url:'api/user/addUser',
-    method: 'post',
-    data: Qs.stringify(data)
-  })
-}
-
-/* 修改用户状态
- * enabled 是否启用
- * id  用户id
- */
-export function editUser(data) {
-  return request({
-    url:'api/user/editUser',
-    method: 'post',
-    data: Qs.stringify(data)
-  })
-}
-
-
-/* 重置用户密码
+// /* 人员-重置密码
+//  * id  用户id
+//  */
+// export function resetPassword(data) {
+//   return request({
+//     url:'/admin/user/resetPassword',
+//     method: 'post',
+//     data: Qs.stringify(data)
+//   })
+// }
+// /* 人员-重置密码
+//  * id  用户id
+//  */
+// export function resetPassword(data) {
+//   return request({
+//     url:'/admin/user/resetPassword',
+//     method: 'post',
+//     data: Qs.stringify(data)
+//   })
+// }
+//
+//
+//
+/* 人员-重置密码
  * id  用户id
  */
 export function resetPassword(data) {
   return request({
-    url:'api-user/users/resetPassword',
+    url:'/admin/user/resetPassword',
     method: 'post',
     data: Qs.stringify(data)
   })
 }
 
 
-/* 批量删除用户
- * ids  用户id
- */
-export function deleteSysUser(data) {
-  return request({
-    url:'api-user/users/deleteSysUser',
-    method: 'post',
-    data: Qs.stringify(data)
-  })
-}
+

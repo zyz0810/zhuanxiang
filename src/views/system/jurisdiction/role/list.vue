@@ -16,9 +16,9 @@
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
         <el-table-column label="序号" type="index" align="center"></el-table-column>
-        <el-table-column label="角色名称" align="center" prop="name"></el-table-column>
-        <el-table-column label="角色说明" align="center" prop="name"></el-table-column>
-        <el-table-column label="角色状态" align="center" prop="address"></el-table-column>
+        <el-table-column label="角色名称" align="center" prop="role_name"></el-table-column>
+        <el-table-column label="角色说明" align="center" prop="description"></el-table-column>
+        <el-table-column label="角色状态" align="center" prop="status" :formatter="formatStatus"></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
             <el-button class="btn_blue02" type="primary" @click="">编辑</el-button>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-  import {paraList, paraSave, paraUpdate, paraDelete} from '@/api/parameter'
+  import {roleList} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -152,9 +152,16 @@
           }
         };
       });
-      // this.getList();
+      this.getList();
     },
     methods: {
+      formatStatus(row, column, cellValue, index) {
+        return cellValue == 1
+          ? "正常"
+          : cellValue == 2
+            ? "禁用"
+            : "";
+      },
       handleValue(val){
         // this.temp.parameterValueList.map(item=>{
         //   if(item.name == val.srcElement.value){
@@ -185,9 +192,9 @@
         this.getList()
       },
       getList() {
-        paraList(this.listQuery).then(res => {
+        roleList(this.listQuery).then(res => {
           this.list = res.data.data
-          this.total = res.data.count
+          this.total = res.data.total
         });
       },
 

@@ -7,7 +7,7 @@
         :collapse="isCollapse"
         background-color="#fff"
         text-color="#606266"
-        :unique-opened="false"
+        :unique-opened="true"
         active-text-color="#fff"
         :collapse-transition="false"
         mode="vertical" class="bold">
