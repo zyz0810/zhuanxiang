@@ -1,240 +1,177 @@
 <template>
   <div class="app-container">
-    <el-form ref="dataForm" :rules="rules" :inline="true" :model="temp" label-width="120px" class="text-center user_data">
-      <el-form-item label="名称" prop="facility_id">
-        <el-input v-model.trim="temp.name" placeholder="请输入名称" autocomplete="off" clearable/>
+    <el-form ref="firstForm" :rules="rules" :inline="true" :model="temp" label-width="120px" class="user_data">
+      <el-form-item label="部门" prop="department_id">
+        <el-select v-model="temp.department_id">
+          <el-option label="男" value="0"></el-option>
+          <el-option label="女" value="0"></el-option>
+        </el-select>
+<!--        <el-input v-model.trim="temp.name" placeholder="请输入名称" autocomplete="off" clearable/>-->
       </el-form-item>
-      <el-form-item label="胸牌编号" prop="company">
-        <el-input v-model.trim="temp.company" placeholder="请输入胸牌编号" autocomplete="off" clearable/>
+      <el-form-item label="姓名" prop="real_name">
+        <el-input v-model.trim="temp.real_name" placeholder="请输入姓名" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="性别" prop="status">
-        <el-select v-model="temp.status">
+      <el-form-item label="登录名" prop="user_name">
+        <el-input v-model.trim="temp.user_name" placeholder="请输入登录名" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="角色" prop="role_id">
+        <el-select v-model="temp.role_id">
           <el-option label="男" value="0"></el-option>
           <el-option label="女" value="0"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="部门名称" prop="simple_name">
-        <el-input v-model.trim="temp.simple_name" placeholder="请输入部门名称" autocomplete="off" clearable/>
-      </el-form-item>
-      <el-form-item label="职务" prop="credit_code">
-        <el-input v-model.trim="temp.credit_code" placeholder="请输入职务" autocomplete="off" clearable/>
-      </el-form-item>
-      <el-form-item label="身份" prop="organization_code">
-        <el-input v-model.trim="temp.organization_code" placeholder="请输入身份" autocomplete="off" clearable/>
-      </el-form-item>
-      <el-form-item label="联系方式" prop="organization_code">
-        <el-input v-model.trim="temp.organization_code" placeholder="请输入身份" autocomplete="off" clearable/>
-      </el-form-item>
-      <el-form-item label="出生年月" prop="organization_code">
-        <el-input v-model.trim="temp.organization_code" placeholder="请输入出生年月" autocomplete="off" clearable/>
-      </el-form-item>
-
-
-
-
-      <el-form-item label="文化程度" prop="status">
-        <el-select v-model="temp.status">
-          <el-option v-for="item in companyStatus" :label="item.name" :value="item.id" :key="item.id"></el-option>
+      <el-form-item label="性别" prop="gender">
+        <el-select v-model="temp.gender">
+          <el-option label="男" value="1"></el-option>
+          <el-option label="女" value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="入职时间" prop="company_code">
-        <el-input v-model.trim="temp.company_code" placeholder="请输入企业编码" autocomplete="off" clearable/>
+      <el-form-item label="职务" prop="job_title">
+        <el-input v-model.trim="temp.job_title" placeholder="请输入部门名称" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="籍贯" prop="principal">
-        <el-input v-model.trim="temp.principal" placeholder="请输入负责人" autocomplete="off" clearable/>
+      <el-form-item label="手机号码" prop="mobile">
+        <el-input v-model.trim="temp.mobile" placeholder="请输入职务" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="是否党员" prop="status">
-        <el-select v-model="temp.status">
-          <el-option label="是" value="0"></el-option>
-          <el-option label="否" value="0"></el-option>
+      <el-form-item label="出生日期" prop="birthday">
+        <el-input v-model.trim="temp.birthday" placeholder="请输入身份" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="胸牌编号" prop="user_code">
+        <el-input v-model.trim="temp.user_code" placeholder="请输入身份" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="文化程度" prop="education">
+        <el-select v-model="temp.education">
+          <el-option label="小学" :value="1"></el-option>
+          <el-option label="初中" :value="2"></el-option>
+          <el-option label="高中" :value="3"></el-option>
+          <el-option label="中专" :value="4"></el-option>
+          <el-option label="大专" :value="5"></el-option>
+          <el-option label="本科" :value="6"></el-option>
+          <el-option label="硕士" :value="7"></el-option>
+          <el-option label="博士" :value="8"></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item label="是否党员" prop="is_party_member">
+        <el-select v-model="temp.is_party_member">
+          <el-option label="未定义" :value="0"></el-option>
+          <el-option label="是" :value="1"></el-option>
+          <el-option label="否" :value="2"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="参加工作时间" prop="first_work_time">
+        <el-input v-model.trim="temp.first_work_time" placeholder="请输入出生年月" autocomplete="off" clearable/>
+      </el-form-item>
+
+      <el-form-item label="籍贯" prop="origin">
+        <el-input v-model.trim="temp.origin" placeholder="请输入负责人" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="人员身份" prop="social_title">
+        <el-input v-model.trim="temp.social_title" placeholder="请输入负责人" autocomplete="off" clearable/>
       </el-form-item>
 
 
-      <el-form-item label="家庭电话" prop="mobile">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入家庭电话" autocomplete="off" clearable/>
+      <el-form-item label="家庭电话" prop="phone">
+        <el-input v-model.trim="temp.phone" placeholder="请输入家庭电话" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="家庭住址" prop="tel">
-        <el-input v-model.trim="temp.tel" placeholder="请输入家庭住址" autocomplete="off" clearable/>
-      </el-form-item>
-      <el-form-item label="参加工作时间" prop="tel">
-        <el-input v-model.trim="temp.tel" placeholder="请输入家庭住址" autocomplete="off" clearable/>
-      </el-form-item>
-      <el-form-item label="是否驾驶员" prop="status">
-        <el-select v-model="temp.status">
-          <el-option label="是" value="0"></el-option>
-          <el-option label="否" value="0"></el-option>
+
+      <el-form-item label="是否驾驶员" prop="is_driver">
+        <el-select v-model="temp.is_driver">
+          <el-option label="未定义" :value="0"></el-option>
+          <el-option label="是" :value="1"></el-option>
+          <el-option label="否" :value="2"></el-option>
         </el-select>
       </el-form-item>
-<div class="text-center">
-  <el-button type="primary" class="btn_blue02" :loading="paraLoading">保 存</el-button>
-</div>
+
+    </el-form>
+    <el-form ref="secondForm" :rules="rules" :model="temp" label-width="120px">
+      <el-form-item label="家庭住址" prop="address">
+        <el-input v-model.trim="temp.address" placeholder="请输入家庭住址" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model.trim="temp.remark" placeholder="请输入备注" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="照片" prop="head_image">
+        <SingleImage :tempUrl="temp.head_image" v-on:imgSrc="hasImgSrc"></SingleImage>
+      </el-form-item>
+
+      <div class="text-center">
+        <el-button type="primary" class="btn_blue02" :loading="paraLoading" @click="onSubmit">保 存</el-button>
+      </div>
 
     </el-form>
   </div>
 </template>
 
 <script>
-  import {userList} from '@/api/user'
-
+  import {userAdd} from '@/api/user'
+  import SingleImage from "@/components/Upload/SingleImage.vue";
   export default {
-    name: 'parameterList',
-
+    name: 'userList',
     components: {
-
+      SingleImage
     },
     data() {
       return {
-        escription:'',
-        isChange:false,
-        showViewDialog:false,
-        paraData:{},
         paraLoading:false,
-        operationOption: [{
-          id: 0,
-          name: '下拉框'
-        }, {
-          id: 1,
-          name: '复选框'
-        }, {
-          id: 2,
-          name: '输入框'
-        }],
-        updateBtn: true,
-        enableBtn: true,
-        disableBtn: true,
-        total: 0,
-        parameterValueList: [{name: ''}],
-        list: [{
-          name:'列表1',
-          address:'杭州市',
-          time:1298963414,
-          num:1,
-          status:1
-        },{
-          name:'列表2',
-          address:'杭州市',
-          time:1298963414,
-          num:1,
-          status:1
-        }],
-        listLoading: false,
-        listQuery: {
-          key_word: '',
-          page: 1,
-          pageSize: 10
-        },
-        updateId: undefined,
-        dialogFormVisible: false,
         temp: {
-          // id: undefined,
-          status: 1,
-          name: '',
-          orders: '',
-          isRequired: 0,
-          operatingMode: 0,
-          parameterValueList: [],
+          department_id:'',
+          real_name:'',
+          user_name:'',
+          role_id:'',
+          gender:'',
+          job_title:'',
+          mobile:'',
+          birthday:'',
+          user_code:'',
+          education:'',
+          is_party_member:'',
+          first_work_time:'',
+          origin:'',
+          social_title:'',
+          phone:'',
+          is_driver:'',
+          address:'',
+          remark:'',
+          head_image:'',
         },
-        textMap: {
-          update: '编辑参数信息',
-          create: '新增参数信息',
-          view:'查看'
-        },
-        dialogStatus: '',
         rules: {
-          name: [{required: true, message: '请输入名称', trigger: 'change'}],
+          user_name: [{required: true, message: '请输入名称', trigger: 'change'}],
         },
-        tableHeight:'100'
       }
     },
-    filters: {
-      filtersStatus: function (value) {
-        let StatusArr = {0: '禁用', 1: '启用'}
-        return StatusArr[value]
-      },
-      filtersMode: function (value) {
-        let StatusArr = {0: '下拉框', 1: '复选框', 2: '输入框'}
-        return StatusArr[value]
-      }
-    },
-
     mounted() {
-      this.$nextTick(function() {
-        // this.$refs.filter-container.offsetHeight
-        let height = window.innerHeight - this.$refs.tableList.$el.offsetTop - 260;
-        if(height>100){
-          this.tableHeight = height
-        }else{
-          this.tableHeight = 100
-        }
-        // 监听窗口大小变化
-        const self = this;
-        window.onresize = function() {
-          let height = window.innerHeight - self.$refs.tableList.$el.offsetTop - 260;
-          if(height>100){
-            self.tableHeight = height
-          }else{
-            self.tableHeight = 100
-          }
-        };
-      });
-      // this.getList();
+
     },
     methods: {
-      handleExport(){},
-
-      handleFilter() {
-        this.listQuery.page = 1;
-        this.getList()
+      hasImgSrc(val) {
+        this.temp.imageUrl = val;
       },
-      getList() {
-        userList(this.listQuery).then(res => {
-          this.list = res.data.data
-          this.total = res.data.total
-        });
-      },
-
-      resetList() {
-        this.listQuery = {
-          key_word: '',
-          page: 1,
-          pageSize: 10
-        }
-        this.getList();
-      },
-      clickRow(row){
-        this.$refs.tableList.toggleRowSelection(row)
-      },
-      handleSelectionChange(val) {
-        console.log(val)
-        this.rowInfo = val;
-        if (val.length == 1) {
-          this.updateBtn = false
-          this.deleteBtn = false
-          if(val[0].status == 0){
-            this.enableBtn = false
-            this.disableBtn = true
-          }else{
-            this.enableBtn = true
-            this.disableBtn = false
+      onSubmit(){
+        this.$refs['firstForm'].validate((valid) => {
+          if (valid) {
+            this.$refs['secondForm'].validate((valid) => {
+              if (valid) {
+                this.paraLoading = true
+                let temp = JSON.parse(JSON.stringify(this.temp));
+                temp.auth_id = this.getCheckedKeys();
+                userAdd(temp).then((res) => {
+                  setTimeout(()=>{
+                    this.paraLoading = false
+                  },1000)
+                  if(res.code == 1) {
+                    this.$emit('insertList');
+                    this.showViewDialog = false;
+                    this.$message({
+                      message: res.message,
+                      type: 'success'
+                    });
+                  }
+                }).catch(() => {
+                  this.paraLoading = false;
+                });
+              }
+            })
           }
-        } else {
-          this.updateBtn = true
-          this.deleteBtn = true
-          this.enableBtn = true
-          this.disableBtn = true
-        }
-      },
-      resetTemp() {
-        this.temp = {
-          // id: undefined,
-          status: 1,
-          name: '',
-          orders: '',
-          isRequired: 0,
-          operatingMode: 0,
-          parameterValueList: [],
-        }
+        });
       },
     }
   }
@@ -246,6 +183,6 @@
     box-sizing: border-box;
   }
   .user_data{
-    padding: 50px 50px;
+    padding: 50px 50px 0 0;
   }
 </style>

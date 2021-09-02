@@ -107,7 +107,7 @@ export default {
   name: 'topTitle',
   data() {
     return {
-      citySelected:Number(getCitySelected()),
+      // citySelected:Number(getCitySelected()),
       headImg: headImg,
       systemDate:'',
       // name:getName()!='null'?getName():'',
@@ -121,7 +121,7 @@ export default {
       temp:{
         oldPassword:''
       },
-      cityList:getCity(),
+      // cityList:getCity(),
       rules:{
         password: [
           { required: true, message: "请输入密码", trigger: "change" },{validator: isPassword}
@@ -160,17 +160,17 @@ export default {
       'sidebar',
       'avatar',
       'device',
-      'city'
+      // 'city'
     ])
   },
   methods: {
-    chooseCity(val){
-      this.citySelected = val;
-      setCitySelected(val);
-      console.log( getCity())
-     console.log( getCitySelected())
-    },
-    updateCity(){},
+    // chooseCity(val){
+    //   this.citySelected = val;
+    //   setCitySelected(val);
+    //   console.log( getCity())
+    //  console.log( getCitySelected())
+    // },
+    // updateCity(){},
     resetPasswordTemp(){
       this. passwordTemp={
         confirmPassword:'',

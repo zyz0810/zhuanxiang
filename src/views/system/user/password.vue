@@ -1,18 +1,18 @@
 <template>
   <div class="app-container">
     <el-form ref="dataForm" :rules="rules":model="temp" label-width="120px" class="text-center user_password">
-      <el-form-item label="旧密码" prop="facility_id">
-        <el-input v-model.trim="temp.name" placeholder="请输入名称" autocomplete="off" clearable/>
+      <el-form-item label="旧密码" prop="password">
+        <el-input v-model.trim="temp.password" type="password" placeholder="请输入旧密码" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="新密码" prop="company">
-        <el-input v-model.trim="temp.company" placeholder="请输入胸牌编号" autocomplete="off" clearable/>
+      <el-form-item label="新密码" prop="repwd">
+        <el-input v-model.trim="temp.repwd" type="password" placeholder="请输入新密码" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="确认密码" prop="company">
-        <el-input v-model.trim="temp.company" placeholder="请输入胸牌编号" autocomplete="off" clearable/>
+      <el-form-item label="确认密码" prop="conpwd">
+        <el-input v-model.trim="temp.conpwd" type="password" placeholder="请再次输入新密码" autocomplete="off" clearable/>
       </el-form-item>
 
       <div class="text-center">
-        <el-button type="primary" class="btn_blue02" :loading="paraLoading">保 存</el-button>
+        <el-button type="primary" class="btn_blue02" :loading="paraLoading" @click="onSubmit">保 存</el-button>
       </div>
 
     </el-form>
@@ -20,7 +20,8 @@
 </template>
 
 <script>
-  import {resetPassword} from '@/api/user'
+  import { getId,removeId,} from '@/utils/auth'
+  import {editPassword} from '@/api/user'
 
   export default {
     name: 'password',
@@ -32,29 +33,42 @@
       return {
         paraLoading:false,
         temp: {
-          // id: undefined,
-          status: 1,
-          name: '',
-          orders: '',
-          isRequired: 0,
-          operatingMode: 0,
-          parameterValueList: [],
+          user_id: getId(),
+          password: '',
+          repwd: '',
+          conpwd:''
         },
         rules: {
-          name: [{required: true, message: '请输入名称', trigger: 'change'}],
+          password: [{required: true, message: '请输入原密码', trigger: 'change'}],
+          repwd: [{required: true, message: '请输入新密码', trigger: 'change'}],
+          conpwd: [{required: true, message: '请再次输入新密码', trigger: 'change'}],
         },
 
       }
     },
-
-    mounted() {
-      this.$nextTick(function() {
-
-      });
-      // this.getList();
-    },
     methods: {
-
+      onSubmit() {
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            this.paraLoading = true
+            const {user_id,password,repwd} = this.temp;
+            let temp = {user_id,password,repwd};
+            editPassword(temp).then((res) => {
+              setTimeout(()=>{
+                this.paraLoading = false
+              },1000)
+              if(res.code == 1) {
+                this.$message({
+                  message: res.message,
+                  type: 'success'
+                });
+              }
+            }).catch(() => {
+              this.paraLoading = false;
+            });
+          }
+        })
+      },
     }
   }
 </script>

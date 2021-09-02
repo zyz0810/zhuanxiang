@@ -76,27 +76,49 @@ export function userAdd(data) {
     data: Qs.stringify(data)
   })
 }
-// /* 人员-重置密码
-//  * id  用户id
-//  */
-// export function resetPassword(data) {
-//   return request({
-//     url:'/admin/user/resetPassword',
-//     method: 'post',
-//     data: Qs.stringify(data)
-//   })
-// }
-// /* 人员-重置密码
-//  * id  用户id
-//  */
-// export function resetPassword(data) {
-//   return request({
-//     url:'/admin/user/resetPassword',
-//     method: 'post',
-//     data: Qs.stringify(data)
-//   })
-// }
+/* 人员-编辑
+ * id  用户id
+ */
+export function userEdit(data) {
+  return request({
+    url:'/admin/user/edit',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 人员-详情
+ * id  用户id
+ */
+export function userDetail(data) {
+  return request({
+    url:'/admin/user/detail',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 人员-修改状态
+ * id  用户id
+ * status 状态
+ */
+export function userStatus(data) {
+  return request({
+    url:'/admin/user/editStatus',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
 //
+/* 人员-导出
+ * real_name  人员名称
+ * department_id 部门ID
+ */
+export function userExport(data) {
+  return request({
+    url:'/admin/user/export',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
 //
 //
 /* 人员-重置密码
@@ -105,6 +127,18 @@ export function userAdd(data) {
 export function resetPassword(data) {
   return request({
     url:'/admin/user/resetPassword',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 人员-修改密码
+ * user_id  用户id
+ * password 原密码
+ * repwd 新密码
+ */
+export function editPassword(data) {
+  return request({
+    url:'/admin/user/editPassword',
     method: 'post',
     data: Qs.stringify(data)
   })

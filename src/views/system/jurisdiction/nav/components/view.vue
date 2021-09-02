@@ -44,7 +44,7 @@
   import Pagination from "@/components/Pagination/index";
   import {menuAdd, menuDetail, menuEdit,roleAll} from "@/api/system"; // waves directive
   export default {
-    name: 'parameterView',
+    name: 'navView',
     directives: { waves },
     components: {
       draggable,
@@ -72,6 +72,7 @@
         roleList:[],
         paraLoading:false,
         temp: {
+          pid:'',
           menu_name:'',
           sort:'',
           role_id:[],
@@ -108,6 +109,7 @@
       open(){
         this.getRole();
         console.log(this.paraData)
+        this.temp.pid = this.paraData.pid;
         this.dialogStatus = this.paraData.operatorType;
         if(this.paraData.operatorType != 'create'){
           this.getView();
