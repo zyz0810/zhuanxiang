@@ -3,7 +3,7 @@
     <div class="bg_white">
       <el-form :inline="true" :model="listQuery" :label="280">
         <el-form-item label="选择类型">
-          <el-select v-model="value" placeholder="请选择" clearable>
+          <el-select v-model="listQuery.value" placeholder="请选择" clearable>
             <el-option label="部件类型" :value="0"></el-option>
             <el-option label="事件类型" :value="0"></el-option>
             <el-option label="投诉件类型" :value="0"></el-option>
@@ -12,7 +12,7 @@
       </el-form>
       <el-divider></el-divider>
       <div class="mb_10">
-        <el-button class="btn_blue02" type="primary"  @click="">导出</el-button>
+        <el-button class="btn_blue02" type="primary"  @click="handleView">添加</el-button>
         <el-form :inline="true" :model="listQuery" :label="280" class="fr">
           <el-form-item label="">
             <el-input v-model="listQuery.productSn" placeholder="" @change="handleFilter" clearable/>
@@ -24,10 +24,14 @@
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight" row-key="id"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" :tree-props="{children: 'children'}">
-        <el-table-column label="部件类型" align="center" prop="name"></el-table-column>
+        <el-table-column label="事件类型" align="center" prop="name"></el-table-column>
+        <el-table-column label="案件编码" align="center" prop=""></el-table-column>
+        <el-table-column label="处理时限" align="center" prop="send_time"></el-table-column>
+        <el-table-column label="处置部门" align="center" prop=""></el-table-column>
+        <el-table-column label="启用状态" align="center" prop="status" :formatter="formatStatus"></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
-            <el-button class="btn_blue02" type="primary" @click="">编辑</el-button>
+            <el-button class="btn_blue02" type="primary" @click="handleSmall">添加事件小类</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -35,18 +39,19 @@
                   @pagination="getList" class="text-right"/>
     </div>
 
-    <paraView :showDialog.sync="showViewDialog" :paraData="paraData" @insertProduct="getList"></paraView>
-    <!--<history :showDialog.sync="showHistoryDialog" :historyData="historyData"></history>-->
+    <paraView :showDialog.sync="showViewDialog" :paraData="viewData" @insertProduct="getList"></paraView>
+    <smallView :showDialog.sync="showSmallDialog" :paraData="smallData"></smallView>
   </div>
 </template>
 
 <script>
-  import {paraList, paraSave, paraUpdate, paraDelete} from '@/api/parameter'
+  import {categoryList} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
   import Pagination from "@/components/Pagination/index"; // waves directive
   import paraView from "./components/view";
+  import smallView from "./components/smallView";
   export default {
     name: 'parameterList',
     directives: {waves},
@@ -54,62 +59,20 @@
       draggable,
       Pagination,
       paraView,
-
+      smallView
     },
     data() {
       return {
+        showSmallDialog:false,
+        smallData:{},
         showViewDialog:false,
         showHistoryDialog:false,
         historyData:{},
         viewData:{},
         paraData:{},
         paraLoading:false,
-        operationOption: [{
-          id: 0,
-          name: '下拉框'
-        }, {
-          id: 1,
-          name: '复选框'
-        }, {
-          id: 2,
-          name: '输入框'
-        }],
-        updateBtn: true,
-        enableBtn: true,
-        disableBtn: true,
         total: 0,
-        parameterValueList: [{name: ''}],
-        list: [{
-          id:445,
-          name:'列表1',
-          children:[{
-            id:1,
-            name:'321'
-            },{
-            id:5,
-            name:'8989'
-          }],
-        },{
-          id:2,
-          name:'列表2',
-          children:[{
-            id:3,
-            name:'5332'
-          },{
-            id:4,
-            name:'6758'
-          }],
-        },{
-          id:232,
-          name:'列表4322',
-          children:[{
-            id:421,
-            name:'3221111'
-          },{
-            id:435,
-            name:'22321311'
-          }],
-        },],
+        list: [],
         listLoading: false,
         listQuery: {
           name: '',
@@ -117,39 +80,10 @@
           page: 1,
           limit: 10
         },
-        updateId: undefined,
-        dialogFormVisible: false,
-        temp: {
-          // id: undefined,
-          status: 1,
-          name: '',
-          orders: '',
-          isRequired: 0,
-          operatingMode: 0,
-          parameterValueList: [],
-        },
-        textMap: {
-          update: '编辑参数信息',
-          create: '新增参数信息',
-          view:'查看'
-        },
-        dialogStatus: '',
-        rules: {
-          name: [{required: true, message: '请输入名称', trigger: 'change'}],
-        },
         tableHeight:'100'
       }
     },
-    filters: {
-      filtersStatus: function (value) {
-        let StatusArr = {0: '禁用', 1: '启用'}
-        return StatusArr[value]
-      },
-      filtersMode: function (value) {
-        let StatusArr = {0: '下拉框', 1: '复选框', 2: '输入框'}
-        return StatusArr[value]
-      }
-    },
+
     computed: {
       ...mapState({
         roles: state => state.user.roles,
@@ -175,42 +109,24 @@
           }
         };
       });
-      // this.getList();
+      this.getList();
     },
     methods: {
-      handleValue(val){
-        // this.temp.parameterValueList.map(item=>{
-        //   if(item.name == val.srcElement.value){
-        //     this.$confirm(
-        //       '参数值重复，请重新输入',
-        //       "提示",
-        //       {
-        //         type: "warning",
-        //         showCancelButton: false
-        //       }
-        //     )
-        //       .then(() => {
-        //
-        //       })
-        //       .catch(() => {});
-        //   }
-        // })
-      },
-      handleOperating(val){
-        console.log(val.srcElement.value)
-
-      },
-      deleteParam(index) {
-        this.parameterValueList.splice(index, 1)
+      formatStatus(row, column, cellValue, index) {
+        return cellValue == 1
+          ? "正常"
+          : cellValue == 2
+            ? "禁用"
+            : "";
       },
       handleFilter() {
         this.listQuery.page = 1;
         this.getList()
       },
       getList() {
-        paraList(this.listQuery).then(res => {
+        categoryList(this.listQuery).then(res => {
           this.list = res.data.data
-          this.total = res.data.count
+          this.total = res.data.total
         });
       },
 
@@ -224,43 +140,15 @@
         this.getList();
       },
 
-      addSpecifications() {
-        this.parameterValueList.push({name: ''})
-      },
-      goView() {
-        // this.$router.push('/product/view')
-        // this.$router.push({path: "/product/paramView", query: {id: this.rowInfo[0].id, name: this.rowInfo[0].name,operatingMode: this.rowInfo[0].operatingMode}})
-        this.showViewDialog = true
-        this.paraData = {
-          option: {
-            name: this.rowInfo[0].name,
-            operatingMode: this.rowInfo[0].operatingMode
-          },
-          operatorType: 'view',
-          id: this.rowInfo[0].id
-        }
-      },
-
-      resetTemp() {
-        this.temp = {
-          // id: undefined,
-          status: 1,
-          name: '',
-          orders: '',
-          isRequired: 0,
-          operatingMode: 0,
-          parameterValueList: [],
-        }
-      },
       handleView(row){
         this.showViewDialog = true
         this.viewData = {
           id:row.id
         }
       },
-      handleHistory(row){
-        this.showHistoryDialog = true
-        this.historyData = {
+      handleSmall(row){
+        this.showSmallDialog = true
+        this.smallData = {
           id:row.id
         }
       },

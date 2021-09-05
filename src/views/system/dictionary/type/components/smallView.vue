@@ -5,7 +5,7 @@
     width="50%"
     @close="close"
     top="15vh"
-    title="添加事件"
+    title="添加事件小类"
     class="dialogContainer"
     @open="open"
   >
@@ -13,8 +13,21 @@
       <el-form-item label="事件大类名称" prop="name">
         <el-input v-model.trim="temp.name" placeholder="请输入负责人" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="事件大类编码" prop="mobile">
+      <el-form-item label="事件小类名称" prop="name">
+        <el-input v-model.trim="temp.name" placeholder="请输入负责人" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="海康上报小类" prop="mobile">
         <el-input v-model.trim="temp.mobile" placeholder="请输入负责人电话" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="处理时限" prop="mobile">
+        <el-input v-model.trim="temp.mobile" placeholder="请输入负责人电话" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="处置部门" prop="mobile">
+        <el-select v-model="temp.value" placeholder="请选择" clearable>
+          <el-option label="部件类型" :value="0"></el-option>
+          <el-option label="事件类型" :value="0"></el-option>
+          <el-option label="投诉件类型" :value="0"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="是否启用" prop="mobile">
         <el-switch v-model="temp.value" active-color="#13ce66" inactive-color="#ff4949" :active-value="1" :inactive-value="2"></el-switch>

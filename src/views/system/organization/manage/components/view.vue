@@ -2,46 +2,80 @@
   <myDialog
     :visible.sync="showViewDialog"
     :close-on-click-modal="false"
-    width="50%"
+    width="60%"
     @close="close"
     top="20vh"
-    title="编辑组织管理名称"
+    title="组织管理"
     class="dialogContainer"
     @open="open"
   >
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" style="width: 400px; margin-left:50px;">
+    <el-form ref="dataForm" :inline="true" :rules="rules" :model="temp" label-width="120px" >
 
-      <el-form-item label="父类型" prop="city_id">
-<!--        <el-input v-model.trim="temp.name" placeholder="请输入所属分组" autocomplete="off" clearable/>-->
-        <el-select v-model="temp.city_id"  placeholder="选择父类型">
-          <el-option v-for="option in cityList" :label="option.province+option.city+option.area" :value="option.id" :key="option.id"></el-option>
-        </el-select>
+      <el-form-item label="部门名称" prop="department_name">
+        <el-input v-model.trim="temp.department_name" placeholder="请输入部门名称" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="应用类型" prop="city_id">
+      <el-form-item label="上级部门" prop="parent_id">
         <!--        <el-input v-model.trim="temp.name" placeholder="请输入所属分组" autocomplete="off" clearable/>-->
-        <el-select v-model="temp.city_id"  placeholder="选择应用类型">
+        <el-select v-model="temp.parent_id"  placeholder="选择上级部门">
           <el-option v-for="option in cityList" :label="option.province+option.city+option.area" :value="option.id" :key="option.id"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="分平台名称" prop="city_id">
-        <!--        <el-input v-model.trim="temp.name" placeholder="请输入所属分组" autocomplete="off" clearable/>-->
-        <el-select v-model="temp.city_id" multiple  placeholder="选择分平台名称">
-          <el-option v-for="option in cityList" :label="option.province+option.city+option.area" :value="option.id" :key="option.id"></el-option>
+      <el-form-item label="部门地址" prop="address">
+                <el-input v-model.trim="temp.address" placeholder="请输入部门地址" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="部门电话" prop="phone">
+                <el-input v-model.trim="temp.phone" placeholder="请输入部门电话" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="部门负责人" prop="contact">
+        <el-input v-model.trim="temp.contact" placeholder="请输入部门负责人" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="负责人手机" prop="mobile">
+        <el-input v-model.trim="temp.mobile" placeholder="请输入负责人手机" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="在地图上显示" prop="is_map">
+        <el-select v-model="temp.is_map"  placeholder="选择父类型">
+          <el-option label="是" :value="1"></el-option>
+          <el-option label="否" :value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="角色" prop="city_id">
-        <!--        <el-input v-model.trim="temp.name" placeholder="请输入所属分组" autocomplete="off" clearable/>-->
-        <el-select v-model="temp.city_id" multiple  placeholder="选择角色" @change="$forceUpdate()">
-          <el-option v-for="option in cityList" :label="option.province+option.city+option.area" :value="option.id" :key="option.id"></el-option>
+      <el-form-item label="部门大类" prop="big_type">
+        <el-select v-model="temp.big_type"  placeholder="选择部门大类">
+          <el-option label="是" :value="1"></el-option>
+          <el-option label="否" :value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="首页地址" prop="name">
-        <el-input v-model.trim="temp.name" placeholder="请输入用户名" autocomplete="off" clearable/>
+      <el-form-item label="单位性质" prop="nature">
+        <el-input v-model.trim="temp.nature" placeholder="请输入单位性质" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="排序" prop="password">
-        <el-input v-model.trim="temp.password" placeholder="请输入密码" autocomplete="off" clearable/>
+      <el-form-item label="111部门人数" prop="">
+        <el-input v-model.trim="temp.password" placeholder="请输入部门人数" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="平台照片" prop="mobile">
+      <el-form-item label="公务员人数" prop="user_num1">
+      <el-input v-model.trim="temp.user_num1" placeholder="请输入公务员人数" autocomplete="off" clearable/>
+    </el-form-item>
+      <el-form-item label="参公人数" prop="user_num2">
+        <el-input v-model.trim="temp.user_num2" placeholder="请输入参公人数" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="事业编制人数" prop="user_num3">
+        <el-input v-model.trim="temp.user_num3" placeholder="请输入事业编制人数" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="协管人数" prop="user_num4">
+        <el-input v-model.trim="temp.user_num4" placeholder="请输入协管人数" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="111油烟城区" prop="password">
+        <el-select v-model="temp.city_id"  placeholder="选择油烟城区">
+          <el-option label="是" :value="1"></el-option>
+          <el-option label="否" :value="2"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="部门职责介绍" prop="duty">
+      <el-input type="textarea" v-model.trim="temp.duty" placeholder="请输入密码" autocomplete="off" clearable/>
+    </el-form-item>
+      <el-form-item label="部门简介" prop="remark">
+        <el-input type="textarea" v-model.trim="temp.remark" placeholder="请输入密码" autocomplete="off" clearable/>
+      </el-form-item>
+
+      <el-form-item label="部门照片" prop="dept_img">
         <SingleImage
           :tempUrl="temp.imgUrl"
           v-on:imgSrc="hasImgSrc"
