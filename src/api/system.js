@@ -316,6 +316,16 @@ export function departmentDetail(data) {
     data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
   })
 }
+/* 组织架构-大类
+ *
+ */
+export function bigSmallType(data) {
+  return request({
+    url: `/admin/department/bigSmallType`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
 /* 组织架构-修改状态
  * id
  * status

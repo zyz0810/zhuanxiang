@@ -107,6 +107,16 @@ export function userStatus(data) {
     data: Qs.stringify(data)
   })
 }
+/* 人员-文化程度
+ */
+export function userConstants(data) {
+  return request({
+    url:'/admin/user/constants',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
 //
 /* 人员-导出
  * real_name  人员名称

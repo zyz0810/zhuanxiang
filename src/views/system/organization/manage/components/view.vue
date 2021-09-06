@@ -93,7 +93,7 @@
 </template>
 
 <script>
-  import {addUser,editUser,userDetail} from '@/api/user'
+  import {departmentAdd,departmentEdit,departmentDetail,bigSmallType} from '@/api/system'
   import {cityList} from '@/api/jurisdiction'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
@@ -133,6 +133,7 @@
           password:'',
           mobile:''
         },
+        bigTypeList:[],
         rules: {
           city_id: [{ required: true, message: '请选择所属分组', trigger: 'change' }],
           name: [{ required: true, message: '请输入用户名', trigger: 'change' }],
@@ -155,8 +156,14 @@
       hasImgSrc(val) {
         this.form.imgUrl = val;
       },
+      getBigSmallType(){
+        bigSmallType().then(res=>{
+          this.bigTypeList = res.data
+        });
+      },
       open(){
         this.dialogStatus = this.paraData.operatorType
+        this.getBigSmallType();
         if(this.paraData.operatorType != 'create'){
           // this.getView();
         }

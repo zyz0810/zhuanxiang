@@ -27,7 +27,7 @@
         <el-table-column label="事件类型" align="center" prop="name"></el-table-column>
         <el-table-column label="案件编码" align="center" prop=""></el-table-column>
         <el-table-column label="处理时限" align="center" prop="send_time"></el-table-column>
-        <el-table-column label="处置部门" align="center" prop=""></el-table-column>
+        <el-table-column label="处置部门" align="center" prop="department_name"></el-table-column>
         <el-table-column label="启用状态" align="center" prop="status" :formatter="formatStatus"></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">

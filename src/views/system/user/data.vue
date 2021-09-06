@@ -3,8 +3,7 @@
     <el-form ref="firstForm" :rules="rules" :inline="true" :model="temp" label-width="120px" class="user_data">
       <el-form-item label="部门" prop="department_id">
         <el-select v-model="temp.department_id">
-          <el-option label="男" value="0"></el-option>
-          <el-option label="女" value="0"></el-option>
+          <el-option v-for="item in departmentList" :label="item.department_name" :value="item.id" :key="item.id"></el-option>
         </el-select>
 <!--        <el-input v-model.trim="temp.name" placeholder="请输入名称" autocomplete="off" clearable/>-->
       </el-form-item>
@@ -16,8 +15,7 @@
       </el-form-item>
       <el-form-item label="角色" prop="role_id">
         <el-select v-model="temp.role_id">
-          <el-option label="男" value="0"></el-option>
-          <el-option label="女" value="0"></el-option>
+          <el-option v-for="item in roleList" :label="item.role_name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="性别" prop="gender">
@@ -40,14 +38,7 @@
       </el-form-item>
       <el-form-item label="文化程度" prop="education">
         <el-select v-model="temp.education">
-          <el-option label="小学" :value="1"></el-option>
-          <el-option label="初中" :value="2"></el-option>
-          <el-option label="高中" :value="3"></el-option>
-          <el-option label="中专" :value="4"></el-option>
-          <el-option label="大专" :value="5"></el-option>
-          <el-option label="本科" :value="6"></el-option>
-          <el-option label="硕士" :value="7"></el-option>
-          <el-option label="博士" :value="8"></el-option>
+          <el-option v-for="item in userConstantsList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="是否党员" prop="is_party_member">
@@ -102,7 +93,8 @@
 </template>
 
 <script>
-  import {userAdd} from '@/api/user'
+  import {userAdd,userConstants} from '@/api/user';
+  import {departmentAllList,roleList} from '@/api/system';
   import SingleImage from "@/components/Upload/SingleImage.vue";
   export default {
     name: 'userList',
@@ -136,12 +128,33 @@
         rules: {
           user_name: [{required: true, message: '请输入名称', trigger: 'change'}],
         },
+        departmentList:[],
+        roleList:[],
+        userConstantsList:[],
       }
     },
     mounted() {
-
+      this.getDepartment();
+      this.getRole();
+      this.getUserConstants();
     },
     methods: {
+      getDepartment(){
+        departmentAllList().then((res) => {
+         this.departmentList = res.data
+        })
+      },
+      getRole(){
+        roleList({page:1,pageSize:999999}).then((res) => {
+          this.roleList = res.data.data
+        })
+      },
+      getUserConstants(){
+        userConstants().then((res) => {
+          this.userConstantsList = res.data
+        })
+      },
+
       hasImgSrc(val) {
         this.temp.imageUrl = val;
       },
