@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <ul class="drive_ul">
-      <li><router-link to='/dataAcquisition/digital'>数字城管</router-link></li>
-      <li><router-link to='/dataAcquisition/letter'>信访投诉</router-link></li>
-      <li><router-link to='/dataAcquisition/examine'>行政审批</router-link></li>
+      <li><router-link to='/dataAcquisition/driveInput/digital'>数字城管</router-link></li>
+      <li><router-link to='/dataAcquisition/driveInput/letter'>信访投诉</router-link></li>
+      <li><router-link to='/dataAcquisition/driveInput/examine'>行政审批</router-link></li>
     </ul>
   </div>
 </template>

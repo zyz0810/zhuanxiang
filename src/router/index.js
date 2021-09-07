@@ -421,7 +421,7 @@ export const asyncRoutes = [
 
 
 {
-  path: '/dataAcquisition',
+  path: '/dataAcquisition/grid',
   component: Layout,
   redirect: 'noRedirect',
   // name: '数据交换',
@@ -433,7 +433,7 @@ export const asyncRoutes = [
   children: [
 
     {
-      path: 'grid',
+      path: 'index',
       component: () => import('@/views/dataAcquisition/grid/list'),
       name: 'gridList',
       meta: {
@@ -444,7 +444,7 @@ export const asyncRoutes = [
   ]
 },
   {
-    path: '/dataAcquisition',
+    path: '/dataAcquisition/gridManage',
     component: Layout,
     redirect: 'noRedirect',
     // name: '数据交换',
@@ -455,7 +455,7 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'gridManage',
+        path: 'index',
         component: () => import('@/views/dataAcquisition/gridManage/list'),
         name: 'gridManageList',
         meta: {
@@ -496,7 +496,7 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/dataAcquisition',
+    path: '/dataAcquisition/driveInput',
     component: Layout,
     redirect: 'noRedirect',
     // name: '数据交换',
@@ -507,7 +507,7 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: 'driveInput',
+        path: 'index',
         component: () => import('@/views/dataAcquisition/driveInput/index'),
         name: 'driveInput',
         meta: {
@@ -522,7 +522,7 @@ export const asyncRoutes = [
         meta: {
           title: '数字城管',
           roles: ['dataAcquisition'],
-          activeMenu:'/dataAcquisition/driveInput',
+          activeMenu:'/dataAcquisition/driveInput/index',
         }
       },{
         path: 'letter',
@@ -532,7 +532,7 @@ export const asyncRoutes = [
         meta: {
           title: '信访投诉',
           roles: ['dataAcquisition'],
-          activeMenu:'/dataAcquisition/driveInput',
+          activeMenu:'/dataAcquisition/driveInput/index',
         }
       },{
         path: 'examine',
@@ -542,7 +542,7 @@ export const asyncRoutes = [
         meta: {
           title: '行政审批',
           roles: ['dataAcquisition'],
-          activeMenu:'/dataAcquisition/driveInput',
+          activeMenu:'/dataAcquisition/driveInput/index',
         }
       }
     ]

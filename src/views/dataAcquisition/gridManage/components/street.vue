@@ -50,7 +50,7 @@
         type: Boolean,
         default: false
       },
-      paraData: {
+      viewData: {
         required: true,
         type: Object,
         default: {
