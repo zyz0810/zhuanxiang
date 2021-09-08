@@ -58,6 +58,13 @@ module.exports = {
         // pathRewrite:{
         //   '/keynote/api':''
         // }
+      },
+      '/ai':{
+        target:'http://erp.susongzhijia.com',
+        changeOrigin: true,
+        // pathRewrite:{
+        //   '/keynote/api':''
+        // }
       }
     }
     // proxy:"http://139.224.233.152:18000",

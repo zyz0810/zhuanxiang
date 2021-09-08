@@ -81,3 +81,31 @@ export function editChildCategory(data) {
     data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
   })
 }
+
+/* 示范小区列表
+ * pageSize 分页结束位置
+ * page  分页起始位置
+ */
+export function communityList(data) {
+  return request({
+    url:'/ai/community/communityList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
+/* 添加/编辑示范小区
+ * name 小区名称
+ * mobile 手机号
+ * images 封面图
+ * point_id 绑定监控点ID
+ * linkman 	联系人
+ * id 小区ID
+ */
+export function editCommunity(data) {
+  return request({
+    url:'/ai/community/editCommunity',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}

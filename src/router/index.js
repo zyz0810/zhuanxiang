@@ -492,6 +492,14 @@ export const asyncRoutes = [
           title: '工地采集',
           roles: ['dataAcquisition'],
         }
+      },{
+        path: 'community',
+        component: () => import('@/views/dataAcquisition/community/list'),
+        name: 'communityList',
+        meta: {
+          title: '示范小区',
+          roles: ['dataAcquisition'],
+        }
       }
     ]
   },

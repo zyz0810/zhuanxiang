@@ -336,28 +336,33 @@
         function drawPolygon() {
           // polygonTool.clear();//清除所画的多边形
           PolygonPoints=[]
-          that.map.clearOverLays();
+          // that.map.clearOverLays();
           polygonTool.open();
-          PolygonPoints.length=0;  //清零保存的坐标
+          // PolygonPoints.length=0;  //清零保存的坐标
           if(mapclick!=""){
             // TEvent.removeListener(mapclick); //避免加载多次点击事件
             that.map.removeEventListener("click",mapclick);
+            that.map.addEventListener("dblclick",onDrawPolygon);
           }
 
           mapclick = that.map.addEventListener("click",function(p){
             polygonTool.open();
             console.log(p)
+
             // var lnglat = that.map.fromContainerPixelToLngLat(p);//获取点击处的坐标
             var lnglat = p.lnglat;//获取点击处的坐标
             PolygonPoints.push(lnglat.getLng());
             PolygonPoints.push(lnglat.getLat());
-            if(PolygonPoints.length>20){
-              alert("不能超过10个点！请重新选择范围。");
-              polygonTool.close();
-              PolygonPoints.length=0;
-              // TEvent.removeListener(mapclick);
-              that.map.removeEventListener("click",mapclick);
-            }
+            console.log(lnglat.getLng())
+            console.log(lnglat.getLat())
+            console.log(PolygonPoints)
+            // if(PolygonPoints.length>20){
+            //   alert("不能超过10个点！请重新选择范围。");
+            //   polygonTool.close();
+            //   PolygonPoints.length=0;
+            //   // TEvent.removeListener(mapclick);
+            //   that.map.removeEventListener("click",mapclick);
+            // }
           });
           // drawPolygonByPoint();
         }
