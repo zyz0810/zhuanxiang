@@ -469,9 +469,10 @@ img {
 //}
 // 纯form类型弹窗高度
 .dialog_form{
-  margin-left:50px;
+  //margin-left:50px;
   max-height: 62vh;
   overflow: auto;
+  padding: 0 10px;
   .el-input{
     width: 230px;
   }

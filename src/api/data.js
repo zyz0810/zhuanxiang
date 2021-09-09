@@ -109,3 +109,12 @@ export function editCommunity(data) {
     data: Qs.stringify(data)
   })
 }
+/* 驾驶舱录入-行政审批
+ */
+export function implodeCheck(data) {
+  return request({
+    url:'/admin/excel/implodeCheck',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}

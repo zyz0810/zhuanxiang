@@ -1,53 +1,29 @@
 <template>
   <div class="app-container">
     <div class="bg_white">
-      <el-form :inline="true" :model="listQuery" :label="280">
-        <el-form-item label="选择应用">
-          <el-select v-model="listQuery.value" placeholder="请选择" clearable>
-            <el-option label="数字城管2.0" :value="0"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>
-        </el-form-item>
-      </el-form>
-      <el-divider></el-divider>
       <div class="mb_10">
-        <el-button class="btn_purple" type="primary"  @click="handleView('create','')">添加</el-button>
-        <el-button class="btn_blue01" type="primary"  @click="">批量导入</el-button>
-        <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
-        <el-form :inline="true" :model="listQuery" :label="280" class="fr">
-          <el-form-item label="">
-            <el-input v-model="listQuery.productSn" placeholder="" @change="handleFilter" clearable/>
-          </el-form-item>
-          <el-form-item>
-            <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>
-          </el-form-item>
-        </el-form>
+        <el-button class="btn_blue01" type="primary"  @click="handleView('create','')">新增</el-button>
+<!--        <el-form :inline="true" :model="listQuery" :label="280" class="fr">-->
+<!--          <el-form-item label="">-->
+<!--            <el-input v-model="listQuery.productSn" placeholder="" @change="handleFilter" clearable/>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item>-->
+<!--            <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>-->
+<!--          </el-form-item>-->
+<!--        </el-form>-->
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
-                element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
-        <el-table-column label="序号" align="center" prop="id"></el-table-column>
-        <el-table-column label="监控点编码" align="center" prop="name"></el-table-column>
-        <el-table-column label="监控点名称" align="center" prop="linkman"></el-table-column>
-        <el-table-column label="监控类型" align="center" prop="mobile"></el-table-column>
-        <el-table-column label="归属区域" align="center" prop=""></el-table-column>
-        <el-table-column label="来源区域" align="center" prop=""></el-table-column>
-        <el-table-column label="是否重点视频" align="center" prop=""></el-table-column>
-        <el-table-column label="安装地址" align="center" prop=""></el-table-column>
-        <el-table-column label="是否启用" align="center" prop="">
-          <template slot-scope="scope">
-            <el-switch v-model="scope.row.enabled" @change="handelState(scope.$index, scope.row)"></el-switch>
-          </template>
-        </el-table-column>
+                element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
+        <el-table-column label="序号" type="index" align="center"></el-table-column>
+        <el-table-column label="字典表" align="center" prop="name"></el-table-column>
+        <el-table-column label="属性值" align="center" prop="address"></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
-            <el-button class="btn_green" type="primary" @click="handleView('update',scope.row)">编辑</el-button>
-            <el-button class="btn_red" type="primary" @click="handleDelete">删除</el-button>
+            <el-button class="btn_blue02" type="primary" @click="handleView('update',scope.row)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
-      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
                   @pagination="getList" class="text-right"/>
     </div>
 
@@ -57,14 +33,14 @@
 </template>
 
 <script>
-  import {communityList} from '@/api/data'
+  import {languageList,} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
   import Pagination from "@/components/Pagination/index"; // waves directive
   import paraView from "./components/view";
   export default {
-    name: 'parameterList',
+    name: 'languageList',
     directives: {waves},
     components: {
       draggable,
@@ -96,12 +72,18 @@
         total: 0,
         parameterValueList: [{name: ''}],
         list: [{
-          id:445,
           name:'列表1',
+          address:'杭州市',
+          time:1298963414,
+          num:1,
+          status:1
         },{
-          id:232,
-          name:'列表4322',
-        },],
+          name:'列表2',
+          address:'杭州市',
+          time:1298963414,
+          num:1,
+          status:2
+        }],
         listLoading: false,
         listQuery: {
           name: '',
@@ -170,42 +152,6 @@
       this.getList();
     },
     methods: {
-      handelState(index,row){
-        // ：active-value得为true
-        // ：inactive-value得为false
-        let flag = row.enabled //保存点击之后v-modeld的值(true，false)
-        row.enabled = !row.enabled //保持switch点击前的状态
-        let paras = {
-          id:row.id,
-          enabled:flag,
-        };
-        this.$confirm('是否确认此操作?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-
-          updateEnabled(paras).then(res => {
-            if (res.resp_code == 0) {
-              this.getList();
-              row.enabled = !row.enabled;
-              // 逻辑处理
-              if(flag == false){
-                this.$message.success('账号停用!');
-              }else {
-                this.$message.success('账号恢复正常!');
-              }
-
-              // this.GetList();
-            } else {
-              this.$message.error(res.message);
-            }
-          }).catch(() => {
-          });
-        }).catch(() => {
-          // this.$message.info('取消操作！')
-        });
-      },
       handleValue(val){
         // this.temp.parameterValueList.map(item=>{
         //   if(item.name == val.srcElement.value){
@@ -236,11 +182,12 @@
         this.getList()
       },
       getList() {
-        communityList(this.listQuery).then(res => {
+        languageList(this.listQuery).then(res => {
           this.list = res.data.data
           this.total = res.data.total
         });
       },
+
       resetList() {
         this.listQuery = {
           name: '',
@@ -283,7 +230,7 @@
         this.showViewDialog = true
         this.viewData = {
           operatorType:type,
-          id:type!='create'?row.id:'',
+          id:type!='create'?row.id:''
         }
       },
       handleHistory(row){
@@ -530,24 +477,25 @@
 
       },
       handleDelete(row, index) {
-        this.$confirm('确定删除吗?', '提示', {
+        console.log(this.rowInfo[0].id)
+        this.$confirm('确定删除此记录吗?', '提示', {
           type: 'warning'
         }).then(() => {
-          // this.listLoading = true;
+          this.listLoading = true;
           //NProgress.start();
-          // let para = {id: this.rowInfo[0].id};
-          // paraDelete(para).then((res) => {
-          //   this.listLoading = false;
-          //   if (res.resp_code == 0) {
-          //     // this.list.splice(index, 1);
-          //     //NProgress.done();
-          //     this.getList();
-          //     this.$message({
-          //       message: '删除成功',
-          //       type: 'success'
-          //     });
-          //   }
-          // });
+          let para = {id: this.rowInfo[0].id};
+          paraDelete(para).then((res) => {
+            this.listLoading = false;
+            if (res.resp_code == 0) {
+              // this.list.splice(index, 1);
+              //NProgress.done();
+              this.getList();
+              this.$message({
+                message: '删除成功',
+                type: 'success'
+              });
+            }
+          });
         }).catch(() => {
 
         });

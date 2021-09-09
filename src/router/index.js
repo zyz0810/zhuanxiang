@@ -304,6 +304,30 @@ export const asyncRoutes = [
     }],
   },
   {
+    path: '/system/language',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: '案件表达语',
+    meta: {
+      title: '案件表达语',
+      icon: 'iconfont icon-xiangqing',
+      roles: [
+        'system',
+      ]
+    },
+    children: [{
+      path: 'data',
+      component: () => import('@/views/system/language/list'),
+      name: 'languageList',
+      meta: {
+        title: '案件表达语',
+        roles: [
+          'system',
+        ]
+      }
+    }],
+  },
+  {
     path: '/dataExchange',
     component: Layout,
     redirect: 'noRedirect',
