@@ -5,29 +5,15 @@
     width="50%"
     @close="close"
     top="20vh"
-    title="用户信息"
+    title="详细信息"
     class="dialogContainer"
     @open="open"
   >
     <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" style="width: 400px; margin-left:50px;">
 
-      <el-form-item label="所属分组" prop="city_id">
-<!--        <el-input v-model.trim="temp.name" placeholder="请输入所属分组" autocomplete="off" clearable/>-->
-        <el-select v-model="temp.city_id" multiple  placeholder="选择区" @change="$forceUpdate()">
-          <el-option v-for="option in cityList" :label="option.province+option.city+option.area" :value="option.id" :key="option.id"></el-option>
-        </el-select>
-      </el-form-item>
-<!--      <el-form-item label="分组ID" prop="name">-->
-<!--        <el-input v-model.trim="temp.name" placeholder="请输入分组ID" autocomplete="off" clearable/>-->
-<!--      </el-form-item>-->
-      <el-form-item label="用户名" prop="name">
-        <el-input v-model.trim="temp.name" placeholder="请输入用户名" autocomplete="off" clearable/>
-      </el-form-item>
-      <el-form-item label="密码" prop="password">
-        <el-input v-model.trim="temp.password" placeholder="请输入密码" autocomplete="off" clearable/>
-      </el-form-item>
-      <el-form-item label="手机号码" prop="mobile">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入手机号码" autocomplete="off" clearable/>
+
+      <el-form-item label="表达语" prop="language">
+        <el-input v-model.trim="temp.language" placeholder="请输入表达语" autocomplete="off" clearable/>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -40,8 +26,8 @@
 </template>
 
 <script>
-  import {addUser,editUser,userDetail} from '@/api/user'
-  import {cityList} from '@/api/jurisdiction'
+  import {languageAdd,languageEdit,} from '@/api/system'
+
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import Pagination from "@/components/Pagination/index"; // waves directive
@@ -70,19 +56,12 @@
     },
     data() {
       return {
-        cityList:[],
         paraLoading:false,
         temp: {
-          city_id:'',
-          name:'',
-          password:'',
-          mobile:''
+          language:'',
         },
         rules: {
-          city_id: [{ required: true, message: '请选择所属分组', trigger: 'change' }],
-          name: [{ required: true, message: '请输入用户名', trigger: 'change' }],
-          password: [{ required: true, message: '请输入密码', trigger: 'change' }],
-          mobile: [{ required: true, message: '请输入手机号码', trigger: 'change' }],
+          language: [{ required: true, message: '请输入表达语', trigger: 'change' }],
         },
       }
     },
@@ -98,49 +77,36 @@
     },
     methods: {
       open(){
+        console.log(this.paraData)
         this.dialogStatus = this.paraData.operatorType
         if(this.paraData.operatorType != 'create'){
           this.getView();
         }
-        this.getCity();
       },
       close(){
-        this.cityList=[];
         this.paraLoading=false;
         this.temp= {
-          city_id:'',
-          name:'',
-          password:'',
-          mobile:''
+          language:'',
         };
       },
       getView(){
-        userDetail({id:this.paraData.id}).then(res=>{
-          const { id, name, password,mobile} = res.data
-          let city_id = res.data.city_id.split(',')
-          this.temp = { id, city_id, name, password,mobile}
+        languageDetail({id:this.paraData.id}).then(res=>{
+          const { id, language} = res.data
+          this.temp = {  id, language}
         });
       },
-      getCity(){
-        cityList({page:1,pageSize:9999,}).then(res=>{
-          this.cityList = res.data.data;
-        });
-      },
-
 
       createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.paraLoading = true;
-            let temp = JSON.parse(JSON.stringify(this.temp));
-            temp.city_id = temp.city_id.join(',')
-            addUser(temp).then((res) => {
+            languageAdd(this.temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)
               if(res.code == 1) {
                 this.showViewDialog = false;
-                this.$emit('insertUser');
+                this.$emit('insertList');
                 this.$message({
                   message: res.message,
                   type: 'success'
@@ -156,15 +122,13 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.paraLoading = true
-            let temp = JSON.parse(JSON.stringify(this.temp));
-            temp.city_id = temp.city_id.join(',')
-            editUser(temp).then((res) => {
+            languageEdit(this.temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)
               if(res.code == 1) {
                 this.showViewDialog = false;
-                this.$emit('insertUser');
+                this.$emit('insertList');
                 this.$message({
                   message: res.message,
                   type: 'success'

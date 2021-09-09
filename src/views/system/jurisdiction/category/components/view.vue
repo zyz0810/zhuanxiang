@@ -11,11 +11,11 @@
   >
     <el-form ref="dataForm" :inline="true" :rules="rules" :model="temp" label-width="120px" >
 
-      <el-form-item label="父类目" prop="pid">
+      <el-form-item label="父类目" prop="parent_name">
 <!--        <el-select v-model="temp.pid" placeholder="选择父类目">-->
 <!--          <el-option v-for="option in arr" :label="option.name" :value="option.name"></el-option>-->
 <!--        </el-select>-->
-        <el-input v-model.trim="temp.pidName" placeholder="" autocomplete="off" :disabled="true" clearable/>
+        <el-input v-model.trim="temp.parent_name" placeholder="" autocomplete="off" :disabled="true" clearable/>
       </el-form-item>
 
       <el-form-item label="权限类目名称" prop="auth_name">
@@ -70,7 +70,7 @@
         arr:[],
         temp: {
           pid:'',
-          pidName:'',
+          parent_name:'',
           auth_name:'',
           remark:'',
         },
@@ -98,7 +98,7 @@
       open(){
         this.dialogStatus = this.paraData.operatorType;
         this.temp.pid = this.paraData.pid;
-        this.temp.pidName = this.paraData.pidName;
+        this.temp.parent_name = this.paraData.pidName;
         if(this.paraData.operatorType != 'create'){
           this.getView();
         }
@@ -107,7 +107,7 @@
         this.paraLoading=false;
         this.temp= {
           pid:'',
-          pidName:'',
+          parent_name:'',
           auth_name:'',
           remark:'',
         };
@@ -115,8 +115,8 @@
       },
       getView(){
         authDetail({id:this.paraData.id}).then(res=>{
-          const { id, pid, pidName, auth_name, remark,} = res.data;
-          this.temp = { id, pid, pidName, auth_name, remark,}
+          const { id, pid, parent_name, auth_name, remark,} = res.data;
+          this.temp = { id, pid, parent_name, auth_name, remark,}
         });
       },
 

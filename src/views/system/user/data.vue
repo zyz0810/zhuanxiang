@@ -31,14 +31,14 @@
         <el-input v-model.trim="temp.mobile" placeholder="请输入职务" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="出生日期" prop="birthday">
-        <el-input v-model.trim="temp.birthday" placeholder="请输入身份" autocomplete="off" clearable/>
+        <el-date-picker v-model="temp.birthday" type="date" value-format="yyyy-MM-dd" placeholder="选择日期"></el-date-picker>
       </el-form-item>
       <el-form-item label="胸牌编号" prop="user_code">
         <el-input v-model.trim="temp.user_code" placeholder="请输入身份" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="文化程度" prop="education">
         <el-select v-model="temp.education">
-          <el-option v-for="item in userConstantsList" :label="item.name" :value="item.id" :key="item.id"></el-option>
+          <el-option v-for="(item,index) in userConstantsList" :label="item" :value="index" :key="index"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="是否党员" prop="is_party_member">
@@ -49,9 +49,9 @@
         </el-select>
       </el-form-item>
       <el-form-item label="参加工作时间" prop="first_work_time">
-        <el-input v-model.trim="temp.first_work_time" placeholder="请输入出生年月" autocomplete="off" clearable/>
+        <!--<el-date-picker v-model="temp.first_work_time" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>-->
+        <el-input v-model.trim="temp.first_work_time" placeholder="请输入身份" autocomplete="off" clearable/>
       </el-form-item>
-
       <el-form-item label="籍贯" prop="origin">
         <el-input v-model.trim="temp.origin" placeholder="请输入负责人" autocomplete="off" clearable/>
       </el-form-item>
@@ -131,6 +131,7 @@
         departmentList:[],
         roleList:[],
         userConstantsList:[],
+        images:'',
       }
     },
     mounted() {
@@ -151,12 +152,13 @@
       },
       getUserConstants(){
         userConstants().then((res) => {
-          this.userConstantsList = res.data
+          this.userConstantsList = res.data.education_list
         })
       },
 
       hasImgSrc(val) {
-        this.temp.imageUrl = val;
+        this.temp.imageUrl = val.url;
+        this.images = val.images;
       },
       onSubmit(){
         this.$refs['firstForm'].validate((valid) => {
@@ -165,7 +167,7 @@
               if (valid) {
                 this.paraLoading = true
                 let temp = JSON.parse(JSON.stringify(this.temp));
-                temp.auth_id = this.getCheckedKeys();
+                temp.imageUrl = this.images;
                 userAdd(temp).then((res) => {
                   setTimeout(()=>{
                     this.paraLoading = false

@@ -40,15 +40,14 @@
       </el-form-item>
       <el-form-item label="部门大类" prop="big_type">
         <el-select v-model="temp.big_type"  placeholder="选择部门大类">
-          <el-option label="是" :value="1"></el-option>
-          <el-option label="否" :value="2"></el-option>
+          <el-option v-for="(item,index) in bigTypeList" :label="item" :value="index" :key="index"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="单位性质" prop="nature">
         <el-input v-model.trim="temp.nature" placeholder="请输入单位性质" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="111部门人数" prop="">
-        <el-input v-model.trim="temp.password" placeholder="请输入部门人数" autocomplete="off" clearable/>
+      <el-form-item label="部门人数" prop="user_num">
+        <el-input v-model.trim="temp.user_num" placeholder="请输入部门人数" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="公务员人数" prop="user_num1">
       <el-input v-model.trim="temp.user_num1" placeholder="请输入公务员人数" autocomplete="off" clearable/>
@@ -62,12 +61,12 @@
       <el-form-item label="协管人数" prop="user_num4">
         <el-input v-model.trim="temp.user_num4" placeholder="请输入协管人数" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="111油烟城区" prop="password">
-        <el-select v-model="temp.city_id"  placeholder="选择油烟城区">
-          <el-option label="是" :value="1"></el-option>
-          <el-option label="否" :value="2"></el-option>
-        </el-select>
-      </el-form-item>
+      <!--<el-form-item label="111油烟城区" prop="password">-->
+        <!--<el-select v-model="temp.city_id"  placeholder="选择油烟城区">-->
+          <!--<el-option label="是" :value="1"></el-option>-->
+          <!--<el-option label="否" :value="2"></el-option>-->
+        <!--</el-select>-->
+      <!--</el-form-item>-->
       <el-form-item label="部门职责介绍" prop="duty">
       <el-input type="textarea" v-model.trim="temp.duty" placeholder="请输入密码" autocomplete="off" clearable/>
     </el-form-item>
@@ -77,7 +76,7 @@
 
       <el-form-item label="部门照片" prop="dept_img">
         <SingleImage
-          :tempUrl="temp.imgUrl"
+          :tempUrl="temp.dept_img"
           v-on:imgSrc="hasImgSrc"
         ></SingleImage>
       </el-form-item>
@@ -128,10 +127,23 @@
         cityList:[],
         paraLoading:false,
         temp: {
-          city_id:'',
-          name:'',
-          password:'',
-          mobile:''
+          department_name:'',
+          parent_id:'',
+          address:'',
+          phone:'',
+          contact:'',
+          mobile:'',
+          is_map:'',
+          big_type:'',
+          nature:'',
+          user_num:'',
+          user_num1:'',
+          user_num2:'',
+          user_num3:'',
+          user_num4:'',
+          duty:'',
+          remark:'',
+          dept_img:'',
         },
         bigTypeList:[],
         rules: {
@@ -154,11 +166,11 @@
     },
     methods: {
       hasImgSrc(val) {
-        this.form.imgUrl = val;
+        this.form.dept_img = val;
       },
       getBigSmallType(){
         bigSmallType().then(res=>{
-          this.bigTypeList = res.data
+          this.bigTypeList = res.data.big_type_list
         });
       },
       open(){
@@ -172,10 +184,23 @@
         this.cityList=[];
         this.paraLoading=false;
         this.temp= {
-          city_id:'',
-          name:'',
-          password:'',
-          mobile:''
+          department_name:'',
+          parent_id:'',
+          address:'',
+          phone:'',
+          contact:'',
+          mobile:'',
+          is_map:'',
+          big_type:'',
+          nature:'',
+          user_num:'',
+          user_num1:'',
+          user_num2:'',
+          user_num3:'',
+          user_num4:'',
+          duty:'',
+          remark:'',
+          dept_img:'',
         };
       },
       getView(){
