@@ -90,10 +90,12 @@
         };
       },
       getView(){
-        languageDetail({id:this.paraData.id}).then(res=>{
-          const { id, language} = res.data
-          this.temp = {  id, language}
-        });
+        const { id, language} = this.paraData.option
+        this.temp = {  id, language}
+        // languageDetail({id:this.paraData.id}).then(res=>{
+        //   const { id, language} = res.data
+        //   this.temp = {  id, language}
+        // });
       },
 
       createData() {

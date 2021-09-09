@@ -15,7 +15,7 @@
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
         <el-table-column label="序号" type="index" align="center"></el-table-column>
-        <el-table-column label="表达语" align="center" prop="name"></el-table-column>
+        <el-table-column label="表达语" align="center" prop="language"></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
             <el-button class="btn_blue02" type="primary" @click="handleView('update',scope.row)">编辑</el-button>
@@ -110,7 +110,8 @@
         this.showViewDialog = true;
         this.viewData = {
           operatorType:type,
-          id:type!='create'?row.id:''
+          id:type!='create'?row.id:'',
+          option:row
         }
       },
 
