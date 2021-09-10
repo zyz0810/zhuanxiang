@@ -4,18 +4,13 @@
       <ul class="gird_list" style="width: 260px;">
         <li class="f18 bold text-center mt_10 mb_10">网格列表</li>
         <p class="text-center">
-          <el-select v-model="gridType">
-            <el-option label="街道-社区" :value="0"></el-option>
-            <el-option label="执法中队" :value="1"></el-option>
-            <el-option label="市容道路环卫" :value="2"></el-option>
-            <el-option label="市政道路养护" :value="3"></el-option>
-            <el-option label="市政绿化养护" :value="4"></el-option>
-            <el-option label="河道养护" :value="5"></el-option>
+          <el-select v-model="gridType" @change="getCategoryList(gridType)">
+            <el-option v-for="item in firstCategory" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </p>
         <p class="text-center"><el-button icon="el-icon-plus" class="mb_10 mt_10" @click="handleOne(gridType)">新 建</el-button></p>
-        <el-collapse accordion v-show="gridType == 0">
-          <el-collapse-item v-for="(item,index) in streetList" :key="index" class="mb_20">
+        <el-collapse accordion>
+          <el-collapse-item v-for="(item,index) in secondCategory" :key="item.id" class="mb_20">
             <template slot="title">
               <div class="weui-cell gridNav_one f16">
                 <div class="weui-cell__hd"><span class="tag block clr_white">{{index}}</span></div>
@@ -24,35 +19,7 @@
               </div>
             </template>
             <div class="gridNav_two f14">
-              <p v-for="items in item.children" :key="items.id">{{items.name}}</p>
-            </div>
-          </el-collapse-item>
-        </el-collapse>
-        <el-collapse accordion v-show="gridType == 1">
-          <el-collapse-item v-for="(item,index) in list1" :key="index" class="mb_20">
-            <template slot="title">
-              <div class="weui-cell gridNav_one f16">
-                <div class="weui-cell__hd"><span class="tag block clr_white">{{index}}</span></div>
-                <div class="weui-cell__bd">{{item.name}}</div>
-                <div class="weui-cell__ft"><i class="el-icon-circle-plus-outline f20 bold"></i></div>
-              </div>
-            </template>
-            <div class="gridNav_two f14">
-              <p v-for="items in item.children" :key="items.id">{{items.name}}</p>
-            </div>
-          </el-collapse-item>
-        </el-collapse>
-        <el-collapse accordion v-show="gridType == 2 || gridType == 3 || gridType == 4 || gridType == 5">
-          <el-collapse-item v-for="(item,index) in list2" :key="index" class="mb_20">
-            <template slot="title">
-              <div class="weui-cell gridNav_one f16">
-                <div class="weui-cell__hd"><span class="tag block clr_white">{{index}}</span></div>
-                <div class="weui-cell__bd">{{item.name}}</div>
-                <div class="weui-cell__ft"><i class="el-icon-circle-plus-outline f20 bold"></i></div>
-              </div>
-            </template>
-            <div class="gridNav_two f14">
-              <p v-for="items in item.children" :key="items.id">{{items.name}}</p>
+              <p v-for="items in item.list" :key="items.id">{{items.name}}</p>
             </div>
           </el-collapse-item>
         </el-collapse>
@@ -87,7 +54,7 @@
 
 <script>
   import echarts from 'echarts'
-  import {getGps, addGps,} from '@/api/data'
+  import {getFirstCategory,getCategoryList, getGps, addGps, lightList,} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -115,6 +82,8 @@
     data() {
 
       return {
+        firstCategory:[],
+        secondCategory:[],
         viewData:{},
         showStreetDialog:false,
         showCommunityDialog:false,
@@ -250,23 +219,35 @@
       },
     },
     mounted() {
-      this.onLoad()
+      this.onLoad();
+      this.getFirstCategory();
     },
     methods: {
+      getFirstCategory(){
+        getFirstCategory().then(res=>{
+          // const { id, province, city, area, principal, mobile,} = res.data;
+          this.firstCategory = res.data;
+          this.gridType = res.data[0].id;
+          this.getCategoryList(res.data[0].id);
+        });
+      },
+      getCategoryList(id){
+        getCategoryList({parent_ids:id}).then(res=>{
+          // const { id, province, city, area, principal, mobile,} = res.data;
+          this.secondCategory = res.data;
+        });
+      },
+
       handleOne(type){
-        if(type == 0){
-          this.showStreetDialog = true;
+        this.showStreetDialog = true;
+        this.viewData = {
+          id:type,
         }
       },
       handleCommunity(){
         this.showCommunityDialog = true;
       },
-      companyShow(){
 
-      },
-      handleFilter(){
-
-      },
       onLoad() {
         let T = window.T
         this.map = new T.Map('mapDiv')

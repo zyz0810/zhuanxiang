@@ -3,47 +3,46 @@
     <el-tabs type="border-card" class="height_100">
       <el-tab-pane label="页面数据录入">
         <el-form ref="dataForm" :rules="rules" :model="temp" class="digital_form" label-width="200px" >
-          <el-form-item label="今日未处理量" prop="province">
-            <el-input v-model="temp.productSn" placeholder="" clearable/>
+          <el-form-item label="今日未处理量" prop="undisposed">
+            <el-input v-model="temp.undisposed" placeholder="请输入今日未处理量" clearable/>
           </el-form-item>
-          <el-form-item label="今日黄灯件" prop="city">
-            <el-input v-model="temp.productSn" placeholder="" clearable/>
+          <el-form-item label="今日黄灯件" prop="yellow_num">
+            <el-input v-model="temp.yellow_num" placeholder="请输入今日黄灯件" clearable/>
           </el-form-item>
-          <el-form-item label="黄灯件情况" prop="area">
-            <el-input v-model="temp.productSn" placeholder="" clearable/>
+          <el-form-item label="黄灯件情况" prop="yellow_detail">
+            <el-input v-model="temp.yellow_detail" placeholder="请输入黄灯件情况" clearable/>
           </el-form-item>
-          <el-form-item label="今日红灯件" prop="principal">
-            <el-input v-model.trim="temp.principal" placeholder="请输入负责人" autocomplete="off" clearable/>
+          <el-form-item label="今日红灯件" prop="red_num">
+            <el-input v-model.trim="temp.red_num" placeholder="请输入今日红灯件" autocomplete="off" clearable/>
           </el-form-item>
-          <el-form-item label="红灯件情况" prop="mobile">
-            <el-input v-model.trim="temp.mobile" placeholder="请输入负责人电话" autocomplete="off" clearable/>
+          <el-form-item label="红灯件情况" prop="red_detail">
+            <el-input v-model.trim="temp.red_detail" placeholder="请输入红灯件情况" autocomplete="off" clearable/>
           </el-form-item>
-          <el-form-item label="录入时间" prop="mobile">
+          <el-form-item label="录入时间" prop="input_time">
             <el-date-picker
-              v-model="value1"
-              type="datetimerange"
-              range-separator="至"
-              start-placeholder="开始日期"
-              end-placeholder="结束日期">
+              v-model="temp.input_time"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              placeholder="请选择时间">
             </el-date-picker>
           </el-form-item>
           <el-form-item label="" class="f14 baseColor text-right" ><span @click="handleHistory">历史数据</span></el-form-item>
           <el-form-item label="" prop="mobile" class="text-center">
-            <el-button class="btn_blue02" type="primary" @click="">确定</el-button>
+            <el-button class="btn_blue02" type="primary" @click="onSubmit">确定</el-button>
             <el-button class="" @click="">取消</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="基础数据导入">
         <div class="mb_10">
-          <el-button class="btn_blue02" type="primary"  @click="">导入</el-button>
+          <el-button class="btn_blue02" type="primary" @click="importFile">导入</el-button>
           <el-form :inline="true" :model="listQuery" :label="280" class="fr">
             <el-form-item label="">
               <el-input v-model="listQuery.productSn" placeholder="智能检索" @change="handleFilter" clearable/>
             </el-form-item>
             <el-form-item label="">
               <el-date-picker
-                v-model="value1"
+                v-model="temp.value1"
                 type="datetimerange"
                 range-separator="至"
                 start-placeholder="开始日期"
@@ -81,7 +80,7 @@
             </el-form-item>
             <el-form-item label="">
               <el-date-picker
-                v-model="value1"
+                v-model="temp.value1"
                 type="datetimerange"
                 range-separator="至"
                 start-placeholder="开始日期"
@@ -106,14 +105,13 @@
                     @pagination="getList" class="text-right"/>
       </el-tab-pane>
     </el-tabs>
-
-    <paraView :showDialog.sync="showViewDialog" :paraData="paraData" @insertProduct="getList"></paraView>
+    <input type="file" @change="fileChange" id="fileImport" v-show="false" />
     <historyList :showDialog.sync="showHistoryDialog" :historyData="historyData"></historyList>
   </div>
 </template>
 
 <script>
-  import {paraList, paraSave, paraUpdate, paraDelete} from '@/api/parameter'
+  import {addDigital, implodeCityManage, implodeRepCityManage} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -131,27 +129,10 @@
     },
     data() {
       return {
-        showViewDialog:false,
         showHistoryDialog:false,
         historyData:{},
-        viewData:{},
-        paraData:{},
         paraLoading:false,
-        operationOption: [{
-          id: 0,
-          name: '下拉框'
-        }, {
-          id: 1,
-          name: '复选框'
-        }, {
-          id: 2,
-          name: '输入框'
-        }],
-        updateBtn: true,
-        enableBtn: true,
-        disableBtn: true,
         total: 0,
-        parameterValueList: [{name: ''}],
         list: [{
           id:445,
           name:'列表1',
@@ -166,23 +147,14 @@
           page: 1,
           limit: 10
         },
-        updateId: undefined,
-        dialogFormVisible: false,
         temp: {
-          // id: undefined,
-          status: 1,
-          name: '',
-          orders: '',
-          isRequired: 0,
-          operatingMode: 0,
-          parameterValueList: [],
+          undisposed: '',
+          yellow_num: '',
+          yellow_detail: '',
+          red_num: '',
+          red_detail: '',
+          input_time: '',
         },
-        textMap: {
-          update: '编辑参数信息',
-          create: '新增参数信息',
-          view:'查看'
-        },
-        dialogStatus: '',
         rules: {
           name: [{required: true, message: '请输入名称', trigger: 'change'}],
         },
@@ -227,30 +199,35 @@
       // this.getList();
     },
     methods: {
-      handleValue(val){
-        // this.temp.parameterValueList.map(item=>{
-        //   if(item.name == val.srcElement.value){
-        //     this.$confirm(
-        //       '参数值重复，请重新输入',
-        //       "提示",
-        //       {
-        //         type: "warning",
-        //         showCancelButton: false
-        //       }
-        //     )
-        //       .then(() => {
-        //
-        //       })
-        //       .catch(() => {});
-        //   }
-        // })
+      importFile () {
+        document.getElementById("fileImport").click();
       },
-      handleOperating(val){
-        console.log(val.srcElement.value)
+      fileChange (e) {
+        const url = e.target.files[0];
+        const name = e.target.files[0].name;
+        const fileTypes = ["xls", "xlsx"];
+        if (name) {
+          const type = name.split(".").pop();
 
-      },
-      deleteParam(index) {
-        this.parameterValueList.splice(index, 1)
+          if (fileTypes.includes(type)) {
+            implodeCityManage({ url }).then((res) => {
+              if (res.code == 1) {
+                this.$message({ message: "导入成功", type: "success" });
+              } else {
+                this.$alert(res.code, "提示", {
+                  confirmButtonText: "确定",
+                  type: "warning",
+                });
+              }
+              e.target.value = "";
+            });
+          } else {
+            this.$alert("文件类型不匹配，请重新选择", "提示", {
+              confirmButtonText: "确定",
+              type: "warning",
+            });
+          }
+        }
       },
       handleFilter() {
         this.listQuery.page = 1;
@@ -273,40 +250,18 @@
         this.getList();
       },
 
-      addSpecifications() {
-        this.parameterValueList.push({name: ''})
-      },
-      goView() {
-        // this.$router.push('/product/view')
-        // this.$router.push({path: "/product/paramView", query: {id: this.rowInfo[0].id, name: this.rowInfo[0].name,operatingMode: this.rowInfo[0].operatingMode}})
-        this.showViewDialog = true
-        this.paraData = {
-          option: {
-            name: this.rowInfo[0].name,
-            operatingMode: this.rowInfo[0].operatingMode
-          },
-          operatorType: 'view',
-          id: this.rowInfo[0].id
-        }
-      },
 
       resetTemp() {
         this.temp = {
-          // id: undefined,
-          status: 1,
-          name: '',
-          orders: '',
-          isRequired: 0,
-          operatingMode: 0,
-          parameterValueList: [],
+          undisposed: '',
+          yellow_num: '',
+          yellow_detail: '',
+          red_num: '',
+          red_detail: '',
+          input_time: '',
         }
       },
-      handleView(row){
-        this.showViewDialog = true
-        this.viewData = {
-          id:row.id
-        }
-      },
+
       handleHistory(row){
         console.log(11111)
         this.showHistoryDialog = true
@@ -314,268 +269,26 @@
           // id:row.id
         }
       },
-      handleCreate() {
-        this.resetTemp();
-        this.parameterValueList = [{name: ''}];
-        this.dialogStatus = 'create';
-        this.dialogFormVisible = true;
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
-      },
-      createData() {
+      onSubmit() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            if(this.temp.operatingMode != 2){
-              let parameterValueList = this.parameterValueList.filter(item=>item.name!='')
-              console.log(parameterValueList)
-              if(parameterValueList.length<1){
-                this.$confirm('请输入参数值', "提示", {
-                  type: "warning",
-                  showCancelButton: false
-                })
-                  .then(() => {
-
-                  })
-                  .catch(() => {});
-              }else{
-                this.paraLoading = true
-                this.temp.parameterValueList = parameterValueList
-                paraSave(this.temp).then((res) => {
+            addDigital(this.temp).then((res) => {
                   setTimeout(()=>{
                     this.paraLoading = false
                   },1000)
-                  if(res.resp_code == 0){
-                    this.list.unshift(res.data);
-                    this.dialogFormVisible = false;
+                  if(res.code == 1){
                     this.getList();
                     this.$message({
-                      message: '增加成功',
+                      message: res.message,
                       type: 'success'
                     });
                   }
                 }).catch(() => {
                   this.paraLoading = false;
                 });
-              }
-            }else{
-              this.paraLoading = true
-              paraSave(this.temp).then((res) => {
-                setTimeout(()=>{
-                  this.paraLoading = false
-                },1000)
-                if(res.resp_code == 0){
-                  this.list.unshift(res.data);
-                  this.dialogFormVisible = false;
-                  this.getList();
-                  this.$message({
-                    message: '增加成功',
-                    type: 'success'
-                  });
-                }
-              }).catch(() => {
-                this.paraLoading = false;
-              });
-            }
           }
         })
       },
-      handleUpdate(row) {
-        this.temp = Object.assign({}, this.rowInfo[0]); // copy obj
-
-        if (this.temp.parameterValueList) {
-          this.parameterValueList = this.temp.parameterValueList
-        } else {
-          this.parameterValueList = [{name: ''}]
-        }
-        this.dialogStatus = 'update';
-        this.dialogFormVisible = true;
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
-      },
-      updateData() {
-        this.$refs['dataForm'].validate((valid) => {
-          if (valid) {
-            const tempData = Object.assign({}, this.temp);
-            this.$delete(tempData, 'updateTime')
-            this.$delete(tempData, 'updateUser')
-            this.$delete(tempData, 'createTime')
-            this.$delete(tempData, 'createUser')
-            this.$delete(tempData, 'remarks')
-            this.$delete(tempData, 'status')
-            if(tempData.operatingMode != 2){
-              tempData.parameterValueList = this.parameterValueList
-              let arr = tempData.parameterValueList.filter(item=>item.name!='')
-              if(arr.length<1){
-                this.$confirm('请输入参数值', "提示", {
-                  type: "warning",
-                  showCancelButton: false
-                })
-                  .then(() => {
-
-                  })
-                  .catch(() => {});
-              }else{
-                arr = arr.map(item=>{
-                  let json={}
-                  json.id=item.id;
-                  json.name=item.name;
-                  json.parameterId=item.parameterId;
-                  return json
-                })
-                tempData.parameterValueList = arr
-                this.paraLoading = true
-                paraUpdate(tempData).then((res) => {
-                  // const index = this.list.findIndex(v => v.id === this.temp.id);
-                  // this.list.splice(index, 1, res.data);
-                  setTimeout(()=>{
-                    this.paraLoading = false
-                  },1000)
-                  if (res.resp_code == 0) {
-                    this.getList();
-                    this.dialogFormVisible = false;
-                    this.$message({
-                      message: '修改成功',
-                      type: 'success'
-                    });
-                  }
-                }).catch(() => {
-                  this.paraLoading = false;
-                });
-              }
-            }else{
-              this.$delete(tempData, 'parameterValueList')
-              this.paraLoading = true
-              paraUpdate(tempData).then((res) => {
-                setTimeout(()=>{
-                  this.paraLoading = false
-                },1000)
-                // const index = this.list.findIndex(v => v.id === this.temp.id);
-                // this.list.splice(index, 1, res.data);
-                if (res.resp_code == 0) {
-                  this.getList();
-                  this.dialogFormVisible = false;
-                  this.$message({
-                    message: '修改成功',
-                    type: 'success'
-                  });
-                }
-              }).catch(() => {
-                this.paraLoading = false;
-              });
-            }
-          }
-        })
-      },
-      handleState(val) {
-        console.log(this.rowInfo[0].id)
-        if (val == 0) {
-          this.$confirm('确定禁用此参数吗?', '提示', {
-            type: 'warning'
-          }).then(() => {
-            this.listLoading = true;
-            //NProgress.start();
-            let tempData = Object.assign({}, this.rowInfo[0]);
-            tempData.status = 0;
-            let para = {id:this.rowInfo[0].id,status:0}
-            this.$delete(tempData,'createTime')
-            this.$delete(tempData,'updateTime')
-            this.$delete(tempData,'createUser')
-            this.$delete(tempData,'updateUser')
-            if(tempData.operatingMode != 2){
-              tempData.parameterValueList = tempData.parameterValueList.map(item=>{
-                let obj = {}
-                obj.id = item.id
-                obj.name = item.name
-                return obj
-              })
-            }else{
-              this.$delete(tempData, 'parameterValueList')
-            }
-            paraUpdate(tempData).then((res) => {
-              this.listLoading = false;
-              if (res.resp_code == 0) {
-                // this.list.splice(index, 1);
-                //NProgress.done();
-                this.getList();
-                this.$message({
-                  message: '禁用成功',
-                  type: 'success'
-                });
-              }
-            });
-          }).catch(() => {
-
-          });
-        } else {
-          this.$confirm('确定启用此参数吗?', '提示', {
-            type: 'warning'
-          }).then(() => {
-            this.listLoading = true;
-            //NProgress.start();
-            let tempData = Object.assign({}, this.rowInfo[0]);
-            tempData.status = 1;
-            this.$delete(tempData,'createTime')
-            this.$delete(tempData,'updateTime')
-            this.$delete(tempData,'createUser')
-            this.$delete(tempData,'updateUser')
-            if(tempData.operatingMode != 2){
-              if(tempData.parameterValueList){
-                tempData.parameterValueList = tempData.parameterValueList.map(item=>{
-                  let obj = {}
-                  obj.id = item.id
-                  obj.name = item.name
-                  return obj
-                })
-              }
-            }else{
-              this.$delete(tempData, 'parameterValueList')
-            }
-            // let para = {id:this.rowInfo[0].id,status:1}
-            paraUpdate(tempData).then((res) => {
-              this.listLoading = false;
-              if (res.resp_code == 0) {
-                // this.list.splice(index, 1);
-                //NProgress.done();
-                this.getList();
-                this.$message({
-                  message: '启用成功',
-                  type: 'success'
-                });
-              }
-            });
-          }).catch(() => {
-
-          });
-        }
-
-      },
-      handleDelete(row, index) {
-        console.log(this.rowInfo[0].id)
-        this.$confirm('确定删除此记录吗?', '提示', {
-          type: 'warning'
-        }).then(() => {
-          this.listLoading = true;
-          //NProgress.start();
-          let para = {id: this.rowInfo[0].id};
-          paraDelete(para).then((res) => {
-            this.listLoading = false;
-            if (res.resp_code == 0) {
-              // this.list.splice(index, 1);
-              //NProgress.done();
-              this.getList();
-              this.$message({
-                message: '删除成功',
-                type: 'success'
-              });
-            }
-          });
-        }).catch(() => {
-
-        });
-      },
-
 
     }
   }

@@ -49,8 +49,8 @@
         </el-select>
       </el-form-item>
       <el-form-item label="参加工作时间" prop="first_work_time">
-        <!--<el-date-picker v-model="temp.first_work_time" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>-->
-        <el-input v-model.trim="temp.first_work_time" placeholder="请输入身份" autocomplete="off" clearable/>
+        <el-date-picker v-model="temp.first_work_time" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
+<!--        <el-input v-model.trim="temp.first_work_time" placeholder="请输入身份" autocomplete="off" clearable/>-->
       </el-form-item>
       <el-form-item label="籍贯" prop="origin">
         <el-input v-model.trim="temp.origin" placeholder="请输入负责人" autocomplete="off" clearable/>
@@ -58,7 +58,6 @@
       <el-form-item label="人员身份" prop="social_title">
         <el-input v-model.trim="temp.social_title" placeholder="请输入负责人" autocomplete="off" clearable/>
       </el-form-item>
-
 
       <el-form-item label="家庭电话" prop="phone">
         <el-input v-model.trim="temp.phone" placeholder="请输入家庭电话" autocomplete="off" clearable/>
@@ -157,7 +156,7 @@
       },
 
       hasImgSrc(val) {
-        this.temp.imageUrl = val.url;
+        this.temp.head_image = val.url;
         this.images = val.images;
       },
       onSubmit(){
@@ -167,7 +166,7 @@
               if (valid) {
                 this.paraLoading = true
                 let temp = JSON.parse(JSON.stringify(this.temp));
-                temp.imageUrl = this.images;
+                temp.head_image = this.images;
                 userAdd(temp).then((res) => {
                   setTimeout(()=>{
                     this.paraLoading = false

@@ -10,33 +10,26 @@
     @open="open"
   >
     <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" style="width: 400px; margin-left:50px;">
-
-
       <el-form-item label="表达语" prop="language">
         <el-input v-model.trim="temp.language" placeholder="请输入表达语" autocomplete="off" clearable/>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()" :loading="paraLoading">确 定</el-button>
-      <el-button type="primary" class="btn_gray" @click="showViewDialog = false">取 消</el-button>
+      <el-button type="" class="btn_gray" @click="showViewDialog = false">取 消</el-button>
     </div>
-
-
   </myDialog>
 </template>
 
 <script>
   import {languageAdd,languageEdit,} from '@/api/system'
-
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
-  import Pagination from "@/components/Pagination/index"; // waves directive
   export default {
-    name: 'parameterView',
+    name: 'languageView',
     directives: { waves },
     components: {
       draggable,
-      Pagination
     },
     props: {
       showDialog: {
@@ -77,7 +70,9 @@
     },
     methods: {
       open(){
-        console.log(this.paraData)
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
         this.dialogStatus = this.paraData.operatorType
         if(this.paraData.operatorType != 'create'){
           this.getView();
@@ -88,14 +83,13 @@
         this.temp= {
           language:'',
         };
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
       },
       getView(){
         const { id, language} = this.paraData.option
         this.temp = {  id, language}
-        // languageDetail({id:this.paraData.id}).then(res=>{
-        //   const { id, language} = res.data
-        //   this.temp = {  id, language}
-        // });
       },
 
       createData() {
@@ -124,7 +118,9 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.paraLoading = true
-            languageEdit(this.temp).then((res) => {
+            const {id,language} = this.temp;
+            let temp = {id,language,status:1,sort:0,}
+            languageEdit(temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)

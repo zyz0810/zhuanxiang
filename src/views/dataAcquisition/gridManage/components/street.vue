@@ -9,22 +9,24 @@
     class="dialogContainer"
     @open="open"
   >
-    <el-form ref="dataForm" :model="temp" label-width="120px">
-      <el-form-item label="责任部门" prop="facility_id">
-        <el-input v-model.trim="temp.name" placeholder="请输入名称" autocomplete="off" clearable/>
+    <el-form ref="dataForm" :model="temp" label-width="120px" class="dialog_form">
+      <el-form-item label="责任部门" prop="parent_ids">
+        <el-select v-model="temp.parent_ids" :disabled="true">
+          <el-option v-for="item in firstCategory" :label="item.name" :value="item.id"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="网格名称" prop="company">
-        <el-input v-model.trim="temp.company" placeholder="请输入胸牌编号" autocomplete="off" clearable/>
+      <el-form-item label="网格名称" prop="table_name">
+        <el-input v-model.trim="temp.table_name" placeholder="请输入网格名称" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="网格编码" prop="company">
-        <el-input v-model.trim="temp.company" placeholder="请输入胸牌编号" autocomplete="off" clearable/>
+      <el-form-item label="网格编码" prop="table_code">
+        <el-input v-model.trim="temp.table_code" placeholder="请输入网格编码" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="描述" prop="company">
-        <el-input v-model.trim="temp.company" placeholder="请输入胸牌编号" autocomplete="off" clearable/>
+      <el-form-item label="描述" prop="description">
+        <el-input v-model.trim="temp.description" placeholder="请输入描述" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="" class="text-right">
         <el-button @click="showDialog = false">取 消</el-button>
-        <el-button type="primary" class="btn_blue02">保 存</el-button>
+        <el-button type="primary" class="btn_blue02" @click="onSubmit">保 存</el-button>
       </el-form-item>
     </el-form>
 
@@ -33,10 +35,11 @@
 </template>
 
 <script>
-  import {paraValueList,paraValueSave,paraValueUpdate,paraValueDelete} from '@/api/parameter'
+  import {addChildCategory, getFirstCategory} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
-  import Pagination from "@/components/Pagination/index"; // waves directive
+  import Pagination from "@/components/Pagination/index";
+  import {languageAdd} from "@/api/system"; // waves directive
   export default {
     name: 'parameterView',
     directives: { waves },
@@ -62,34 +65,19 @@
     },
     data() {
       return {
+        firstCategory:[],
         paraLoading:false,
-        operatingMode:'',
-        updateBtn:true,
-        total:0,
-        specificationsItem:[''],
-        list: null,
-        listLoading: false,
-        listQuery:{
-          parameterId:'',
-          page:1,
-          limit:10
-        },
-        updateId:undefined,
-        dialogFormVisible: false,
         temp: {
+          parent_ids:'',
           name:'',
-          parameterId:undefined,
-          deleted:0
+          table_name:'',
+          table_code:'',
+          description:'',
+          parent_id:1, //二级传1   三级传2
         },
-        textMap: {
-          update: '编辑规格信息',
-          create: '新增规格信息'
-        },
-        dialogStatus: '',
         rules: {
           name: [{ required: true, message: '请输入名称', trigger: 'change' }],
         },
-        name:''
       }
     },
     computed: {
@@ -102,79 +90,36 @@
         }
       },
     },
-    filters:{
-      filtersStatus: function(value) {
-        let StatusArr = {0:'禁用', 1:'启用'}
-        return StatusArr[value]
-      }
-    },
-    mounted() {
-
-    },
     methods: {
+      getFirstCategory(){
+        getFirstCategory().then(res=>{
+          this.firstCategory = res.data;
+        });
+      },
       open(){
-        // this.getList();
+        this.getFirstCategory();
+        this.temp.parent_ids = this.viewData.id
       },
       close(){},
-      getList(){
-        paraValueList(this.listQuery).then(res=>{
-          this.list = res.data.data;
-          this.total = res.data.count
-        });
-      },
-      clickRow(row){
-        this.$refs.tableList.toggleRowSelection(row)
-      },
-      handleSelectionChange(val) {
-        this.rowInfo = val;
-        if(val.length > 1){
-          this.updateBtn = true
-          this.deleteBtn = true
-        }else if(val.length == 1){
-          this.updateBtn = false
-          this.deleteBtn = false
-        }else{
-          this.updateBtn = true
-          this.deleteBtn = true
-        }
-      },
-
-      resetTemp() {
-        this.temp = {
-          // parameterId:undefined,
-          name:'',
-          parameterId:undefined,
-          deleted:0
-          // orders:'',
-          // isSystem:1,
-        }
-      },
-
-      handleCreate() {
-        this.resetTemp();
-        this.dialogStatus = 'create';
-        this.dialogFormVisible = true;
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
-      },
-      createData() {
+      onSubmit() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            this.paraLoading = true
-            this.temp.parameterId = this.paraData.id
-            paraValueSave(this.temp).then((res) => {
+            this.paraLoading = true;
+            let parentObj = this.firstCategory.filter(item=>{
+              if(this.temp.parent_ids == item.id){
+                return item;
+              }
+            })
+            this.temp.name = parentObj[0].name;
+            addChildCategory(this.temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)
-              if(res.resp_code == 0) {
-                this.getList();
-                // this.list.unshift(res.data);
-                this.dialogFormVisible = false;
-                // debugger
-                this.getList();
+              if(res.code == 1) {
+                this.showViewDialog = false;
+                this.$emit('insertList');
                 this.$message({
-                  message: '增加成功',
+                  message: res.message,
                   type: 'success'
                 });
               }
@@ -184,65 +129,6 @@
           }
         })
       },
-      handleUpdate(row) {
-        this.temp = Object.assign({}, this.rowInfo[0]); // copy obj
-        this.dialogStatus = 'update';
-        this.dialogFormVisible = true;
-        this.$nextTick(() => {
-          this.$refs['dataForm'].clearValidate()
-        })
-      },
-      updateData() {
-        this.$refs['dataForm'].validate((valid) => {
-          if (valid) {
-            this.paraLoading = true
-            const tempData = Object.assign({}, this.temp);
-            this.$delete(tempData,'createTime')
-            this.$delete(tempData,'updateTime')
-            paraValueUpdate(tempData).then((res) => {
-              setTimeout(()=>{
-                this.paraLoading = false
-              },1000)
-              if(res.resp_code == 0) {
-                // const index = this.list.findIndex(v => v.id === this.temp.id);
-                // this.list.splice(index, 1, res.data);
-                this.getList();
-                this.dialogFormVisible = false;
-                this.$message({
-                  message: '修改成功',
-                  type: 'success'
-                });
-              }
-            }).catch(() => {
-              this.paraLoading = false;
-            });
-          }
-        })
-      },
-      handleDelete(row, index) {
-        this.$confirm('确定删除此记录吗?', '提示', {
-          type: 'warning'
-        }).then(() => {
-          this.listLoading = true;
-          //NProgress.start();
-          let para = {id: this.rowInfo[0].id};
-          paraValueDelete(para).then((res) => {
-            this.listLoading = false;
-            if(res.resp_code == 0) {
-              this.getList();
-              //NProgress.done();
-              this.$message({
-                message: '删除成功',
-                type: 'success'
-              });
-            }
-          });
-        }).catch(() => {
-
-        });
-      },
-
-
 
     }
   }

@@ -37,7 +37,7 @@
       </el-form-item>
       <el-form-item label="">
         <el-date-picker
-          v-model="value1"
+          v-model="dateTime"
           type="datetimerange"
           range-separator="至"
           start-placeholder="开始日期"
@@ -52,15 +52,23 @@
 
   <el-table v-loading="listLoading" :data="list" :height="tableHeight"
             element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
-    <el-table-column label="时间" align="center" prop="name"></el-table-column>
-    <el-table-column label="月受理量" align="center" prop="name"></el-table-column>
-    <el-table-column label="同比" align="center" prop="name"></el-table-column>
-    <el-table-column label="环比" align="center" prop="name"></el-table-column>
-    <el-table-column label="满意率" align="center" prop="name"></el-table-column>
-    <el-table-column label="重复投诉件" align="center" prop="name"></el-table-column>
-    <el-table-column label="重复投诉情况" align="center" prop="name"></el-table-column>
+    <el-table-column label="时间" align="center" prop="input_time"></el-table-column>
+    <el-table-column label="月受理量" align="center" prop="month_deal_num"></el-table-column>
+    <el-table-column label="同比" align="center" prop="basis_num">
+      <template slot-scope="scope">
+          <span>{{scope.row.basis_direction | filtersStatus}}{{scope.row.basis_num}}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="环比" align="center" prop="comparative_num">
+      <template slot-scope="scope">
+        <span>{{scope.row.comparative_direction | filtersStatus}}{{scope.row.comparative_num}}</span>
+      </template>
+    </el-table-column>
+    <el-table-column label="满意率" align="center" prop="satisfaction_rate"></el-table-column>
+    <el-table-column label="重复投诉件" align="center" prop="rep_num"></el-table-column>
+    <el-table-column label="重复投诉情况" align="center" prop="rep_detail"></el-table-column>
   </el-table>
-  <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+  <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
               @pagination="getList" class="text-right"/>
 </div>
 
@@ -69,7 +77,7 @@
 
 <script>
 
-  import {cityDetail,addCity,updateCity} from '@/api/jurisdiction'
+  import {letterList,} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import Pagination from "@/components/Pagination/index"; // waves directive
@@ -86,7 +94,7 @@
         type: Boolean,
         default: false
       },
-      paraData: {
+      historyData: {
         required: true,
         type: Object,
         default: {
@@ -100,29 +108,14 @@
       return {
         total:0,
         listQuery:{
+          start_time:"",
+          end_time:"",
           page:1,
-          limit:10,
+          pageSize:10,
         },
         list:[],
         listLoading:false,
-        paraLoading:false,
-        dialogFormVisible: false,
-        temp: {
-          province:'',
-          city:'',
-          area:'',
-          principal:'',
-          mobile:'',
-        },
-        dialogStatus: '',
         tableHeight:200,
-        rules: {
-          province: [{ required: true, message: '请选择省', trigger: 'change' }],
-          city: [{ required: true, message: '请选择市', trigger: 'change' }],
-          area: [{ required: true, message: '请选择区', trigger: 'change' }],
-          principal: [{ required: true, message: '请输入负责人', trigger: 'change' }],
-          mobile: [{ required: true, message: '请输入手机号', trigger: 'change' }],
-        },
       }
     },
     computed: {
@@ -134,14 +127,33 @@
           this.$emit("update:show-dialog", value);
         }
       },
+      dateTime: {
+        get () {
+          if (this.listQuery.start_time && this.listQuery.end_time) {
+            return [this.listQuery.start_time, this.listQuery.end_time];
+          } else {
+            return [];
+          }
+        },
+        set (v) {
+          if (v) {
+            this.listQuery.start_time = v[0];
+            this.listQuery.end_time = v[1];
+          } else {
+            this.listQuery.start_time = "";
+            this.listQuery.end_time = "";
+          }
+        },
+      },
+    },
+    filters: {
+      filtersStatus: function (value) {
+        let StatusArr = {1: '上升', 2: '下降'}
+        return StatusArr[value]
+      },
     },
     methods: {
-      getList(){},
       open(){
-        this.dialogStatus = this.paraData.operatorType;
-        if(this.paraData.operatorType != 'create'){
-          // this.getView();
-        }
         this.$nextTick(function() {
           // this.$refs.filter-container.offsetHeight
           let height = window.innerHeight - this.$refs.tableList.$el.offsetTop - 260;
@@ -161,25 +173,27 @@
             }
           };
         });
+        this.getList();
       },
       close(){
-        this.paraLoading=false;
-        this.dialogFormVisible= false;
-        this.temp= {
-          province:'',
-          city:'',
-          area:'',
-          principal:'',
-          mobile:'',
+        this.total=0;
+        this.listQuery={
+          start_time:"",
+          end_time:"",
+          page:1,
+          pageSize:10,
         };
-        this.dialogStatus= '';
+        this.list=[];
+        this.listLoading=false;
+        this.tableHeight=200;
       },
-      getView(){
-        cityDetail({id:this.paraData.id}).then(res=>{
-          const { id, province, city, area, principal, mobile,} = res.data;
-          this.temp = { id, province, city, area, principal, mobile,}
+      getList(){
+        letterList({}).then(res=>{
+          this.list = res.data.data;
+          this.total = res.data.total;
         });
       },
+      handleFilter(){},
     }
   }
 </script>

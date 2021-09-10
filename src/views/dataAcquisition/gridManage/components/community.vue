@@ -9,7 +9,7 @@
     class="dialogContainer"
     @open="open"
   >
-    <el-form ref="dataForm" :model="temp" label-width="120px">
+    <el-form ref="dataForm" :model="temp" label-width="120px" class="dialog_form">
       <el-form-item label="责任部门" prop="facility_id">
         <el-input v-model.trim="temp.name" placeholder="请输入名称" autocomplete="off" clearable/>
       </el-form-item>

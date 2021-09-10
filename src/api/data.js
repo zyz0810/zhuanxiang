@@ -23,6 +23,25 @@ export function addGps(data) {
     data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
   })
 }
+/* 获取网格一级分类
+ */
+export function getFirstCategory(data) {
+  return request({
+    url: `/admin/map_category/getFirstCategory`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+/* 获取网格二级和子类
+ * parent_ids
+ */
+export function getCategoryList(data) {
+  return request({
+    url: `/admin/map_category/getCategoryList`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
 /* 添加父类网格
  * name 父类名称
  * type
@@ -94,6 +113,16 @@ export function communityList(data) {
   })
 }
 
+/* 示范小区详情
+ * id
+ */
+export function communityDetail(data) {
+  return request({
+    url:'/ai/community/communityDetail',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
 /* 添加/编辑示范小区
  * name 小区名称
  * mobile 手机号
@@ -114,6 +143,82 @@ export function editCommunity(data) {
 export function implodeCheck(data) {
   return request({
     url:'/admin/excel/implodeCheck',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 驾驶舱录入-数字城管
+ */
+export function addDigital(data) {
+  return request({
+    url:'/admin/input_letter/addLetter',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 驾驶舱录入-数字城管-历史数据
+ */
+export function lightList(data) {
+  return request({
+    url:'/admin/input_light/lightList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 驾驶舱录入-数字城管-基础数据导入
+ */
+export function implodeCityManage(obj) {
+  const { file, } = obj;
+  const data = new FormData();
+  data.append("url", file);
+  console.log('导入导入')
+  console.log(data)
+  return request({
+    url:'/admin/excel/implodeCityManage',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
+
+// /* 批量导入采购商品
+//  */
+// export function importExcel(obj) {
+//   const { file, sn, createTime } = obj;
+//   const data = new FormData();
+//   data.append("file", file);
+//   data.append("sn", sn);
+//   data.append("createTime", createTime);
+//   return request({
+//     url: `/api-product/product/purchase/importExcel`,
+//     method: "POST",
+//     data: data
+//   });
+// }
+
+/* 驾驶舱录入-数字城管-重复事件导入
+ */
+export function implodeRepCityManage(data) {
+  return request({
+    url:'/admin/excel/implodeRepCityManage',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 驾驶舱录入-信访投诉
+ */
+export function addLetter(data) {
+  return request({
+    url:'/admin/input_light/addLight',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 驾驶舱录入-信访投诉-历史数据
+ */
+export function letterList(data) {
+  return request({
+    url:'/admin/input_letter/letterList',
     method: 'post',
     data: Qs.stringify(data)
   })

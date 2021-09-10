@@ -10,24 +10,24 @@
     @open="open"
   >
     <el-form ref="dataForm" :rules="rules" :model="temp" label-width="140px" class="dialog_form">
-      <el-form-item label="小区名称" prop="province">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入联系方式" autocomplete="off" clearable/>
+      <el-form-item label="小区名称" prop="name">
+        <el-input v-model.trim="temp.name" placeholder="请输入小区名称" :disabled="paraData.operatorType == 'view'" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="小区负责人" prop="province">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入联系方式" autocomplete="off" clearable/>
+      <el-form-item label="小区负责人" prop="linkman">
+        <el-input v-model.trim="temp.linkman" placeholder="请输入小区负责人" :disabled="paraData.operatorType == 'view'" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="负责人电话" prop="province">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入联系方式" autocomplete="off" clearable/>
+      <el-form-item label="负责人电话" prop="mobile">
+        <el-input v-model.trim="temp.mobile" placeholder="请输入负责人电话" :disabled="paraData.operatorType == 'view'" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="地址" prop="address">
-        <el-input v-model.trim="temp.address" placeholder="请输入排查结果" autocomplete="off" @input="getAddress" clearable/>
+        <el-input v-model.trim="temp.address" placeholder="请输入地址" :disabled="paraData.operatorType == 'view'" autocomplete="off" @input="getAddress" clearable/>
         <div id='mapDiv' class="mapDiv mt_10" style="width: 100%;height: 200px;"></div>
       </el-form-item>
 
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="showViewDialog = false">取 消</el-button>
-      <el-button type="primary" class="btn_blue02" @click="dialogStatus==='create'?createData():updateData()" :loading="paraLoading">保 存</el-button>
+      <el-button type="primary" class="btn_blue02" v-if="paraData.operatorType != 'view'" @click="dialogStatus==='create'?createData():updateData()" :loading="paraLoading">保 存</el-button>
     </div>
 
 
@@ -37,10 +37,9 @@
 <script>
   import axios from 'axios'
   import map from '@/components/Map/map' // 引入刚才的map.js 注意路径
-  import {cityDetail,addCity,updateCity} from '@/api/jurisdiction'
+  import {communityDetail,editCommunity} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
-  import Pagination from "@/components/Pagination/index"; // waves directive
   import SingleImage from "@/components/Upload/SingleImage.vue"; // waves directive
   let markerTool;
   export default {
@@ -49,7 +48,6 @@
     mixins: [map],
     components: {
       draggable,
-      Pagination,
       SingleImage
     },
     props: {
@@ -75,24 +73,19 @@
         centerLatitude:'30.20835',//中心纬度
         centerLongitude:'120.21194',//中心经度
         paraLoading:false,
-        dialogFormVisible: false,
         temp: {
-          province:'',
-          city:'',
-          area:'',
-          principal:'',
+          name:'',
+          linkman:'',
           mobile:'',
+          address:'',
           log:'120.21194',
           lat:'30.20835',
-          address:''
         },
         dialogStatus: '',
         rules: {
-          province: [{ required: true, message: '请选择省', trigger: 'change' }],
-          city: [{ required: true, message: '请选择市', trigger: 'change' }],
-          area: [{ required: true, message: '请选择区', trigger: 'change' }],
-          principal: [{ required: true, message: '请输入负责人', trigger: 'change' }],
-          mobile: [{ required: true, message: '请输入手机号', trigger: 'change' }],
+          name: [{ required: true, message: '请输入名称', trigger: 'change' }],
+          linkman: [{ required: true, message: '请输入小区负责人', trigger: 'change' }],
+          mobile: [{ required: true, message: '请输入负责人电话', trigger: 'change' }],
         },
       }
     },
@@ -374,33 +367,38 @@
         this.form.imgUrl = val;
       },
       open(){
-
-        // this.dialogStatus = this.paraData.operatorType;
-        // if(this.paraData.operatorType != 'create'){
-          // this.getView();
-        // }
+        this.dialogStatus = this.paraData.operatorType;
+        if(this.paraData.operatorType != 'create'){
+          this.getView();
+        }
         this.$nextTick(function() {
           this.onLoad();
+          this.$refs['dataForm'].clearValidate()
         })
-
       },
       close(){
-
+        this.map= ''; // 对象
+        this.zoom= 12; // 地图的初始化级别，及放大比例
+        this.centerLatitude='30.20835';//中心纬度
+        this.centerLongitude='120.21194';//中心经度
         this.paraLoading=false;
-        this.dialogFormVisible= false;
         this.temp= {
-          province:'',
-          city:'',
-          area:'',
-          principal:'',
+          name:'',
+          linkman:'',
           mobile:'',
+          address:'',
+          log:'120.21194',
+          lat:'30.20835',
         };
         this.dialogStatus= '';
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
       },
       getView(){
-        cityDetail({id:this.paraData.id}).then(res=>{
-          const { id, province, city, area, principal, mobile,} = res.data;
-          this.temp = { id, province, city, area, principal, mobile,}
+        communityDetail({id:this.paraData.id}).then(res=>{
+          const { id, name, linkman, mobile, address, log,lat,} = res.data;
+          this.temp = { id, name, linkman, mobile, address, log,lat,}
         });
       },
 
@@ -408,7 +406,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.paraLoading = true
-            addCity(this.temp).then((res) => {
+            editCommunity(this.temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)
@@ -430,7 +428,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.paraLoading = true
-            updateCity(this.temp).then((res) => {
+            editCommunity(this.temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)

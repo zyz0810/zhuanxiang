@@ -32,7 +32,7 @@
 </template>
 
 <script>
-  import {departmentList, departmentStatus, departmentExport,} from '@/api/system'
+  import {departmentList,departmentAllList, departmentStatus, departmentExport,} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -99,9 +99,9 @@
         this.getList()
       },
       getList() {
-        departmentList(this.listQuery).then(res => {
-          this.list = res.data.data;
-          this.total = res.data.total;
+        departmentAllList(this.listQuery).then(res => {
+          this.list = res.data;
+          // this.total = res.data.total;
         });
       },
 
