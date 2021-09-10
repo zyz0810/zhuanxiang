@@ -20,7 +20,7 @@
         <el-table-column label="小区名称" align="center" prop="name"></el-table-column>
         <el-table-column label="小区负责人" align="center" prop="linkman"></el-table-column>
         <el-table-column label="负责人电话" align="center" prop="mobile"></el-table-column>
-        <el-table-column label="地址" align="center" prop=""></el-table-column>
+        <el-table-column label="地址" align="center" prop="address"></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
             <el-button class="btn_green" type="primary" @click="handleView('update',scope.row)">更新</el-button>
