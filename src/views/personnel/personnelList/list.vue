@@ -35,7 +35,7 @@
             <el-button class="btn_yellow" type="primary" v-if="scope.row.status == 1" @click="handleState(scope.row)">冻结</el-button>
             <el-button class="btn_red" type="primary" v-if="scope.row.status == 2" @click="handleState(scope.row)">解冻</el-button>
             <el-button class="btn_blue01" type="primary" @click="handlePassword(scope.row)">重置密码</el-button>
-            <el-button class="btn_red" type="primary" @click="">删除</el-button>
+<!--            <el-button class="btn_red" type="primary" @click="">删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -91,7 +91,7 @@
     mounted() {
       this.$nextTick(function() {
         // this.$refs.filter-container.offsetHeight
-        let height = window.innerHeight - this.$refs.tableList.$el.offsetTop - 260;
+        let height = window.innerHeight - this.$refs.tableList.$el.offsetTop - 220;
         if(height>100){
           this.tableHeight = height
         }else{
@@ -100,7 +100,7 @@
         // 监听窗口大小变化
         const self = this;
         window.onresize = function() {
-          let height = window.innerHeight - self.$refs.tableList.$el.offsetTop - 260;
+          let height = window.innerHeight - self.$refs.tableList.$el.offsetTop - 220;
           if(height>100){
             self.tableHeight = height
           }else{

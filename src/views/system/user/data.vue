@@ -20,8 +20,8 @@
       </el-form-item>
       <el-form-item label="性别" prop="gender">
         <el-select v-model="temp.gender">
-          <el-option label="男" value="1"></el-option>
-          <el-option label="女" value="2"></el-option>
+          <el-option label="男" :value="1"></el-option>
+          <el-option label="女" :value="2"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="职务" prop="job_title">
@@ -92,7 +92,8 @@
 </template>
 
 <script>
-  import {userAdd,userConstants} from '@/api/user';
+  import { getId} from '@/utils/auth'
+  import {userAdd, userConstants, userDetail} from '@/api/user';
   import {departmentAllList,roleList} from '@/api/system';
   import SingleImage from "@/components/Upload/SingleImage.vue";
   export default {
@@ -104,6 +105,7 @@
       return {
         paraLoading:false,
         temp: {
+          id:getId(),
           department_id:'',
           real_name:'',
           user_name:'',
@@ -137,8 +139,17 @@
       this.getDepartment();
       this.getRole();
       this.getUserConstants();
+      this.getView();
     },
     methods: {
+      getView(){
+        userDetail({id:getId()}).then(res=>{
+          const { id, department_id, real_name, user_name, role_id, gender,job_title,mobile,birthday,user_code,education,is_party_member,first_work_time,origin,
+            social_title,phone,is_driver,address,remark,head_image} = res.data;
+          this.temp = { id, department_id, real_name, user_name, role_id, gender,job_title,mobile,birthday,user_code,education,is_party_member,first_work_time,origin,
+            social_title,phone,is_driver,address,remark,head_image}
+        });
+      },
       getDepartment(){
         departmentAllList().then((res) => {
          this.departmentList = res.data

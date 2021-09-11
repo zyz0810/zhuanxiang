@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="bg_white">
       <div class="mb_10">
-        <el-button class="btn_purple" type="primary"  @click="handleView('create')">添加</el-button>
+        <el-button class="btn_purple" type="primary"  @click="handleView('create','parent','')">添加</el-button>
         <el-button class="btn_blue01" type="primary"  @click="">批量导入</el-button>
         <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
       </div>
@@ -15,10 +15,10 @@
         <el-table-column label="地址" align="center" prop="address"></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
-            <el-button class="btn_blue02" type="primary" @click="">编辑</el-button>
-            <el-button class="btn_blue01" type="primary" @click="">新增</el-button>
-            <el-button class="btn_yellow" type="primary" @click="">人员</el-button>
-            <el-button class="btn_red" type="primary" @click="">删除</el-button>
+            <el-button class="btn_blue02" type="primary" @click="handleView('update','',scope.row)">编辑</el-button>
+            <el-button class="btn_blue01" type="primary" @click="handleView('create','child',scope.row)">新增</el-button>
+            <el-button class="btn_yellow" type="primary" @click="handleUser">人员</el-button>
+<!--            <el-button class="btn_red" type="primary" @click="">删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -26,7 +26,7 @@
                   @pagination="getList" class="text-right"/>
     </div>
 
-    <paraView :showDialog.sync="showViewDialog" :paraData="viewData" @insertProduct="getList"></paraView>
+    <paraView :showDialog.sync="showViewDialog" :paraData="viewData" @insertList="getList"></paraView>
     <!--<history :showDialog.sync="showHistoryDialog" :historyData="historyData"></history>-->
   </div>
 </template>
@@ -110,14 +110,20 @@
 
 
 
-      handleView(row){
+      handleView(type,parent,row){
         this.showViewDialog = true
         this.viewData = {
-          // id:row.id
+          option:{
+            parent:parent,
+            pId:parent=='child'?row.id:''
+          },
+          operatorType: type,
+          id:type != 'create'?row.id:''
         }
       },
-
-
+      handleUser(){
+        this.$router.push({path:'/personnel/personnelList',query:{}});
+      },
       handleState(val) {
         console.log(this.rowInfo[0].id)
         if (val == 0) {

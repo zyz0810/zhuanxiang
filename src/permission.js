@@ -3,19 +3,60 @@ import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getToken,setRole } from '@/utils/auth' // get token from cookie
+import {getRole, getToken, setRole} from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
-
+let newRole = false
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
 
   // set page title
   document.title = getPageTitle(to.meta.title)
+  // if((to.path).includes("system")&&!((from.path).includes("system"))){
+  //   setRole(['system']);
+  //   newRole = true;
+  // }else if((to.path).includes("system")&&(from.path).includes("system")){
+  //   setRole(['system']);
+  //   newRole = false;
+  // } else if((to.path).includes("dataExchange")&&!((from.path).includes("dataExchange"))){
+  //   setRole(['dataExchange']);
+  //   newRole = true;
+  // }else if((to.path).includes("dataExchange")&&(from.path).includes("dataExchange")){
+  //   setRole(['dataExchange']);
+  //   newRole = false;
+  // } else if((to.path).includes("dataAcquisition")&&!((from.path).includes("dataAcquisition"))){
+  //   setRole(['dataAcquisition']);
+  //   newRole = true;
+  // }else if((to.path).includes("dataAcquisition")&&(from.path).includes("dataAcquisition")){
+  //   setRole(['dataAcquisition']);
+  //   newRole = false;
+  // } else if((to.path).includes("personnel")&&!((from.path).includes("personnel"))){
+  //   setRole(['personnel']);
+  //   newRole = true;
+  // }else if((to.path).includes("personnel")&&(from.path).includes("personnel")){
+  //   setRole(['personnel']);
+  //   newRole = false;
+  // } else if((to.path).includes("car")&&!((from.path).includes("car"))){
+  //   setRole(['car']);
+  //   newRole = true;
+  // } else if((to.path).includes("car")&&(from.path).includes("car")){
+  //   setRole(['car']);
+  //   newRole = false;
+  // }else if((to.path).includes("video")&&!((from.path).includes("video"))){
+  //   setRole(['video']);
+  //   newRole = true;
+  // }else if((to.path).includes("video")&&(from.path).includes("video")){
+  //   setRole(['video']);
+  //   newRole = false;
+  // }else{
+  //   setRole(['system']);
+  //   newRole = true;
+  // }
+
   if((to.path).includes("system")){
     setRole(['system']);
   } else if((to.path).includes("dataExchange")){
@@ -24,12 +65,12 @@ router.beforeEach(async(to, from, next) => {
     setRole(['dataAcquisition']);
   } else if((to.path).includes("personnel")){
     setRole(['personnel']);
-  } else if((to.path).includes("car")){
+  }else if((to.path).includes("car")){
     setRole(['car']);
   } else if((to.path).includes("video")){
     setRole(['video']);
   }else{
-    setRole([]);
+    setRole(['system']);
   }
 
 
@@ -43,15 +84,12 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      const hasRoles = store.getters.roles && store.getters.roles.length > 0
-      console.log(1111)
+      const hasRoles = store.getters.roles && store.getters.roles.length > 0 &&(store.getters.roles.sort().toString() == getRole().sort().toString())
       if (hasRoles) {
         next()
       } else {
         try {
           const roles = await store.dispatch('user/getInfo')
-          console.log(roles)
-          console.log('取消囔囔非得')
           const accessRoutes = await store.dispatch(
             'permission/generateRoutes',
             roles

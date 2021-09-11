@@ -24,17 +24,6 @@
           </el-collapse-item>
         </el-collapse>
 
-
-        <!--<li v-for="(item,index) in streetList" :key="index" class="mb_20">-->
-          <!--<div class="weui-cell gridNav_one f16">-->
-            <!--<div class="weui-cell__hd"><span class="tag inlineBlock clr_white">{{index}}</span></div>-->
-            <!--<div class="weui-cell__bd">{{item.name}}</div>-->
-            <!--<div class="weui-cell__ft"><i class="el-icon-circle-plus-outline f20 bold"></i></div>-->
-          <!--</div>-->
-          <!--<div class="gridNav_two f14">-->
-            <!--<p v-for="items in item.children" :key="items.id">{{items.name}}</p>-->
-          <!--</div>-->
-        <!--</li>-->
       </ul>
       <div style="flex:1;" class="mapContent">
         <div id='mapDiv' class="mapDiv"></div>
@@ -88,113 +77,9 @@
         showStreetDialog:false,
         showCommunityDialog:false,
         gridType: 0,
-        activeName:'first',
-        videoSwitch:true,
-        videoSwitch2:false,
-        streetList: [{
-          id:0,
-          name:'浦沿街道',
-          children:[{
-            id:1,
-            name:'西陵社区'
-          },{
-            id:2,
-            name:'水电社区'
-          }],
-        },{
-          id:3,
-          name:'西兴街道',
-          children:[{
-            id:4,
-            name:'西兴社区2'
-          },{
-            id:5,
-            name:'水电社区2'
-          }],
-        },{
-          id:6,
-          name:'长河街道',
-          children:[{
-            id:7,
-            name:'西陵社区3'
-          },{
-            id:8,
-            name:'水电社区3'
-          }],
-        },],
-        list1:[{
-          id:0,
-          name:'浦沿中队',
-        },{
-          id:1,
-          name:'西兴中队',
-        },{
-          id:2,
-          name:'长河中队',
-        }],
-        list2: [{
-          id:0,
-          name:'养护单位1',
-          children:[{
-            id:1,
-            name:'火炬大道'
-          },{
-            id:2,
-            name:'火炬大道南段'
-          }],
-        },{
-          id:3,
-          name:'养护单位2',
-          children:[{
-            id:4,
-            name:'火炬大道2'
-          },{
-            id:5,
-            name:'火炬大道南段2'
-          }],
-        },{
-          id:6,
-          name:'养护单位3',
-          children:[{
-            id:7,
-            name:'火炬大道3'
-          },{
-            id:8,
-            name:'火炬大道南段3'
-          }],
-        },],
-        showSearchDialog:false,
-        showCompanyDialog:false,
-        total:1,
-        companyList: [{
-          name:'列表1',
-          address:'杭州市',
-          time:1298963414,
-          num:1,
-          status:1
-        },{
-          name:'列表2',
-          address:'杭州市',
-          time:1298963414,
-          num:1,
-          status:2
-        }],
-        companyListLoading: false,
-        listQuery: {
-          name: '',
-          status: undefined,
-          page: 1,
-          limit: 10
-        },
-        temp:{
-          area:'',
-          name:''
-        },
         zoom:12,
         centerLatitude:'30.20835',//中心纬度
         centerLongitude:'120.21194',//中心经度
-        activeId:'',
-        listLoading: false,
         polygonTool:[],
       }
     },
@@ -327,7 +212,7 @@
           }
 
           mapclick = that.map.addEventListener("click",function(p){
-            polygonTool.open();
+            // polygonTool.open();
             console.log(p)
 
             // var lnglat = that.map.fromContainerPixelToLngLat(p);//获取点击处的坐标
@@ -393,8 +278,8 @@
           //创建面对象
           polygon = new T.Polygon(points,{strokeColor:"red", strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
           this.map.addOverLay(polygon);
-          console.log('diandianddd')
-          console.log(points)
+          // console.log('diandianddd')
+          // console.log(points)
         }else{
           alert("没有选择电子栅栏！");
         }
@@ -470,9 +355,7 @@
 
 
       },
-      handleTab(val){
-        this.activeId = val;
-      }
+
 
     }
   }
