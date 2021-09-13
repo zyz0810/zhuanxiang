@@ -50,7 +50,6 @@
       draggable,
       Pagination,
       paraView,
-
     },
     data() {
       return {

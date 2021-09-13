@@ -180,10 +180,10 @@ export const asyncRoutes = [
     path: '/system/logAlarm',
     component: Layout,
     redirect: 'noRedirect',
-    name: '日志告警',
-    alwaysShow: true,
+    name: '日志管理',
+    // alwaysShow: true,
     meta: {
-      title: '日志告警',
+      title: '日志管理',
       icon: 'iconfont icon-xiangqing',
       roles: [
         'system',
@@ -194,22 +194,24 @@ export const asyncRoutes = [
       component: () => import('@/views/system/logAlarm/log/list'),
       name: 'logList',
       meta: {
-        title: '日志',
+        title: '日志管理',
         roles: [
           'system',
         ]
       }
-    },{
-      path: 'alarm',
-      component: () => import('@/views/system/logAlarm/alarm/list'),
-      name: 'alarm',
-      meta: {
-        title: '告警',
-        roles: [
-          'system',
-        ]
-      }
-    }],
+    },
+    //   {
+    //   path: 'alarm',
+    //   component: () => import('@/views/system/logAlarm/alarm/list'),
+    //   name: 'alarm',
+    //   meta: {
+    //     title: '告警',
+    //     roles: [
+    //       'system',
+    //     ]
+    //   }
+    // }
+    ],
   },
   {
     path: '/system/dictionary',

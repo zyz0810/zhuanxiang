@@ -10,66 +10,64 @@
     @open="open"
   >
     <el-form ref="dataForm" :inline="true" :rules="rules" :model="temp" label-width="140px" >
-      <el-form-item label="工地名称" prop="province">
-        <el-select v-model="temp.province" placeholder="选择店铺名称">
-          <el-option label="1111" :value="0"></el-option>
-        </el-select>
+      <el-form-item label="工地名称" prop="building_name">
+        <el-input v-model.trim="temp.building_name" placeholder="请输入工地名称" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="工程类别" prop="province">
-        <el-select v-model="temp.province" placeholder="选择经营范围">
+      <el-form-item label="工程类别" prop="building_type">
+        <el-select v-model="temp.building_type" placeholder="选择经营范围">
           <el-option label="2222" :value="0"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="有效时间" prop="principal">
         <el-date-picker
-          v-model="temp.value1"
+          v-model="dataTime"
           type="daterange"
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期">
         </el-date-picker>
       </el-form-item>
-      <el-form-item label="建设方" prop="mobile">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入联系方式" autocomplete="off" clearable/>
+      <el-form-item label="建设方" prop="construction_name">
+        <el-input v-model.trim="temp.construction_name" placeholder="请输入联系方式" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="联系人" prop="mobile">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入联系方式" autocomplete="off" clearable/>
+      <el-form-item label="联系人" prop="construction_person">
+        <el-input v-model.trim="temp.construction_person" placeholder="请输入联系方式" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="联系方式" prop="mobile">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入联系方式" autocomplete="off" clearable/>
+      <el-form-item label="联系方式" prop="construction_relation">
+        <el-input v-model.trim="temp.construction_relation" placeholder="请输入联系方式" autocomplete="off" clearable/>
       </el-form-item>
 
 
 
 
-      <el-form-item label="施工方" prop="mobile">
+      <el-form-item label="施工方" prop="roadwork">
+        <el-input v-model.trim="temp.roadwork" placeholder="请输入联系方式" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="联系人" prop="roadwork_person">
+        <el-input v-model.trim="temp.roadwork_person" placeholder="请输入联系方式" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="联系方式" prop="roadwork_relation">
+        <el-input v-model.trim="temp.roadwork_relation" placeholder="请输入联系方式" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="1111夜间施工审批时间" prop="">
         <el-input v-model.trim="temp.mobile" placeholder="请输入联系方式" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="联系人" prop="mobile">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入联系方式" autocomplete="off" clearable/>
-      </el-form-item>
-      <el-form-item label="联系方式" prop="mobile">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入联系方式" autocomplete="off" clearable/>
-      </el-form-item>
-      <el-form-item label="夜间施工审批时间" prop="mobile">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入联系方式" autocomplete="off" clearable/>
-      </el-form-item>
-      <el-form-item label="审批记录表" prop="mobile">
+      <el-form-item label="审批记录表" prop="images">
         <SingleImage
-          :tempUrl="temp.imgUrl"
+          :tempUrl="temp.images"
           v-on:imgSrc="hasImgSrc"
         ></SingleImage>
       </el-form-item>
-      <el-form-item label="违章次数" prop="mobile">
+      <el-form-item label="111违章次数" prop="mobile">
         <el-input v-model.trim="temp.mobile" placeholder="请输入联系方式" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="" prop="mobile">
         <el-button type="primary" class="btn_blue02">添加违章</el-button>
       </el-form-item>
-      <el-form-item label="违章时间" prop="mobile">
+      <el-form-item label="111违章时间" prop="mobile">
         <el-input v-model.trim="temp.mobile" placeholder="请输入违章时间" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="违章事项" prop="mobile">
+      <el-form-item label="111违章事项" prop="mobile">
         <el-input v-model.trim="temp.mobile" placeholder="请输入违章类型" autocomplete="off" clearable/>
       </el-form-item>
 
@@ -77,11 +75,11 @@
 
     </el-form>
     <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" >
-      <el-form-item label="处理状态" prop="mobile">
+      <el-form-item label="111处理状态" prop="mobile">
         <el-input v-model.trim="temp.mobile" placeholder="请输入处理状态" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="地址" prop="mobile">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入排查结果" autocomplete="off" clearable/>
+      <el-form-item label="地址" prop="address">
+        <el-input v-model.trim="temp.address" placeholder="请输入排查结果" autocomplete="off" clearable/>
         <div id='mapDiv' class="mapDiv mt_10" style="width: 100%;height: 100px;"></div>
       </el-form-item>
 
@@ -97,7 +95,7 @@
 
 <script>
   import map from '@/components/Map/map' // 引入刚才的map.js 注意路径
-  import {cityDetail,addCity,updateCity} from '@/api/jurisdiction'
+  import {buildDetail,} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import Pagination from "@/components/Pagination/index"; // waves directive
@@ -161,6 +159,24 @@
           this.$emit("update:show-dialog", value);
         }
       },
+      dataTime: {
+        get () {
+          if (this.temp.valid_start && this.temp.valid_end) {
+            return [this.temp.valid_start, this.temp.valid_end];
+          } else {
+            return [];
+          }
+        },
+        set (v) {
+          if (v) {
+            this.temp.valid_start = v[0];
+            this.temp.valid_end = v[1];
+          } else {
+            this.temp.valid_start = "";
+            this.temp.valid_end = "";
+          }
+        },
+      },
     },
     methods: {
       onLoad() {
@@ -206,9 +222,9 @@
       open(){
 
         // this.dialogStatus = this.paraData.operatorType;
-        // if(this.paraData.operatorType != 'create'){
-          // this.getView();
-        // }
+        if(this.paraData.operatorType != 'create'){
+          this.getView();
+        }
         this.$nextTick(function() {
           this.onLoad();
         })
@@ -228,7 +244,7 @@
         this.dialogStatus= '';
       },
       getView(){
-        cityDetail({id:this.paraData.id}).then(res=>{
+        buildDetail({id:this.paraData.id}).then(res=>{
           const { id, province, city, area, principal, mobile,} = res.data;
           this.temp = { id, province, city, area, principal, mobile,}
         });

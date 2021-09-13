@@ -99,7 +99,7 @@
         this.getList()
       },
       getList() {
-        departmentAllList(this.listQuery).then(res => {
+        departmentList(this.listQuery).then(res => {
           this.list = res.data;
           // this.total = res.data.total;
         });

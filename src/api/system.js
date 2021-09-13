@@ -435,3 +435,96 @@ export function languageEdit(data) {
     data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
   })
 }
+
+/* 配置系统数据常量列表
+ */
+export function setConstants(data) {
+  return request({
+    url: `/admin/setting/constants`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+
+/* 事件时间详情
+ *
+ */
+export function eventDetail(data) {
+  return request({
+    url: `/admin/setting/eventDetail`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+/* 修改事件时间配置
+ * event_time 事件时间
+ */
+export function updateEventSetting(data) {
+  return request({
+    url: `/admin/setting/updateEventSetting`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+/* 获取日志记录列表
+ * start_time
+ * end_time
+ * request_uri
+ * page
+ * pageSize
+ */
+export function logList(data) {
+  return request({
+    url: `/admin/request_log/list`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+
+/* 分平台权限列表
+ * plat_name 	平台名称
+ * page
+ * pageSize
+ */
+export function platAuthList(data) {
+  return request({
+    url: `/admin/platAuth/list`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+/* 分平台权限常量列表
+ */
+export function platAuthConstants(data) {
+  return request({
+    url: `/admin/platAuth/constants`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+/* 平台权限-详情
+ * 	id
+ */
+export function platAuthDetail(data) {
+  return request({
+    url: `/admin/platAuth/detail`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+/* 平台权限-编辑
+ * parent_type	父类型id
+ * app_type 	APP类型id
+ * plat_name 平台名称
+ * role_id 角色id列表，多个用逗号分隔
+ * index_url 首页链接
+ * img_url 	平台图片
+ * id
+ */
+export function platAuthEdit(data) {
+  return request({
+    url: `/admin/platAuth/edit`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}

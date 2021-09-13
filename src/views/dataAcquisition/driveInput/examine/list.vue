@@ -11,7 +11,7 @@
             </el-form-item>
             <el-form-item label="">
               <el-date-picker
-                v-model="value1"
+                v-model="listQuery.value1"
                 type="datetimerange"
                 range-separator="至"
                 start-placeholder="开始日期"
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import {implodeCheck} from '@/api/data'
+  import {administrativeCheckList} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -114,7 +114,7 @@
         this.getList()
       },
       getList() {
-        implodeCheck(this.listQuery).then(res => {
+        administrativeCheckList(this.listQuery).then(res => {
           this.list = res.data.data
           this.total = res.data.total
         });

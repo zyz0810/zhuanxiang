@@ -4,7 +4,7 @@
     :close-on-click-modal="false"
     width="60%"
     @close="close"
-    top="10vh"
+    top="6vh"
     title="组织管理"
     class="dialogContainer"
     @open="open"
@@ -21,9 +21,9 @@
         </el-select>
       </el-form-item>
     </el-form>
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" >
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" class="mr_20">
       <el-form-item label="部门地址" prop="address">
-        <el-input v-model.trim="temp.address" placeholder="请输入部门地址" autocomplete="off" @input="getAddress" clearable/>
+        <el-input v-model.trim="temp.address" placeholder="请在地图上选择" autocomplete="off" @input="getAddress" clearable/>
         <div id='mapDiv' class="mapDiv mt_10" style="width: 100%;height: 200px"></div>
       </el-form-item>
       </el-form>
@@ -43,16 +43,16 @@
           <el-option label="否" :value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="部门大类" prop="big_type">
-        <el-select v-model="temp.big_type"  placeholder="选择部门大类">
-          <el-option v-for="(item,index) in bigTypeList" :label="item" :value="index" :key="index"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="部门小类" prop="big_type">
-        <el-select v-model="temp.big_type"  placeholder="选择部门大类">
-          <el-option v-for="(item,index) in bigTypeList" :label="item" :value="index" :key="index"></el-option>
-        </el-select>
-      </el-form-item>
+<!--      <el-form-item label="部门大类" prop="big_type">-->
+<!--        <el-select v-model="temp.big_type"  placeholder="选择部门大类">-->
+<!--          <el-option v-for="(item,index) in bigTypeList" :label="item" :value="index" :key="index"></el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
+<!--      <el-form-item label="部门小类" prop="big_type">-->
+<!--        <el-select v-model="temp.big_type"  placeholder="选择部门大类">-->
+<!--          <el-option v-for="(item,index) in bigTypeList" :label="item" :value="index" :key="index"></el-option>-->
+<!--        </el-select>-->
+<!--      </el-form-item>-->
       <el-form-item label="单位性质" prop="nature">
         <el-input v-model.trim="temp.nature" placeholder="请输入单位性质" autocomplete="off" clearable/>
       </el-form-item>
@@ -147,7 +147,6 @@
           contact:'',
           mobile:'',
           is_map:'',
-          big_type:'',
           nature:'',
           user_num:'',
           user_num1:'',
@@ -165,10 +164,10 @@
         smallTypeList:[],
         departmentList:[],
         rules: {
-          city_id: [{ required: true, message: '请选择所属分组', trigger: 'change' }],
-          name: [{ required: true, message: '请输入用户名', trigger: 'change' }],
-          password: [{ required: true, message: '请输入密码', trigger: 'change' }],
-          mobile: [{ required: true, message: '请输入手机号码', trigger: 'change' }],
+          // city_id: [{ required: true, message: '请选择所属分组', trigger: 'change' }],
+          // name: [{ required: true, message: '请输入用户名', trigger: 'change' }],
+          // password: [{ required: true, message: '请输入密码', trigger: 'change' }],
+          // mobile: [{ required: true, message: '请输入手机号码', trigger: 'change' }],
         },
       }
     },
@@ -224,16 +223,18 @@
                   //坐标
                   let lnglatArr = obj[i].lonlat.split(" ");
                   let lnglat = new T.LngLat(lnglatArr[0], lnglatArr[1]);
+                  console.log('haodehaode ')
                   console.log(lnglat)
                   that.temp.latitude = lnglatArr[0];
                   that.temp.longitude = lnglatArr[1];
 
                   let winHtml = "名称:" + name + "<br/>地址:" + address;
 
-                  //创建标注对象
+                  // //创建标注对象
                   let marker = new T.Marker(lnglat);
-                  //地图上添加标注点
-                  that.map.addOverLay(marker);
+                  // //地图上添加标注点
+                  // that.map.addOverLay(marker);
+                  that.positionBtn(lnglat);
                   //注册标注点的点击事件
                   let markerInfoWin = new T.InfoWindow(winHtml, {autoPan: true});
                   marker.addEventListener("click", function () {
@@ -405,15 +406,15 @@
         document.getElementsByClassName("tdt-control-copyright tdt-control")[0].style.display = 'none';
         //创建标注工具对象
         markerTool = new T.MarkTool(this.map, {follow: true});
-        this.positionBtn();
+        // lnglat
+        let lnglat = new T.LngLat(this.temp.longitude,this.temp.latitude);
+        this.positionBtn(lnglat);
       },
-      positionBtn() {
-        // centerLatitude:'30.20835',//中心纬度
-        // centerLongitude:'120.21194',//中心经度
+      positionBtn(lnglat) {
         this.map.clearOverLays();   //清理地图上的覆盖物
         console.log('经纬度')
         // console.log(this.temp.log,this.temp.lat)
-        let marker = new T.Marker(new T.LngLat(this.temp.longitude,this.temp.latitude)); //e.lnglat，标注点的地理坐标
+        let marker = new T.Marker(lnglat); //e.lnglat，标注点的地理坐标
         this.map.addOverLay(marker); //addOverLay方法，将覆盖物添加到地图中，一个覆盖物实例只能向地图中添加一次。
         marker.addEventListener("dragend", overlay_style); //添加事件监听函数。
         marker.enableDragging(); //开启标注拖拽功能
@@ -434,9 +435,10 @@
             //弹出的就是地址信息
             console.log('98888')
 
+            console.log(data.data.result)
             that.temp.address = data.data.result.addressComponent.address
-            that.temp.longitude = data.data.result.location.longitude
-            that.temp.latitude = data.data.result.location.latitude
+            that.temp.longitude = data.data.result.location.lon
+            that.temp.latitude = data.data.result.location.lat
             console.log(that.temp)
             // alert(addressdata.result.formatted_address);
             // if(addressdata.msg =="ok" && addressdata.status ==0){
@@ -496,7 +498,6 @@
           contact:'',
           mobile:'',
           is_map:'',
-          big_type:'',
           nature:'',
           user_num:'',
           user_num1:'',
@@ -506,6 +507,8 @@
           duty:'',
           remark:'',
           dept_img:'',
+          longitude:'120.21194',
+          latitude:'30.20835',
         };
       },
       getView(){

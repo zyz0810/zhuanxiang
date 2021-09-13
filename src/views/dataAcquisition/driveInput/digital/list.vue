@@ -55,7 +55,7 @@
           </el-form>
         </div>
 
-        <el-table v-loading="listLoading" :data="list" :height="tableHeight"
+        <el-table v-loading="listLoading" :data="listOne" :height="tableHeight"
                   element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
           <el-table-column label="任务号" align="center" prop="name"></el-table-column>
           <el-table-column label="任务来源" align="center" prop="name"></el-table-column>
@@ -69,7 +69,7 @@
           <el-table-column label="照片" align="center" prop="name"></el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
-                    @pagination="getList" class="text-right"/>
+                    @pagination="getListOne" class="text-right"/>
       </el-tab-pane>
       <el-tab-pane label="重复件导入">
         <div class="mb_10">
@@ -93,7 +93,7 @@
           </el-form>
         </div>
 
-        <el-table v-loading="listLoading" :data="list" :height="tableHeight"
+        <el-table v-loading="listLoading" :data="listTwo" :height="tableHeight"
                   element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
           <el-table-column label="序号" type="index" align="center"></el-table-column>
           <el-table-column label="重复投诉点位" align="center" prop="name"></el-table-column>
@@ -101,8 +101,8 @@
           <el-table-column label="重复投诉次数" align="center" prop="name"></el-table-column>
           <el-table-column label="承办单位" align="center" prop="name"></el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
-                    @pagination="getList" class="text-right"/>
+        <pagination v-show="totalTwo>0" :total="totalTwo" :page.sync="listQueryTwo.page" :limit.sync="listQueryTwo.pageSize"
+                    @pagination="getListTwo" class="text-right"/>
       </el-tab-pane>
     </el-tabs>
     <input type="file" @change="fileChange" id="fileImport" v-show="false" />
@@ -111,7 +111,7 @@
 </template>
 
 <script>
-  import {addDigital, implodeCityManage, implodeRepCityManage} from '@/api/data'
+  import {addDigital, implodeCityManage,cityManagementList,cityRepManagementList, implodeRepCityManage} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -142,10 +142,13 @@
         },],
         listLoading: false,
         listQuery: {
-          name: '',
-          status: undefined,
           page: 1,
-          limit: 10
+          pageSize: 10
+        },
+        totalTwo:0,
+        listQueryTwo: {
+          page: 1,
+          pageSize: 10
         },
         temp: {
           undisposed: '',
@@ -155,6 +158,8 @@
           red_detail: '',
           input_time: '',
         },
+        listOne:[],
+        listTwo:[],
         rules: {
           name: [{required: true, message: '请输入名称', trigger: 'change'}],
         },
@@ -196,7 +201,8 @@
           }
         };
       });
-      // this.getList();
+      this.getListOne();
+      this.getListTwo();
     },
     methods: {
       importFile () {
@@ -233,13 +239,18 @@
         this.listQuery.page = 1;
         this.getList()
       },
-      getList() {
-        paraList(this.listQuery).then(res => {
-          this.list = res.data.data
-          this.total = res.data.count
+      getListOne() {
+        cityManagementList(this.listQuery).then(res => {
+          this.listOne = res.data.data
+          this.total = res.data.total
         });
       },
-
+      getListTwo() {
+        cityRepManagementList(this.listQueryTwo).then(res => {
+          this.listTwo = res.data.data
+          this.totalTwo = res.data.total
+        });
+      },
       resetList() {
         this.listQuery = {
           name: '',

@@ -34,11 +34,11 @@
         <el-date-picker v-model="temp.birthday" type="date" value-format="yyyy-MM-dd" placeholder="选择日期"></el-date-picker>
       </el-form-item>
       <el-form-item label="胸牌编号" prop="user_code">
-        <el-input v-model.trim="temp.user_code" placeholder="请输入身份" autocomplete="off" clearable/>
+        <el-input v-model.trim="temp.user_code" placeholder="请输入胸牌编号" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="文化程度" prop="education">
         <el-select v-model="temp.education">
-          <el-option v-for="(item,index) in userConstantsList" :label="item" :value="index" :key="index"></el-option>
+          <el-option v-for="item in userConstantsList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="是否党员" prop="is_party_member">
@@ -53,10 +53,10 @@
 <!--        <el-input v-model.trim="temp.first_work_time" placeholder="请输入身份" autocomplete="off" clearable/>-->
       </el-form-item>
       <el-form-item label="籍贯" prop="origin">
-        <el-input v-model.trim="temp.origin" placeholder="请输入负责人" autocomplete="off" clearable/>
+        <el-input v-model.trim="temp.origin" placeholder="请输入籍贯" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="人员身份" prop="social_title">
-        <el-input v-model.trim="temp.social_title" placeholder="请输入负责人" autocomplete="off" clearable/>
+        <el-input v-model.trim="temp.social_title" placeholder="请输入籍贯" autocomplete="off" clearable/>
       </el-form-item>
 
       <el-form-item label="家庭电话" prop="phone">
@@ -93,7 +93,7 @@
 
 <script>
   import { getId} from '@/utils/auth'
-  import {userAdd, userConstants, userDetail} from '@/api/user';
+  import {userEdit, userConstants, userDetail} from '@/api/user';
   import {departmentAllList,roleList} from '@/api/system';
   import SingleImage from "@/components/Upload/SingleImage.vue";
   export default {
@@ -178,7 +178,7 @@
                 this.paraLoading = true
                 let temp = JSON.parse(JSON.stringify(this.temp));
                 temp.head_image = this.images;
-                userAdd(temp).then((res) => {
+                userEdit(temp).then((res) => {
                   setTimeout(()=>{
                     this.paraLoading = false
                   },1000)

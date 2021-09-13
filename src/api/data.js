@@ -156,6 +156,64 @@ export function addDigital(data) {
     data: Qs.stringify(data)
   })
 }
+/* 驾驶舱录入-数字城管-基础数据列表
+ * page
+ * pageSize
+ */
+export function cityManagementList(data) {
+  return request({
+    url:'/admin/import_tool/cityManagementList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 驾驶舱录入-数字城管-重复事件列表
+ * page
+ * pageSize
+ */
+export function cityRepManagementList(data) {
+  return request({
+    url:'/admin/import_tool/cityRepManagementList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
+
+/* 驾驶舱录入-信访投诉-基础数据列表
+ * page
+ * pageSize
+ */
+export function letterAskList(data) {
+  return request({
+    url:'/admin/import_tool/letterAskList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 驾驶舱录入-信访投诉-重复事件列表
+ * page
+ * pageSize
+ */
+export function letterRepAskList(data) {
+  return request({
+    url:'/admin/import_tool/letterRepAskList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 驾驶舱录入-行政审核列表
+ * page
+ * pageSize
+ */
+export function administrativeCheckList(data) {
+  return request({
+    url:'/admin/import_tool/administrativeCheckList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
 /* 驾驶舱录入-数字城管-历史数据
  */
 export function lightList(data) {
@@ -219,6 +277,46 @@ export function addLetter(data) {
 export function letterList(data) {
   return request({
     url:'/admin/input_letter/letterList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 店铺列表
+ */
+export function storeList(data) {
+  return request({
+    url:'/admin/store/storeList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
+/* 工地列表
+ * key_word
+ */
+export function buildList(data) {
+  return request({
+    url:'/admin/building/buildList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 工地详情
+ * id
+ */
+export function buildDetail(data) {
+  return request({
+    url:'/admin/building/buildDetail',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 添加工地
+ * id
+ */
+export function buildAdd(data) {
+  return request({
+    url:'/admin/building/addBuild',
     method: 'post',
     data: Qs.stringify(data)
   })
