@@ -513,9 +513,9 @@
       },
       getView(){
         departmentDetail({id:this.paraData.id}).then(res=>{
-          const { id, department_name, address,phone,contact,parent_id,mobile,is_map,big_type,nature,user_num,user_num1,user_num2,user_num3,user_num4,duty,remark,dept_img} = res.data
+          const { id,latitude,longitude, department_name, address,phone,contact,parent_id,mobile,is_map,big_type,nature,user_num,user_num1,user_num2,user_num3,user_num4,duty,remark,dept_img} = res.data
           // let parent_id = res.data.parent_id == 0?'':res.data.parent_id;
-          this.temp = { id, department_name, parent_id,address,phone,contact,mobile,is_map,big_type,nature,user_num,user_num1,user_num2,user_num3,user_num4,duty,remark,dept_img}
+          this.temp = { id, department_name,latitude,longitude, parent_id,address,phone,contact,mobile,is_map,big_type,nature,user_num,user_num1,user_num2,user_num3,user_num4,duty,remark,dept_img}
         });
       },
 

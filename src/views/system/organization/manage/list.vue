@@ -7,7 +7,7 @@
         <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
-                element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
+                element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" row-key="id" :tree-props="{children: 'list'}">
         <el-table-column label="部门名称" align="center" prop="department_name"></el-table-column>
         <el-table-column label="部门电话" align="center" prop="phone"></el-table-column>
         <el-table-column label="主要负责人" align="center" prop="contact"></el-table-column>

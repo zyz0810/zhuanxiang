@@ -26,13 +26,11 @@
         <el-input v-model.trim="temp.send_time" placeholder="请输入处理时限" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="处置部门" prop="depart_id">
-<!--        <el-select v-model="temp.depart_id" placeholder="请选择" clearable>-->
-<!--          <el-option v-for="item in departmentList" :label="item.department_name" :value="item.id" :key="item.id"></el-option>-->
-<!--        </el-select>-->
+        <el-select v-model="temp.depart_id" placeholder="请选择" clearable>
+          <el-option v-for="item in departmentList" :label="item.department_name" :value="item.id" :key="item.id"></el-option>
+        </el-select>
 
-<!--        <el-cascader v-model="value" :options="departmentList" :prop="children:" @change="handleChange"></el-cascader>-->
-
-        <el-cascader ref="cascaderPublish" v-model="temp.depart_id" :options="departmentList" :show-all-levels="false" filterable :props="props" placeholder="请选择部门"></el-cascader>
+<!--        <el-cascader ref="cascaderPublish" v-model="temp.depart_id" :options="departmentList" :show-all-levels="false" filterable :props="props" placeholder="请选择部门"></el-cascader>-->
       </el-form-item>
       <el-form-item label="是否启用" prop="status">
         <el-switch v-model="temp.status" active-color="#13ce66" :active-value="1" :inactive-value="2"></el-switch>
@@ -97,7 +95,7 @@
           code:'',
           hk_category:'',
           send_time:'',
-          depart_id:[],
+          depart_id:'',
           status:1,
         },
         dialogStatus: '',
@@ -149,7 +147,7 @@
           code:'',
           hk_category:'',
           send_time:'',
-          depart_id:[],
+          depart_id:'',
           status:1,
         };
         this.dialogStatus= '';
