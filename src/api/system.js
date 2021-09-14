@@ -528,3 +528,14 @@ export function platAuthEdit(data) {
     data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
   })
 }
+/* 平台权限-修改状态
+ * id	id
+ * status 		状态
+ */
+export function platAuthStatus(data) {
+  return request({
+    url: `/admin/platAuth/editStatus`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}

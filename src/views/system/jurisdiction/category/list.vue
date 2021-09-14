@@ -34,7 +34,7 @@
             <el-button class="btn_blue02" type="primary" @click="handleView('update','',scope.row)">编辑</el-button>
             <el-button class="btn_blue01" type="primary" @click="handleView('create','child',scope.row)">添加</el-button>
             <el-button class="btn_yellow" type="primary" v-if="scope.row.status == 1" @click="handleState(scope.row)">禁用</el-button>
-            <el-button class="btn_yellow" type="primary" v-if="scope.row.status == 2" @click="handleState(scope.row)">启用</el-button>
+            <el-button class="btn_green" type="primary" v-if="scope.row.status == 2" @click="handleState(scope.row)">启用</el-button>
 <!--            <el-button class="btn_red" type="primary" @click="handleDelete(scope.row)">删除</el-button>-->
           </template>
         </el-table-column>

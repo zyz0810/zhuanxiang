@@ -14,7 +14,9 @@
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
             <el-button class="btn_blue02" type="primary" @click="handleView('update',scope.row)">编辑</el-button>
-            <el-button class="btn_red" type="primary" @click="">删除</el-button>
+            <!--<el-button class="btn_red" type="primary" @click="">删除</el-button>-->
+            <el-button class="btn_yellow" type="primary" v-if="scope.row.status == 1" @click="handleState(scope.row)">禁用</el-button>
+            <el-button class="btn_green" type="primary" v-if="scope.row.status == 2" @click="handleState(scope.row)">启用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -26,7 +28,7 @@
 </template>
 
 <script>
-  import {platAuthConstants,platAuthList, } from '@/api/system'
+  import {platAuthConstants,platAuthList, platAuthStatus} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -119,6 +121,51 @@
           operatorType:type,
           id:type != 'create'?row.id:''
         }
+      },
+      handleState(row) {
+        if (row.status == 1) {
+          this.$confirm('确定禁用吗?', '提示', {
+            type: 'warning'
+          }).then(() => {
+            this.listLoading = true;
+            //NProgress.start();
+            console.log(row)
+            let para = {id:row.id,status:2}
+            platAuthStatus(para).then((res) => {
+              this.listLoading = false;
+              if (res.code == 1) {
+                this.getList();
+                this.$message({
+                  message: res.message,
+                  type: 'success'
+                });
+              }
+            });
+          }).catch(() => {
+
+          });
+        } else {
+          this.$confirm('确定启用吗?', '提示', {
+            type: 'warning'
+          }).then(() => {
+            this.listLoading = true;
+            //NProgress.start();
+            let para = {id:row.id,status:1}
+            platAuthStatus(para).then((res) => {
+              this.listLoading = false;
+              if (res.code == 1) {
+                this.getList();
+                this.$message({
+                  message: res.message,
+                  type: 'success'
+                });
+              }
+            });
+          }).catch(() => {
+
+          });
+        }
+
       },
     }
   }
