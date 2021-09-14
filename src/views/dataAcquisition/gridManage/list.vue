@@ -197,8 +197,6 @@
           polygon.disableEdit();
           this.editMap=false;
         }
-
-
         console.log(this.pointList);
         if(this.pointList.length!=0){
           for(let i=0;i<this.pointList.length;i++){
