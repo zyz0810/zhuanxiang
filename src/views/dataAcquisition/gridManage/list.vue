@@ -28,11 +28,14 @@
       <div style="flex:1;" class="mapContent">
         <div id='mapDiv' class="mapDiv"></div>
         <div class="map_info f14 text-center">
-          <el-button type="primary" class="btn_blue02" @click="openPolygonTool">画网格</el-button>
-          <el-button type="primary" class="btn_blue02" @click="editPolygonTool">编辑网格</el-button>
+          <!--<el-button type="primary" class="btn_blue02" @click="openPolygonTool">画网格</el-button>-->
+          <el-button type="primary" class="btn_blue02" @click="aa">画网格</el-button>
+          <!--<el-button type="primary" class="btn_blue02" @click="editPolygonTool">编辑网格</el-button>-->
+          <el-button type="primary" class="btn_blue02" @click="cc">编辑网格</el-button>
           <el-button type="primary" class="btn_blue02">清除</el-button>
           <el-button type="primary" class="btn_blue02">还原</el-button>
-          <el-button type="primary" class="btn_blue02" @click="drawPolygonByPoint">保存</el-button>
+          <!--<el-button type="primary" class="btn_blue02" @click="drawPolygonByPoint">保存</el-button>-->
+          <el-button type="primary" class="btn_blue02" @click="bb">保存</el-button>
         </div>
       </div>
       <addStreet :showDialog.sync="showStreetDialog" :viewData="viewData"></addStreet>
@@ -77,6 +80,8 @@
         centerLatitude:'30.20835',//中心纬度
         centerLongitude:'120.21194',//中心经度
         polygonTool:[],
+        pointList:[],
+        editMap:false,
       }
     },
     computed: {
@@ -84,20 +89,7 @@
         roles: state => state.user.roles,
       }),
     },
-    filters: {
-      filtersStatus: function (value) {
-        let StatusArr = {0: '未审核', 1: '已审核'}
-        return StatusArr[value]
-      },
-      filtersType: function (value) {
-        let StatusArr = {0: '店外经营', 1: '违规撑伞', 2: '流动摊点', 3: '沿街晾晒'}
-        return StatusArr[value]
-      },
-      filtersSource: function (value) {
-        let StatusArr = {0: '其它', 1: '滨康二区',}
-        return StatusArr[value]
-      },
-    },
+
     mounted() {
       this.onLoad();
       this.getFirstCategory();
@@ -163,6 +155,73 @@
 
         document.getElementsByClassName("tdt-control-copyright tdt-control")[0].style.display = 'none';
       },
+      aa(){
+        //绘制多边形
+        let that = this;
+        drawPolygon()
+        this.pointList = [];
+        function drawPolygon(){
+
+          var config = {
+            strokeColor:"#000",	//折线颜色
+            fillColor:"#000000",	//填充颜色。当参数为空时，折线覆盖物将没有填充效果
+            strokeWeight:"30px",	//折线的宽度，以像素为单位
+            strokeOpacity:0.5,	//折线的透明度，取值范围0 - 1
+            fillOpacity:1,	//填充的透明度，取值范围0 - 1
+            showLabel:false     //是否显示页面，默认为true.
+          };
+          //创建测面工具对象
+          polygonTool = new T.PolygonTool(that.map,config);
+          // map.clearOverLays();
+          polygonTool.open();
+          //绑定draw事件 用户双击完成一次折线绘制时触发事件。
+          polygonTool.addEventListener("draw",getPoints4);
+        }
+
+        function getPoints4(e){
+          //用户当前绘制的多边形的点坐标数组
+          console.log(e.currentLnglats);
+          console.log("用户最后绘制的多边形的地理面积:"+e.currentArea);
+          that.pointList = e.currentLnglats;
+          console.log(that.pointList)
+        }
+      },
+      // 点击保存（第二版）
+      bb(){　//根据点坐标来画多边形
+
+        // if(polygon!=''){
+        //   this.map.removeOverLay(polygon);
+        // }
+        polygonTool.close();
+        if (this.editMap==true){
+          polygon.disableEdit();
+          this.editMap=false;
+        }
+
+
+        console.log(this.pointList);
+        if(this.pointList.length!=0){
+          for(let i=0;i<this.pointList.length;i++){
+            addGps({category_id:1,type:1,lat:this.pointList[i].lat,log:this.pointList[i].lng}).then(res=>{
+
+            });
+          }
+
+          //创建面对象
+          polygon = new T.Polygon(this.pointList,{strokeColor:"red", strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
+          this.map.addOverLay(polygon);
+          console.log(polygon)
+
+        }else{
+          alert("还没有绘制！");
+        }
+      },
+      cc(){
+        this.editMap=true;
+        polygon.enableEdit();
+
+        console.log(polygon)
+      },
 
       openPolygonTool(){
         let that = this;
@@ -188,7 +247,8 @@
           //注册测面工具绘制完成后的事件
           // TEvent.addListener(polygonTool,"draw",onDrawPolygon);
           // that.map.addEventListener("dblclick",onDrawPolygon);
-          that.map.addEventListener("draw",onDrawPolygon);
+          // that.map.addEventListener("draw",onDrawPolygon);
+          polygonTool.addEventListener("draw",onDrawPolygon);
         }
 
         //关闭测面工具时触发
@@ -211,7 +271,7 @@
           if(mapclick!=""){
             // TEvent.removeListener(mapclick); //避免加载多次点击事件
             that.map.removeEventListener("click",mapclick);
-            that.map.addEventListener("dblclick",onDrawPolygon);
+            // that.map.addEventListener("dblclick",onDrawPolygon);
           }
 
           mapclick = that.map.addEventListener("click",function(p){
@@ -253,18 +313,6 @@
           }
 
         }
-      },
-      onDrawPolygon(bounds,line)
-      {
-        console.log('栓wq 估计')
-        polygonTool.close();
-        console.log(PolygonPoints)
-        console.log('1111111111')
-        PolygonPoints.length=PolygonPoints.length-2;//最后双击会把最后一个坐标保存两次。
-        // TEvent.removeListener(mapclick);//关闭单击事件（保存坐标）
-        console.log(PolygonPoints)
-        console.log('2222222222')
-        this.map.removeEventListener("click",mapclick);
       },
       // 点击保存
       drawPolygonByPoint(){　//根据点坐标来画多边形
@@ -323,6 +371,7 @@
       //
       //   this.polygonTool.push(polygon)
       // },
+
       editPolygonTool(){
 
 

@@ -58,20 +58,20 @@
         <el-table v-loading="listLoading" :data="listOne" :height="tableHeight"
                   element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
           <el-table-column label="任务号" align="center" prop="name"></el-table-column>
-          <el-table-column label="任务来源" align="center" prop="name"></el-table-column>
-          <el-table-column label="事件类型" align="center" prop="name"></el-table-column>
-          <el-table-column label="案件状态" align="center" prop="name"></el-table-column>
+          <el-table-column label="问题来源" align="center" prop="name"></el-table-column>
+          <el-table-column label="问题状态" align="center" prop="name"></el-table-column>
+          <el-table-column label="问题类型" align="center" prop="name"></el-table-column>
+          <el-table-column label="大类名称" align="center" prop="name"></el-table-column>
+          <el-table-column label="小类名称" align="center" prop="name"></el-table-column>
           <el-table-column label="上报时间" align="center" prop="name"></el-table-column>
-          <el-table-column label="案件描述" align="center" prop="name"></el-table-column>
-          <el-table-column label="受理部门" align="center" prop="name"></el-table-column>
           <el-table-column label="处置部门" align="center" prop="name"></el-table-column>
-          <el-table-column label="地址描述" align="center" prop="name"></el-table-column>
-          <el-table-column label="照片" align="center" prop="name"></el-table-column>
+          <el-table-column label="所属街道" align="center" prop="name"></el-table-column>
+          <el-table-column label="问题描述" align="center" prop="name"></el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
                     @pagination="getListOne" class="text-right"/>
       </el-tab-pane>
-      <el-tab-pane label="重复件导入">
+      <el-tab-pane label="重复发生件">
         <div class="mb_10">
           <el-button class="btn_blue02" type="primary"  @click="">导入</el-button>
           <el-form :inline="true" :model="listQuery" :label="280" class="fr">
@@ -96,10 +96,9 @@
         <el-table v-loading="listLoading" :data="listTwo" :height="tableHeight"
                   element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
           <el-table-column label="序号" type="index" align="center"></el-table-column>
-          <el-table-column label="重复投诉点位" align="center" prop="name"></el-table-column>
-          <el-table-column label="重复投诉类型" align="center" prop="name"></el-table-column>
-          <el-table-column label="重复投诉次数" align="center" prop="name"></el-table-column>
-          <el-table-column label="承办单位" align="center" prop="name"></el-table-column>
+          <el-table-column label="反复发生点位" align="center" prop="name"></el-table-column>
+          <el-table-column label="反复发生类型" align="center" prop="name"></el-table-column>
+          <el-table-column label="反复发生次数" align="center" prop="name"></el-table-column>
         </el-table>
         <pagination v-show="totalTwo>0" :total="totalTwo" :page.sync="listQueryTwo.page" :limit.sync="listQueryTwo.pageSize"
                     @pagination="getListTwo" class="text-right"/>
