@@ -1,0 +1,145 @@
+<template>
+  <myDialog
+    :visible.sync="showViewDialog"
+    :close-on-click-modal="false"
+    width="60%"
+    @close="close"
+    top="5vh"
+    title="违章详情"
+    class="dialogContainer"
+    :append-to-body="true"
+    @open="open"
+  >
+    <div class="p20">
+      <div class="mb_10">
+        <el-button class="btn_purple" type="primary"  @click="handleView">添加</el-button>
+      </div>
+      <el-table v-loading="listLoading" :data="list" :height="tableHeight"
+                element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
+        <el-table-column label="序号" type="index" align="center"></el-table-column>
+        <el-table-column label="违章时间" align="center" prop="illegal_date"></el-table-column>
+        <el-table-column label="违章类型" align="center" prop="illegal_type"></el-table-column>
+        <el-table-column label="处理事项" align="center" prop="punish"></el-table-column>
+        <el-table-column label="处理状态" align="center" prop="deal"></el-table-column>
+      </el-table>
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
+                  @pagination="getList" class="text-right"/>
+    </div>
+    <violationAdd :showDialog.sync="dialogAddVisible" :paraData="viewData" @insertList="getList"></violationAdd>
+  </myDialog>
+</template>
+
+<script>
+  import map from '@/components/Map/map' // 引入刚才的map.js 注意路径
+  import {buildIllegalList} from '@/api/data'
+  import draggable from 'vuedraggable'
+  import waves from '@/directive/waves'
+  import Pagination from "@/components/Pagination/index"; // waves directive
+  import SingleImage from "@/components/Upload/SingleImage.vue";
+  import {storeList} from "@/api/data"; // waves directive
+  import violationAdd from "./violationView";
+  export default {
+    name: 'parameterView',
+    directives: { waves },
+    mixins: [map],
+    components: {
+      draggable,
+      Pagination,
+      SingleImage,
+      violationAdd
+    },
+    props: {
+      showDialog: {
+        required: true,
+        type: Boolean,
+        default: false
+      },
+      paraData: {
+        required: true,
+        type: Object,
+        default: {
+          option: {},
+          operatorType: "view",
+          id: ""
+        }
+      }
+    },
+    data() {
+      return {
+        paraLoading:false,
+        dialogAddVisible: false,
+        viewData:{},
+        total: 0,
+        list: [],
+        listLoading: false,
+        listQuery: {
+          build_id:'',
+          page: 1,
+          pageSize: 10
+        },
+        tableHeight:'100',
+      }
+    },
+    computed: {
+      showViewDialog: {
+        get() {
+          return this.showDialog;
+        },
+        set(value) {
+          this.$emit("update:show-dialog", value);
+        }
+      },
+    },
+    methods: {
+      getList() {
+        buildIllegalList(this.listQuery).then(res => {
+          this.list = res.data.data
+          this.total = res.data.total
+        });
+      },
+      handleView(){
+        this.dialogAddVisible = true
+        this.viewData = {
+          id:this.paraData.id
+        }
+      },
+
+      hasImgSrc(val) {
+        this.form.imgUrl = val;
+      },
+      open(){
+        this.$nextTick(function() {
+          // this.$refs.filter-container.offsetHeight
+          let height = window.innerHeight - this.$refs.tableList.$el.offsetTop - 220;
+          if(height>100){
+            this.tableHeight = height
+          }else{
+            this.tableHeight = 100
+          }
+          // 监听窗口大小变化
+          const self = this;
+          window.onresize = function() {
+            let height = window.innerHeight - self.$refs.tableList.$el.offsetTop - 220;
+            if(height>100){
+              self.tableHeight = height
+            }else{
+              self.tableHeight = 100
+            }
+          };
+        });
+        // this.dialogStatus = this.paraData.operatorType;
+        // if(this.paraData.operatorType != 'create'){
+          // this.getView();
+        // }
+        this.listQuery.build_id=this.paraData.id
+        this.getList();
+      },
+      close(){
+        this.paraLoading=false;
+        this.dialogFormVisible= false;
+
+      },
+
+    }
+  }
+</script>

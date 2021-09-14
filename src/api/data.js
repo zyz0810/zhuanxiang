@@ -131,6 +131,13 @@ export function communityDetail(data) {
  * linkman 	联系人
  * id 小区ID
  */
+export function addCommunity(data) {
+  return request({
+    url:'/ai/community/addCommunity',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
 export function editCommunity(data) {
   return request({
     url:'/ai/community/editCommunity',
@@ -290,7 +297,87 @@ export function storeList(data) {
     data: Qs.stringify(data)
   })
 }
+/* 更改店铺状态
+ * id 	商铺ID
+ */
+export function storeStatus(data) {
+  return request({
+    url:'/admin/store/changeStatus',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 店铺列表-添加
+ */
+export function storeAdd(data) {
+  return request({
+    url:'/admin/store/addStore',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 店铺列表-编辑
+ * id
+ */
+export function storeEdit(data) {
+  return request({
+    url:'/admin/store/editStore',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
 
+/* 店铺列表-详情
+ * id
+ */
+export function storeDetail(data) {
+  return request({
+    url:'/admin/store/storeDetail',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 获取店铺违规处罚列表
+ * id
+ */
+export function storeIllegalList(data) {
+  return request({
+    url:'/admin/store/storeIllegalList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 添加 店铺违规处罚
+ * id
+ */
+export function addStoreIllegal(data) {
+  return request({
+    url:'/admin/store/addStoreIllegal',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
+/* 获取商铺排查列表
+ * store_id
+ */
+export function storeCheckList(data) {
+  return request({
+    url:'/admin/store/storeCheckList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 添加 店铺排查
+ * store_id
+ */
+export function addStoreCheck(data) {
+  return request({
+    url:'/admin/store/addStoreCheck',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
 /* 工地列表
  * key_word
  */
@@ -317,6 +404,49 @@ export function buildDetail(data) {
 export function buildAdd(data) {
   return request({
     url:'/admin/building/addBuild',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 修改工地
+ * id
+ */
+export function buildEdit(data) {
+  return request({
+    url:'/admin/building/editBuild',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
+/* 获取工地违规处罚列表
+ * build_id
+ */
+export function buildIllegalList(data) {
+  return request({
+    url:'/admin/building/buildIllegalList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
+/* 添加 工地违规处罚
+ * build_id
+ */
+export function addBuildIllegal(data) {
+  return request({
+    url:'/admin/building/addBuildIllegal',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
+/* 更改工地状态
+ * id
+ */
+export function buildStatus(data) {
+  return request({
+    url:'/admin/building/changeStatus',
     method: 'post',
     data: Qs.stringify(data)
   })

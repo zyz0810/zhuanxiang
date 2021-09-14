@@ -42,7 +42,6 @@
 </template>
 
 <script>
-  import echarts from 'echarts'
   import {getFirstCategory,getCategoryList, getGps, addGps, lightList,} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
@@ -50,8 +49,6 @@
   import Pagination from "@/components/Pagination/index"; // waves directive
   import addStreet from "./components/street";
   import addCommunity from "./components/community";
-  import point01 from '@/assets/image/point01.png' // 引入刚才的map.js 注意路径
-  import point05 from '@/assets/image/point05.png' // 引入刚才的map.js 注意路径
   import map from '@/components/Map/map' // 引入刚才的map.js 注意路径
   var polygonTool;
   var PolygonPoints=[];  //保存所画坐标
@@ -69,7 +66,6 @@
       addCommunity,
     },
     data() {
-
       return {
         firstCategory:[],
         secondCategory:[],
@@ -83,7 +79,6 @@
         polygonTool:[],
       }
     },
-
     computed: {
       ...mapState({
         roles: state => state.user.roles,
@@ -108,12 +103,18 @@
       this.getFirstCategory();
     },
     methods: {
+      getGps(id){
+        getGps({category_id:id}).then(res=>{
+
+        });
+      },
       getFirstCategory(){
         getFirstCategory().then(res=>{
           // const { id, province, city, area, principal, mobile,} = res.data;
           this.firstCategory = res.data;
           this.gridType = res.data[0].id;
           this.getCategoryList(res.data[0].id);
+          this.getGps(res.data[0].id);
         });
       },
       getCategoryList(id){
@@ -187,12 +188,12 @@
           //注册测面工具绘制完成后的事件
           // TEvent.addListener(polygonTool,"draw",onDrawPolygon);
           // that.map.addEventListener("dblclick",onDrawPolygon);
+          that.map.addEventListener("draw",onDrawPolygon);
         }
 
         //关闭测面工具时触发
-        function onDrawPolygon(bounds,line)
-        {
-          console.log('栓 估计')
+        function onDrawPolygon(bounds,line) {
+          console.log('面关闭事件')
           // polygonTool.close();
           PolygonPoints.length=PolygonPoints.length-2;//最后双击会把最后一个坐标保存两次。
           // TEvent.removeListener(mapclick);//关闭单击事件（保存坐标）
@@ -202,6 +203,8 @@
         function drawPolygon() {
           // polygonTool.clear();//清除所画的多边形
           PolygonPoints=[]
+          console.log('重新划线')
+          console.log(PolygonPoints)
           // that.map.clearOverLays();
           polygonTool.open();
           // PolygonPoints.length=0;  //清零保存的坐标
@@ -263,14 +266,17 @@
         console.log('2222222222')
         this.map.removeEventListener("click",mapclick);
       },
+      // 点击保存
       drawPolygonByPoint(){　//根据点坐标来画多边形
+        console.log('点击地图')
+        console.log(mapclick)
         console.log(PolygonPoints)
         // if(polygon!=''){
         //   this.map.removeOverLay(polygon);
         // }
         polygonTool.close();
         this.map.removeEventListener("click",mapclick);
-        var points = [];
+        let points = [];
         if(PolygonPoints.length!=0){
           for(var i=0;i<PolygonPoints.length;i=i+2){
             points.push(new T.LngLat(PolygonPoints[i],PolygonPoints[i+1]));
@@ -278,12 +284,9 @@
           //创建面对象
           polygon = new T.Polygon(points,{strokeColor:"red", strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
           this.map.addOverLay(polygon);
-          // console.log('diandianddd')
-          // console.log(points)
         }else{
           alert("没有选择电子栅栏！");
         }
-
       },
       // openPolygonTool(){
       //   var config = {

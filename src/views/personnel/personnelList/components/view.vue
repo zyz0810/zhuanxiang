@@ -47,7 +47,7 @@
       </el-form-item>
       <el-form-item label="文化程度" prop="education">
         <el-select v-model="temp.education">
-          <el-option v-for="(item,index) in userConstantsList" :label="item" :value="index" :key="index"></el-option>
+          <el-option v-for="item in userConstantsList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="是否党员" prop="is_party_member">
@@ -82,7 +82,7 @@
       </el-form-item>
 
     </el-form>
-    <el-form ref="secondForm" :rules="rules" :model="temp" label-width="120px">
+    <el-form ref="secondForm" :rules="rules" :model="temp" label-width="120px" class="mr_20">
       <el-form-item label="家庭住址" prop="address">
         <el-input v-model.trim="temp.address" placeholder="请输入家庭住址" autocomplete="off" clearable/>
       </el-form-item>
@@ -95,7 +95,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()" :loading="paraLoading">确 定</el-button>
-      <el-button type="primary" class="btn_gray" @click="showViewDialog = false">取 消</el-button>
+      <el-button @click="showViewDialog = false">取 消</el-button>
     </div>
 
 
@@ -162,11 +162,11 @@
         },
         dialogStatus: '',
         rules: {
-          province: [{ required: true, message: '请选择省', trigger: 'change' }],
-          city: [{ required: true, message: '请选择市', trigger: 'change' }],
-          area: [{ required: true, message: '请选择区', trigger: 'change' }],
-          principal: [{ required: true, message: '请输入负责人', trigger: 'change' }],
-          mobile: [{ required: true, message: '请输入手机号', trigger: 'change' }],
+          // province: [{ required: true, message: '请选择省', trigger: 'change' }],
+          // city: [{ required: true, message: '请选择市', trigger: 'change' }],
+          // area: [{ required: true, message: '请选择区', trigger: 'change' }],
+          // principal: [{ required: true, message: '请输入负责人', trigger: 'change' }],
+          // mobile: [{ required: true, message: '请输入手机号', trigger: 'change' }],
         },
         images:'',
       }

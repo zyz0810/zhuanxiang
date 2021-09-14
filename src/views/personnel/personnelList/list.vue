@@ -43,7 +43,7 @@
                   @pagination="getList" class="text-right"/>
     </div>
 
-    <paraView :showDialog.sync="showViewDialog" :paraData="viewData" @insertProduct="getList"></paraView>
+    <paraView :showDialog.sync="showViewDialog" :paraData="viewData" @insertList="getList"></paraView>
   </div>
 </template>
 

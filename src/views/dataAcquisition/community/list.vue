@@ -25,7 +25,7 @@
           <template slot-scope="scope">
             <el-button class="btn_green" type="primary" @click="handleView('update',scope.row)">更新</el-button>
             <el-button class="btn_blue02" type="primary" @click="handleView('view',scope.row)">查看</el-button>
-            <el-button class="btn_red" type="primary" @click="">删除</el-button>
+<!--            <el-button class="btn_red" type="primary" @click="">删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>

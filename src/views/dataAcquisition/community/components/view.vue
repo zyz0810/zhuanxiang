@@ -37,7 +37,7 @@
 <script>
   import axios from 'axios'
   import map from '@/components/Map/map' // 引入刚才的map.js 注意路径
-  import {communityDetail,editCommunity} from '@/api/data'
+  import {communityDetail,addCommunity,editCommunity} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import SingleImage from "@/components/Upload/SingleImage.vue"; // waves directive
@@ -406,7 +406,7 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.paraLoading = true
-            editCommunity(this.temp).then((res) => {
+            addCommunity(this.temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)

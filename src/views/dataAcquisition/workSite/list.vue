@@ -29,7 +29,8 @@
           <template slot-scope="scope">
             <el-button class="btn_green" type="primary" @click="handleView('update',scope.row)">更新</el-button>
             <el-button class="btn_blue02" type="primary" @click="handleView('view',scope.row)">查看</el-button>
-            <el-button class="btn_red" type="primary" @click="">删除</el-button>
+            <el-button class="btn_green" type="primary" v-if="scope.row.status == 2" @click="handleState(scope.row)">启用</el-button>
+            <el-button class="btn_red" type="primary" v-if="scope.row.status == 1" @click="handleState(scope.row)">停用</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -37,13 +38,12 @@
                   @pagination="getList" class="text-right"/>
     </div>
 
-    <paraView :showDialog.sync="showViewDialog" :paraData="viewData" @insertProduct="getList"></paraView>
-    <!--<history :showDialog.sync="showHistoryDialog" :historyData="historyData"></history>-->
+    <paraView :showDialog.sync="showViewDialog" :paraData="viewData" @insertList="getList"></paraView>
   </div>
 </template>
 
 <script>
-  import {buildList, } from '@/api/data'
+  import {buildList, storeStatus,} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -61,70 +61,16 @@
     data() {
       return {
         showViewDialog:false,
-        showHistoryDialog:false,
-        historyData:{},
         viewData:{},
-        paraData:{},
-        paraLoading:false,
-        operationOption: [{
-          id: 0,
-          name: '下拉框'
-        }, {
-          id: 1,
-          name: '复选框'
-        }, {
-          id: 2,
-          name: '输入框'
-        }],
-        updateBtn: true,
-        enableBtn: true,
-        disableBtn: true,
         total: 0,
-        parameterValueList: [{name: ''}],
-        list: [{
-          id:445,
-          name:'列表1',
-        },{
-          id:232,
-          name:'列表4322',
-        },],
+        list: [],
         listLoading: false,
         listQuery: {
           key_word: '',
           page: 1,
           pageSize: 10
         },
-        updateId: undefined,
-        dialogFormVisible: false,
-        temp: {
-          // id: undefined,
-          status: 1,
-          name: '',
-          orders: '',
-          isRequired: 0,
-          operatingMode: 0,
-          parameterValueList: [],
-        },
-        textMap: {
-          update: '编辑参数信息',
-          create: '新增参数信息',
-          view:'查看'
-        },
-        dialogStatus: '',
-        rules: {
-          name: [{required: true, message: '请输入名称', trigger: 'change'}],
-        },
         tableHeight:'100'
-      }
-    },
-    filters: {
-      filtersStatus: function (value) {
-        let StatusArr = {0: '禁用', 1: '启用'}
-        return StatusArr[value]
-      },
-      filtersMode: function (value) {
-        let StatusArr = {0: '下拉框', 1: '复选框', 2: '输入框'}
-        return StatusArr[value]
       }
     },
     computed: {
@@ -172,6 +118,51 @@
           operatorType:type,
           id:type!='create'?row.id:''
         }
+      },
+      handleState(row) {
+        if (row.status == 1) {
+          this.$confirm('确定禁用吗?', '提示', {
+            type: 'warning'
+          }).then(() => {
+            this.listLoading = true;
+            //NProgress.start();
+            console.log(row)
+            let para = {id:row.id,status:2}
+            storeStatus(para).then((res) => {
+              this.listLoading = false;
+              if (res.code == 1) {
+                this.getList();
+                this.$message({
+                  message: res.message,
+                  type: 'success'
+                });
+              }
+            });
+          }).catch(() => {
+
+          });
+        } else {
+          this.$confirm('确定启用吗?', '提示', {
+            type: 'warning'
+          }).then(() => {
+            this.listLoading = true;
+            //NProgress.start();
+            let para = {id:row.id,status:1}
+            storeStatus(para).then((res) => {
+              this.listLoading = false;
+              if (res.code == 1) {
+                this.getList();
+                this.$message({
+                  message: res.message,
+                  type: 'success'
+                });
+              }
+            });
+          }).catch(() => {
+
+          });
+        }
+
       },
 
     }
