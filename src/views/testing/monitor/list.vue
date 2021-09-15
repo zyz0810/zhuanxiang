@@ -28,22 +28,21 @@
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
         <el-table-column label="序号" align="center" type="index"></el-table-column>
-        <el-table-column label="监控点编码" align="center" prop=""></el-table-column>
-        <el-table-column label="监控点名称" align="center" prop="point_name"></el-table-column>
-        <el-table-column label="监控类型" align="center" prop="mobile"></el-table-column>
-        <el-table-column label="归属区域" align="center" prop=""></el-table-column>
-        <el-table-column label="来源区域" align="center" prop=""></el-table-column>
-        <el-table-column label="是否重点视频" align="center" prop=""></el-table-column>
-        <el-table-column label="安装地址" align="center" prop=""></el-table-column>
-        <el-table-column label="是否启用" align="center" prop="">
+        <el-table-column label="监控点编码" align="center" prop="index_code"></el-table-column>
+        <el-table-column label="监控点名称" align="center" prop="name"></el-table-column>
+<!--        <el-table-column label="监控类型" align="center" prop="mobile"></el-table-column>-->
+        <el-table-column label="归属区域" align="center" prop="depart_name"></el-table-column>
+        <el-table-column label="来源区域" align="center" prop="community_name"></el-table-column>
+        <el-table-column label="是否重点视频" align="center" prop="is_important" :formatter="formatImportant"></el-table-column>
+        <el-table-column label="安装地址" align="center" prop="install_place"></el-table-column>
+        <el-table-column label="是否启用" align="center" prop="point_status">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.status" active-color="#13ce66" :active-value="1" :inactive-value="2" @change="handleState(scope.row)"></el-switch>
+            <el-switch v-model="scope.row.point_status" active-color="#13ce66" :active-value="1" :inactive-value="2" @change="handleState(scope.row)"></el-switch>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
             <el-button class="btn_green" type="primary" @click="handleView('update',scope.row)">编辑</el-button>
-<!--            <el-button class="btn_red" type="primary" @click="handleDelete">删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -86,16 +85,6 @@
         tableHeight:'100'
       }
     },
-    filters: {
-      filtersStatus: function (value) {
-        let StatusArr = {0: '禁用', 1: '启用'}
-        return StatusArr[value]
-      },
-      filtersMode: function (value) {
-        let StatusArr = {0: '下拉框', 1: '复选框', 2: '输入框'}
-        return StatusArr[value]
-      }
-    },
     computed: {
       ...mapState({
         roles: state => state.user.roles,
@@ -104,7 +93,7 @@
     mounted() {
       this.$nextTick(function() {
         // this.$refs.filter-container.offsetHeight
-        let height = window.innerHeight - this.$refs.tableList.$el.offsetTop - 260;
+        let height = window.innerHeight - this.$refs.tableList.$el.offsetTop - 220;
         if(height>100){
           this.tableHeight = height
         }else{
@@ -113,7 +102,7 @@
         // 监听窗口大小变化
         const self = this;
         window.onresize = function() {
-          let height = window.innerHeight - self.$refs.tableList.$el.offsetTop - 260;
+          let height = window.innerHeight - self.$refs.tableList.$el.offsetTop - 220;
           if(height>100){
             self.tableHeight = height
           }else{
@@ -124,15 +113,22 @@
       this.getList();
     },
     methods: {
+      formatImportant(row, column, cellValue, index) {
+        return cellValue == 1
+          ? "是"
+          : cellValue == 2
+            ? "否"
+            : "--";
+      },
       handleState(row){
         // ：active-value得为true
         // ：inactive-value得为false
-        let flag = row.status //保存点击之后v-modeld的值(true，false)
+        let flag = row.point_status //保存点击之后v-modeld的值(true，false)
         // row.enabled = !row.enabled //保持switch点击前的状态
-        if(row.status == 1){
-          row.status = 2
+        if(row.point_status == 1){
+          row.point_status = 2
         }else{
-          row.status = 1
+          row.point_status = 1
         }
         let paras = {
           id:row.id,

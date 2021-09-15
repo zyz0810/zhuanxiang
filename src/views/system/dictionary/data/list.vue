@@ -16,10 +16,10 @@
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
         <el-table-column label="序号" type="index" align="center"></el-table-column>
         <el-table-column label="字典表" align="center" prop="name"></el-table-column>
-        <el-table-column label="属性值" align="center" prop="address"></el-table-column>
+        <el-table-column label="属性值" align="center" prop="list"></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
-            <el-button class="btn_blue02" type="primary" @click="handleView(scope.row)">编辑</el-button>
+            <el-button class="btn_blue02" type="primary" @click="handleView('update',scope.row)">编辑</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -27,12 +27,12 @@
                   @pagination="getList" class="text-right"/>
     </div>
 
-    <paraView :showDialog.sync="showViewDialog" :paraData="paraData" @insertProduct="getList"></paraView>
+    <paraView :showDialog.sync="showViewDialog" :paraData="viewData" @insertList="getList"></paraView>
   </div>
 </template>
 
 <script>
-  import {paraList, paraSave, paraUpdate, paraDelete} from '@/api/parameter'
+  import {dicList,} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -45,35 +45,17 @@
       draggable,
       Pagination,
       paraView,
-
     },
     data() {
       return {
         showViewDialog:false,
-        showHistoryDialog:false,
-        historyData:{},
         viewData:{},
-        paraData:{},
         paraLoading:false,
         total: 0,
         parameterValueList: [{name: ''}],
-        list: [{
-          name:'列表1',
-          address:'杭州市',
-          time:1298963414,
-          num:1,
-          status:1
-        },{
-          name:'列表2',
-          address:'杭州市',
-          time:1298963414,
-          num:1,
-          status:2
-        }],
+        list: [],
         listLoading: false,
         listQuery: {
-          name: '',
-          status: undefined,
           page: 1,
           pageSize: 10
         },
@@ -98,7 +80,7 @@
     mounted() {
       this.$nextTick(function() {
         // this.$refs.filter-container.offsetHeight
-        let height = window.innerHeight - this.$refs.tableList.$el.offsetTop - 260;
+        let height = window.innerHeight - this.$refs.tableList.$el.offsetTop - 220;
         if(height>100){
           this.tableHeight = height
         }else{
@@ -107,7 +89,7 @@
         // 监听窗口大小变化
         const self = this;
         window.onresize = function() {
-          let height = window.innerHeight - self.$refs.tableList.$el.offsetTop - 260;
+          let height = window.innerHeight - self.$refs.tableList.$el.offsetTop - 220;
           if(height>100){
             self.tableHeight = height
           }else{
@@ -115,7 +97,7 @@
           }
         };
       });
-      // this.getList();
+      this.getList();
     },
     methods: {
       handleFilter() {
@@ -123,16 +105,18 @@
         this.getList()
       },
       getList() {
-        paraList(this.listQuery).then(res => {
+        dicList(this.listQuery).then(res => {
           this.list = res.data.data
-          this.total = res.data.count
+          this.total = res.data.total
         });
       },
 
-      handleView(row){
+      handleView(type,row){
         this.showViewDialog = true
         this.viewData = {
-          id:row.id
+          option: type!='create'?row:{},
+          operatorType: type,
+          id: type!='create'?row.id:''
         }
       },
 

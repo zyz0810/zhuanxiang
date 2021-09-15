@@ -451,3 +451,53 @@ export function buildStatus(data) {
     data: Qs.stringify(data)
   })
 }
+/* 数据字典列表
+ * page
+ * pageSize
+ */
+export function dicList(data) {
+  return request({
+    url:'/admin/dictionary/diclist',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 修改数据字典
+ */
+export function dicEdit(data) {
+  return request({
+    url:'/admin/dictionary/editDictionary',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 修改数据字典
+ */
+export function dicAddEdit(data) {
+  return request({
+    url:'/admin/dictionary/addAndModify',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
+/* 子分类列表
+ * key 对应的key值
+ */
+export function allDictionary(data) {
+  return request({
+    url:'/admin/dictionary/allDictionary',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 修改数据字典状态
+ * id
+ */
+export function dicStatus(data) {
+  return request({
+    url:'/admin/dictionary/mofidyStatus',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}

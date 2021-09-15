@@ -25,15 +25,15 @@
         </div>
         <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                   element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
-          <el-table-column label="办件编号" align="center" prop="name"></el-table-column>
-          <el-table-column label="联系人" align="center" prop="name"></el-table-column>
-          <el-table-column label="联系人证件号" align="center" prop="name"></el-table-column>
-          <el-table-column label="电话" align="center" prop="name"></el-table-column>
-          <el-table-column label="地址" align="center" prop="name"></el-table-column>
-          <el-table-column label="申请日期" align="center" prop="name"></el-table-column>
-          <el-table-column label="办结日期" align="center" prop="name"></el-table-column>
-          <el-table-column label="办理结果" align="center" prop="name"></el-table-column>
-          <el-table-column label="权利名称" align="center" prop="name"></el-table-column>
+          <el-table-column label="办件编号" align="center" prop="number_no"></el-table-column>
+          <el-table-column label="联系人" align="center" prop="linkman"></el-table-column>
+          <el-table-column label="联系人证件号" align="center" prop="linkman_no"></el-table-column>
+          <el-table-column label="电话" align="center" prop="phone"></el-table-column>
+          <el-table-column label="地址" align="center" prop="address"></el-table-column>
+          <el-table-column label="申请日期" align="center" prop="apply_date"></el-table-column>
+          <el-table-column label="办结日期" align="center" prop="end_date"></el-table-column>
+          <el-table-column label="办理结果" align="center" prop="result"></el-table-column>
+          <el-table-column label="权利名称" align="center" prop="apply_name"></el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
                     @pagination="getList" class="text-right"/>
