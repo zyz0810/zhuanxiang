@@ -68,6 +68,8 @@
         firstCategory:[],
         paraLoading:false,
         temp: {
+          depart_id:'',
+          type:'',
           parent_ids:'',
           name:'',
           table_name:'',
@@ -98,7 +100,9 @@
       },
       open(){
         this.getFirstCategory();
-        this.temp.parent_ids = this.viewData.id
+        this.temp.parent_ids = this.viewData.id;
+        this.temp.type = this.viewData.id;
+        this.temp.depart_id = this.viewData.id;
       },
       close(){},
       onSubmit() {

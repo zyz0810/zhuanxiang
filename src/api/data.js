@@ -501,3 +501,15 @@ export function dicStatus(data) {
     data: Qs.stringify(data)
   })
 }
+
+/* 获取网格列表
+ * page
+ * pageSize
+ */
+export function tableList(data) {
+  return request({
+    url:'/admin/MapCategory/tableList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
