@@ -3,8 +3,8 @@
     <div class="bg_white p20">
       <el-form :inline="true" :model="listQuery" :label="280">
         <el-form-item label="选择应用">
-          <el-select v-model="listQuery.value" placeholder="请选择" clearable>
-            <el-option label="数字城管2.0" :value="0"></el-option>
+          <el-select v-model="listQuery.app_type" placeholder="请选择" clearable>
+            <el-option v-for="item in APPList" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -39,7 +39,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
                   @pagination="getList" class="text-right"/>
     </div>
 
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-  import {menuList, menuStatus, menuExport, } from '@/api/system'
+  import {menuList, menuStatus, menuExport, APPConstants} from '@/api/system'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
   import Pagination from "@/components/Pagination/index"; // waves directive
@@ -64,6 +64,7 @@
     },
     data() {
       return {
+        APPList:[],
         showViewDialog:false,
         showHistoryDialog:false,
         historyData:{},
@@ -74,10 +75,9 @@
         list: [],
         listLoading: false,
         listQuery: {
-          name: '',
-          status: undefined,
+          app_type: '',
           page: 1,
-          limit: 10
+          pageSize: 10
         },
         tableHeight:'100'
       }
@@ -109,9 +109,15 @@
         };
       });
       this.getList();
+      this.getApp();
     },
     methods: {
 
+      getApp() {
+        APPConstants().then(res => {
+          this.APPList = res.data.app_type_list
+        });
+      },
       handleFilter() {
         this.listQuery.page = 1;
         this.getList()

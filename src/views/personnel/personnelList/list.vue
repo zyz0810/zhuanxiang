@@ -3,9 +3,7 @@
     <div class="bg_white p20">
       <el-form :inline="true" :model="listQuery" :label="280">
         <el-form-item label="选择部门">
-          <el-select v-model="listQuery.value" placeholder="请选择" clearable>
-            <el-option label="数字城管2.0" :value="0"></el-option>
-          </el-select>
+          <el-cascader ref="cascaderPublish" clearable v-model="listQuery.department" :options="departmentList" @change="changeDepartment" :show-all-levels="false" filterable :props="props" placeholder="请选择"></el-cascader>
         </el-form-item>
       </el-form>
       <el-divider></el-divider>
@@ -14,7 +12,7 @@
         <el-button class="btn_blue02" type="primary"  @click="">导出</el-button>
         <el-form :inline="true" :model="listQuery" :label="280" class="fr">
           <el-form-item label="">
-            <el-input v-model="listQuery.productSn" placeholder="" @change="handleFilter" clearable/>
+            <el-input v-model="listQuery.real_name" placeholder="" clearable/>
           </el-form-item>
           <el-form-item>
             <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>
@@ -49,6 +47,7 @@
 
 <script>
   import {userList, userStatus,resetPassword, userExport} from '@/api/user'
+  import {allDepartmentTreeList,departmentAllList,departmentList} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -66,6 +65,14 @@
     },
     data() {
       return {
+        props: {
+          checkStrictly: true,
+          expandTrigger: "click",
+          value: "id",
+          label: "department_name",
+          children: "list",
+          disabled: false,
+        },
         showViewDialog:false,
         viewData:{},
         paraLoading:false,
@@ -73,12 +80,13 @@
         list: [],
         listLoading: false,
         listQuery: {
-          name: '',
-          status: undefined,
+          department:[],
+          real_name: '',
+          department_id: '',
           page: 1,
           pageSize: 10
         },
-
+        departmentList:[],
         tableHeight:'100'
       }
     },
@@ -109,8 +117,18 @@
         };
       });
       this.getList();
+      this.getFirstDepartment();
     },
     methods: {
+      changeDepartment(val){
+        this.listQuery.department_id = val[val.length-1];
+this.handleFilter();
+      },
+      getFirstDepartment(){
+        departmentList().then(res=>{
+          this.departmentList = res.data;
+        });
+      },
       formatGender(row, column, cellValue, index) {
         return cellValue == 1
           ? "男"

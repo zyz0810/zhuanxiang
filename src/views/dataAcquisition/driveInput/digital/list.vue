@@ -110,7 +110,7 @@
 </template>
 
 <script>
-  import {addDigital, implodeCityManage,cityManagementList,cityRepManagementList, implodeRepCityManage} from '@/api/data'
+  import {addDigital,addLetter, implodeCityManage,cityManagementList,cityRepManagementList, implodeRepCityManage} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -282,12 +282,12 @@
       onSubmit() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            addDigital(this.temp).then((res) => {
+            addLetter(this.temp).then((res) => {
                   setTimeout(()=>{
                     this.paraLoading = false
                   },1000)
                   if(res.code == 1){
-                    this.getList();
+                    this.resetTemp();
                     this.$message({
                       message: res.message,
                       type: 'success'

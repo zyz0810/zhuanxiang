@@ -38,7 +38,7 @@
 </template>
 
 <script>
-  import {storeList, buildStatus } from '@/api/data'
+  import {storeList, storeStatus } from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -141,7 +141,7 @@
             //NProgress.start();
             console.log(row)
             let para = {id:row.id,status:2}
-            buildStatus(para).then((res) => {
+            storeStatus(para).then((res) => {
               this.listLoading = false;
               if (res.code == 1) {
                 this.getList();
@@ -161,7 +161,7 @@
             this.listLoading = true;
             //NProgress.start();
             let para = {id:row.id,status:1}
-            buildStatus(para).then((res) => {
+            storeStatus(para).then((res) => {
               this.listLoading = false;
               if (res.code == 1) {
                 this.getList();

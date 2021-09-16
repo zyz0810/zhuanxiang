@@ -283,6 +283,16 @@ export function departmentList(data) {
     data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
   })
 }
+/* 树形部门列表
+ */
+export function allDepartmentTreeList(data) {
+  return request({
+    url: `/admin/department/allDepartmentTreeList`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+
 /* 组织架构-添加
  * code
  * message
@@ -535,6 +545,15 @@ export function platAuthEdit(data) {
 export function platAuthStatus(data) {
   return request({
     url: `/admin/platAuth/editStatus`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+/* 获取所有应用类型
+ */
+export function APPConstants(data) {
+  return request({
+    url: `/admin/platAuth/constants`,
     method: 'post',
     data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
   })
