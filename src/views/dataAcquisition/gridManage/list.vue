@@ -38,8 +38,8 @@
           <el-button type="primary" class="btn_blue02" @click="bb">保存</el-button>
         </div>
       </div>
-      <addStreet :showDialog.sync="showStreetDialog" :viewData="viewData"></addStreet>
-      <addCommunity :showDialog.sync="showCommunityDialog" :viewData="seconddData"></addCommunity>
+      <addStreet :showDialog.sync="showStreetDialog" :viewData="viewData" @insertList="getCategoryList(gridType)"></addStreet>
+      <addCommunity :showDialog.sync="showCommunityDialog" :viewData="seconddData" @insertList="getCategoryList(gridType)"></addCommunity>
     </div>
   </div>
 </template>
