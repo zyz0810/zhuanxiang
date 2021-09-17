@@ -10,9 +10,8 @@
     @open="open"
   >
     <el-form ref="dataForm" :model="temp" label-width="120px" class="dialog_form">
-      <el-form-item label="责任部门" prop="parent_ids">
+      <el-form-item label="责任部门" prop="duty_depart">
         <el-cascader ref="cascaderPublish" clearable v-model="temp.duty_depart" :options="departmentList" :show-all-levels="false" filterable :props="props" placeholder="请选择违规类型"></el-cascader>
-
       </el-form-item>
       <el-form-item label="网格名称" prop="name">
         <el-input v-model.trim="temp.name" placeholder="请输入网格名称" autocomplete="off" clearable/>
@@ -25,8 +24,8 @@
       </el-form-item>
       <el-form-item label="服务时间" prop="service_time" v-if="type==2">
         <el-date-picker
-          v-model="date"
-
+          v-model="dataTime"
+          value-format="yyyy-MM-dd HH:mm:ss"
           type="datetimerange"
           clearable
           range-separator="至"
@@ -92,7 +91,8 @@
           name:'',
           table_code:'',
           description:'',
-          service_time:''
+          service_start_time:'',
+          service_end_time:'',
         },
         departmentList:[],
         rules: {
@@ -109,9 +109,26 @@
           this.$emit("update:show-dialog", value);
         }
       },
+      dataTime: {
+        get () {
+          if (this.temp.service_start_time && this.temp.service_end_time) {
+            return [this.temp.service_start_time, this.temp.service_end_time];
+          } else {
+            return [];
+          }
+        },
+        set (v) {
+          if (v) {
+            this.temp.service_start_time = v[0];
+            this.temp.service_end_time = v[1];
+          } else {
+            this.temp.service_start_time = "";
+            this.temp.service_end_time = "";
+          }
+        },
+      },
     },
     methods: {
-
       getFirstDepartment(){
         departmentList().then(res=>{
           this.departmentList = res.data;
@@ -127,12 +144,28 @@
           this.type=1;
         }else {
           this.type=2;
-        };;
+        }
         this.getFirstCategory();
         this.getFirstDepartment();
         this.temp.parent_ids = this.viewData.id;
       },
-      close(){},
+      close(){
+        this.type=1;
+          this.firstCategory=[];
+          this. paraLoading=false;
+          this. temp= {
+          duty_depart:'',//责任部门
+            parent_id:1, //0、一级  1、二级 2、三级
+            parent_ids:'',//父级id
+            name:'',
+            table_code:'',
+            description:'',
+            service_start_time:'',
+            service_end_time:'',
+        };
+        this.departmentList=[];
+
+      },
       onSubmit() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {

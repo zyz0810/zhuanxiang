@@ -12,19 +12,19 @@
 
     <el-form ref="dataForm" :rules="rules" :inline="true" :model="temp" label-width="120px" class="dialog_form">
 
-      <el-form-item label="监控点编码" prop="name">
-        <el-input v-model.trim="name" placeholder="请输入监控点编码" autocomplete="off" :disabled="true" clearable/>
+      <el-form-item label="监控点编码" prop="index_code">
+        <el-input v-model.trim="index_code" placeholder="请输入监控点编码" autocomplete="off" :disabled="true" clearable/>
       </el-form-item>
       <el-form-item label="监控点名称" prop="name">
         <el-input v-model.trim="temp.name" placeholder="请输入监控点名称" autocomplete="off" :disabled="true" clearable/>
       </el-form-item>
-      <el-form-item label="监控类型" prop="name">
+      <el-form-item label="111监控类型" prop="">
         <el-input v-model.trim="temp.name" placeholder="请输入监控类型" autocomplete="off" :disabled="true" clearable/>
       </el-form-item>
-      <el-form-item label="视频型号" prop="name">
+      <el-form-item label="111视频型号" prop="name">
         <el-input v-model.trim="temp.name" placeholder="请输入视频型号" autocomplete="off" :disabled="true" clearable/>
       </el-form-item>
-      <el-form-item label="归属区域" prop="depart_id">
+      <el-form-item label="111归属区域" prop="depart_id">
         <el-select v-model="temp.depart_id" placeholder="请选择" clearable>
 <!--          浦沿中队，长河中队，西兴中队-->
           <el-option label="浦沿中队" :value="1"></el-option>
@@ -44,8 +44,8 @@
           <el-option label="否" :value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="安装地址" prop="name">
-        <el-input v-model.trim="temp.name" placeholder="请输入安装地址" autocomplete="off" :disabled="true" clearable/>
+      <el-form-item label="安装地址" prop="install_place">
+        <el-input v-model.trim="temp.install_place" placeholder="请输入安装地址" autocomplete="off" :disabled="true" clearable/>
       </el-form-item>
 
     </el-form>

@@ -3,8 +3,8 @@
     <div class="bg_white">
       <el-form :inline="true" :model="listQuery" :label="280">
         <el-form-item label="执法中队">
-          <el-select v-model="value" placeholder="请选择" clearable>
-            <el-option label="全部" :value="0"></el-option>
+          <el-select v-model="listQuery.type" placeholder="请选择" clearable>
+            <el-option label="选择一级网格" :value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -30,7 +30,7 @@
         <el-table-column label="责任部门" align="center" prop="department_name"></el-table-column>
         <el-table-column label="网格代码" align="center" prop="table_code"></el-table-column>
       </el-table>
-      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
                   @pagination="getList" class="text-right"/>
     </div>
   </div>
@@ -58,8 +58,9 @@
         list: [],
         listLoading: false,
         listQuery: {
+          type:0,
           page: 1,
-          limit: 10
+          pageSize: 10
         },
         tableHeight:'100'
       }

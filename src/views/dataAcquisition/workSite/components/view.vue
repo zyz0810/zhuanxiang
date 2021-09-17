@@ -21,6 +21,7 @@
           v-model="dataTime"
           type="daterange"
           :disabled="isCanView"
+          value-format="yyyy-MM-dd HH:mm:ss"
           range-separator="至"
           start-placeholder="开始日期"
           end-placeholder="结束日期">
@@ -46,21 +47,16 @@
         <el-input v-model.trim="temp.roadwork_relation" placeholder="请输入联系方式" autocomplete="off" :disabled="isCanView" clearable/>
       </el-form-item>
       <el-form-item label="夜间施工审批时间" prop="build_check_time">
-          <el-date-picker
-            v-model="temp.build_check_time"
-            type="datetime"
-            placeholder="选择日期时间"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            :disabled="isCanView"
-          ></el-date-picker>
-      </el-form-item>
-      <el-form-item label="审批记录表" prop="images">
-        <SingleImage
-          v-if="!isCanView"
-          :tempUrl="temp.images"
-          v-on:imgSrc="hasImgSrc"
-        ></SingleImage>
-        <img :src="temp.images" class="my_img" v-else/>
+        <el-time-picker
+          is-range
+          :disabled="isCanView"
+          v-model="timeOne"
+          value-format="HH:mm:ss"
+          range-separator="至"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+          placeholder="选择时间范围">
+        </el-time-picker>
       </el-form-item>
       <el-form-item label="违章次数" prop="break_rules_count" v-if="this.paraData.operatorType != 'create'">
         <el-input v-model.trim="temp.break_rules_count" placeholder="" :disabled="true" autocomplete="off" clearable/>
@@ -69,7 +65,15 @@
         <el-button type="primary" class="btn_blue02" @click="handleViolation(temp.id)">违章详情</el-button>
       </el-form-item>
     </el-form>
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" >
+    <el-form ref="dataForm" :rules="rules" :model="temp" label-width="140px" class="mr_20">
+      <el-form-item label="审批记录表" prop="images">
+        <SingleImage
+          v-if="!isCanView"
+          :tempUrl="temp.images"
+          v-on:imgSrc="hasImgSrc"
+        ></SingleImage>
+        <img :src="temp.images" class="my_img" v-else/>
+      </el-form-item>
       <el-form-item label="地址" prop="address">
         <el-input v-model.trim="temp.address" placeholder="请在地图上选择地址" autocomplete="off" @input="getAddress" :disabled="isCanView" clearable/>
         <div id='mapDiv' class="mapDiv mt_10" style="width: 100%;height: 100px;"></div>
@@ -94,6 +98,7 @@
   import Pagination from "@/components/Pagination/index"; // waves directive
   import SingleImage from "@/components/Upload/SingleImage.vue"; // waves directive
   import violationView from "./violation";
+  let markerTool;
   export default {
     name: 'parameterView',
     directives: { waves },
@@ -138,7 +143,8 @@
           roadwork:'',
           roadwork_person:'',
           roadwork_relation:'',
-          build_check_time:'',
+          build_check_start_time:'',
+          build_check_end_time:'',
           images:'',
           address:'',
           valid_start:'',
@@ -184,6 +190,25 @@
           } else {
             this.temp.valid_start = "";
             this.temp.valid_end = "";
+          }
+        },
+      },
+      timeOne: {
+        get () {
+          if (this.temp.build_check_start_time && this.temp. build_check_end_time) {
+            return [this.temp.build_check_start_time, this.temp. build_check_end_time];
+          } else {
+            console.log('4444')
+            return null;
+          }
+        },
+        set (v) {
+          if (v) {
+            this.temp.build_check_start_time = v[0];
+            this.temp. build_check_end_time = v[1];
+          } else {
+            this.temp.build_check_start_time = "";
+            this.temp. build_check_end_time = "";
           }
         },
       },
@@ -465,12 +490,12 @@
         }
       },
       hasImgSrc(val) {
-        this.form.images = val.url;
+        this.temp.images = val.url;
         this.images = val.images
       },
       open(){
 
-        // this.dialogStatus = this.paraData.operatorType;
+        this.dialogStatus = this.paraData.operatorType;
         if(this.paraData.operatorType != 'create'){
           this.getView();
         }
@@ -494,7 +519,8 @@
           roadwork:'',
           roadwork_person:'',
           roadwork_relation:'',
-          build_check_time:'',
+          build_check_start_time:'',
+          build_check_end_time:'',
           images:'',
           address:'',
           valid_start:'',
@@ -508,9 +534,11 @@
       getView(){
         buildDetail({id:this.paraData.id}).then(res=>{
           const { id, building_name, building_type, construction_name, construction_person, construction_relation,roadwork,
-            roadwork_person,roadwork_relation,build_check_time,images,address,valid_start,valid_end,lat,log,break_rules_count} = res.data;
+            roadwork_person,roadwork_relation,build_check_time,images,address,valid_start,valid_end,lat,log,break_rules_count,build_check_start_time,
+            build_check_end_time,} = res.data;
           this.temp = {id, building_name, building_type, construction_name, construction_person, construction_relation,roadwork,
-            roadwork_person,roadwork_relation,build_check_time,images,address,valid_start,valid_end,lat,log,break_rules_count}
+            roadwork_person,roadwork_relation,build_check_time,images,address,valid_start,valid_end,lat,log,break_rules_count,build_check_start_time,
+            build_check_end_time,}
         });
       },
 

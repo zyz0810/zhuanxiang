@@ -108,14 +108,15 @@
           }
         };
       });
-      this.getList();
+
       this.getApp();
     },
     methods: {
-
       getApp() {
         APPConstants().then(res => {
-          this.APPList = res.data.app_type_list
+          this.APPList = res.data.app_type_list;
+          this.listQuery.app_type = res.data.app_type_list[0].id;
+          this.getList();
         });
       },
       handleFilter() {
