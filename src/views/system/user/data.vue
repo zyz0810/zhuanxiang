@@ -143,7 +143,7 @@
     },
     methods: {
       getView(){
-        userDetail({id:getId()}).then(res=>{
+        userDetail().then(res=>{
           const { id, department_id, real_name, user_name, role_id, gender,job_title,mobile,birthday,user_code,education,is_party_member,first_work_time,origin,
             social_title,phone,is_driver,address,remark,head_image} = res.data;
           this.temp = { id, department_id, real_name, user_name, role_id, gender,job_title,mobile,birthday,user_code,education,is_party_member,first_work_time,origin,
