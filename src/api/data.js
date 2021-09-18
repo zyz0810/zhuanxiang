@@ -265,10 +265,12 @@ export function lightList(data) {
 /* 驾驶舱录入-数字城管-基础数据导入
  */
 export function implodeCityManage(obj) {
-  const { file, } = obj;
+  console.log('7777')
+  console.log(obj.file)
+  const file = obj.file;
   const data = new FormData();
-  data.append("url", file);
-  console.log('导入导入')
+  data.append("file", file);
+  console.log('导入导2s入')
   console.log(data)
   return request({
     url:'/admin/excel/implodeCityManage',
@@ -276,7 +278,20 @@ export function implodeCityManage(obj) {
     data: Qs.stringify(data)
   })
 }
-
+/* 批量导入采购商品
+ */
+export function importExcel(obj) {
+  const { file, sn, createTime } = obj;
+  const data = new FormData();
+  data.append("file", file);
+  data.append("sn", sn);
+  data.append("createTime", createTime);
+  return request({
+    url: `/api-product/product/purchase/importExcel`,
+    method: "POST",
+    data: data
+  });
+}
 
 // /* 批量导入采购商品
 //  */

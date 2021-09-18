@@ -110,7 +110,7 @@
 </template>
 
 <script>
-  import {addDigital,addLetter, implodeCityManage,cityManagementList,cityRepManagementList, implodeRepCityManage} from '@/api/data'
+  import {addDigital,addLetter, implodeCityManage,cityManagementList,cityRepManagementList, implodeRepCityManage,importExcel} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -208,18 +208,30 @@
         document.getElementById("fileImport").click();
       },
       fileChange (e) {
-        const url = e.target.files[0];
+        const file = e.target.files[0];
         const name = e.target.files[0].name;
         const fileTypes = ["xls", "xlsx"];
         if (name) {
           const type = name.split(".").pop();
-
+          const sn = 1111;
+          const createTime = 2020;
           if (fileTypes.includes(type)) {
-            implodeCityManage({ url }).then((res) => {
-              if (res.code == 1) {
+            importExcel({ file, sn, createTime }).then((res) => {
+              if (res.resp_code == 0) {
+                const current = this.dataList.map((item) => item.skuId);
+                const data = res.data.skuList.filter(
+                  (item) => !current.includes(item.skuId)
+                );
+                data.forEach((item) => {
+                  item.totalPrice = this.sumPrice(
+                    item.quantity,
+                    item.costPrice
+                  ).toFixed(2);
+                });
+                this.dataList = this.dataList.concat(data);
                 this.$message({ message: "导入成功", type: "success" });
               } else {
-                this.$alert(res.code, "提示", {
+                this.$alert(res.resp_code, "提示", {
                   confirmButtonText: "确定",
                   type: "warning",
                 });

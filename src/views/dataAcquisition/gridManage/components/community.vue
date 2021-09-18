@@ -11,7 +11,7 @@
   >
     <el-form ref="dataForm" :model="temp" label-width="120px" class="dialog_form">
       <el-form-item label="责任部门" prop="duty_depart">
-        <el-cascader ref="cascaderPublish" clearable v-model="temp.duty_depart" :options="departmentList" :show-all-levels="false" filterable :props="props" placeholder="请选择违规类型"></el-cascader>
+        <el-cascader ref="cascaderPublish" clearable v-model="temp.duty_depart" :options="departmentList" :show-all-levels="false" filterable :props="props" placeholder="请选择责任部门"></el-cascader>
       </el-form-item>
       <el-form-item label="网格名称" prop="name">
         <el-input v-model.trim="temp.name" placeholder="请输入网格名称" autocomplete="off" clearable/>
@@ -190,8 +190,8 @@
         }
         this.getFirstCategory();
         this.getFirstDepartment();
-        this.temp.parent_ids = this.viewData.id;
-
+        console.log(this.viewData)
+        this.temp.parent_ids = this.viewData.parentId;
         if(this.viewData.operatorType != 'create'){
           this.getView();
         }
