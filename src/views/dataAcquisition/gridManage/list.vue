@@ -48,8 +48,8 @@
           <el-button type="primary" class="btn_blue02" @click="aa">画网格</el-button>
           <!--<el-button type="primary" class="btn_blue02" @click="editPolygonTool">编辑网格</el-button>-->
           <el-button type="primary" class="btn_blue02" @click="cc">编辑网格</el-button>
-          <el-button type="primary" class="btn_blue02">清除</el-button>
-          <el-button type="primary" class="btn_blue02">还原</el-button>
+          <!--<el-button type="primary" class="btn_blue02">清除</el-button>-->
+          <!--<el-button type="primary" class="btn_blue02">还原</el-button>-->
           <!--<el-button type="primary" class="btn_blue02" @click="drawPolygonByPoint">保存</el-button>-->
           <el-button type="primary" class="btn_blue02" @click="bb">保存</el-button>
         </div>
@@ -102,6 +102,7 @@
         polygonTool:[],
         pointList:[],
         editMap:false,
+        areaArr:[],
       }
     },
     computed: {
@@ -116,17 +117,37 @@
     },
     methods: {
       getGps(id){
-
+        this.areaArr=[];
         this.categoryId = id;
         getFirstGap({category_id:id}).then(res=>{
-          let a = res.data.map(item=>{
-            return new T.LngLat(item.log, item.lat);
-          })
-          this.pointList = a;
-          this.map.clearOverLays();
-          //创建面对象
-          polygon = new T.Polygon(this.pointList,{strokeColor:"red", strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
-          this.map.addOverLay(polygon);
+          let polygonArr = []
+          for(let i=0; i<res.data.length;i++) {
+            if (res.data[i].length > 0) {
+              let a = res.data[i].map(item => {
+                return new T.LngLat(item.log, item.lat);
+              })
+              console.log('获取二级地图')
+              console.log(a)
+              this.areaArr.push({id: res.data[i][0].category_id, level: 1, arr: a})
+              this.pointList = {id: res.data[i][0].category_id, level: 1, arr: a};
+              console.log(this.pointList)
+              // this.map.clearOverLays();
+              //创建面对象
+              polygon = new T.Polygon(this.pointList.arr, {
+                strokeColor: "#0027eb",
+                fillColor: "#FFFFFF",
+                strokeWeight: 20,
+                strokeOpacity: 0.8,
+                fillOpacity: 0.8
+              });//向地图上添加面
+              polygonArr.push(polygon)
+            }
+          }
+          for(let i=0;i<polygonArr.length;i++){
+            console.log('天机二级')
+            this.map.addOverLay(polygonArr[i]);
+          }
+
         });
       },
       getParentGap(id){
@@ -134,28 +155,141 @@
         this.thirdCategoryId = '';
         this.categoryId = id;
         getParentGap({category_id:id}).then(res=>{
-          let a = res.data.map(item=>{
-            return new T.LngLat(item.log, item.lat);
-          })
-          this.pointList = a;
+
+          let polygonThirdArr = []
+          for(let i=0; i<res.data.length;i++){
+            if(res.data[i].length > 0){
+              let a = res.data[i].map(item=>{
+                return new T.LngLat(item.log, item.lat);
+              })
+              console.log('获取三级地图')
+              console.log(a)
+
+              this.areaArr.push({id:res.data[i][0].category_id,level:2,arr:a})
+              this.pointList = {id:res.data[i][0].category_id,level:2,arr:a};
+              // this.map.clearOverLays();
+              //创建面对象
+
+              polygon = new T.Polygon(this.pointList.arr,{strokeColor:"#f19e9b", fillColor : "#f34821",strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
+              polygonThirdArr.push(polygon)
+            }
+          }
+          for(let i=0;i<polygonThirdArr.length;i++){
+            this.map.addOverLay(polygonThirdArr[i]);
+          }
+
+          this.getSelf(id);
+        });
+      },
+      getSelf(id){
+        getGps({category_id:id}).then(res=>{
           this.map.clearOverLays();
-          //创建面对象
-          polygon = new T.Polygon(this.pointList,{strokeColor:"red", strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
+          let b = this.areaArr.filter(item=>item.id!=id)
+          let c = this.areaArr.filter(item=>item.id==id)
+          for(let i=0; i<b.length;i++) {
+            if(this.areaArr[i].level == 1){
+              polygon = new T.Polygon(b[i].arr, {
+                strokeColor: "#f19e9b",
+                fillColor: "#ffffff",
+                strokeWeight: 20,
+                strokeOpacity: 0.5,
+                fillOpacity: 0.5
+              });//向地图上添加面
+            }else{
+              polygon = new T.Polygon(b[i].arr, {
+                strokeColor: "#f19e9b",
+                fillColor: "#f34821",
+                strokeWeight: 20,
+                strokeOpacity: 0.5,
+                fillOpacity: 0.5
+              });//向地图上添加面
+            }
+
+            this.map.addOverLay(polygon);
+          }
+          polygon = new T.Polygon(c[0].arr, {
+            strokeColor: "#f19e9b",
+            fillColor: "#04c348",
+            strokeWeight: 20,
+            strokeOpacity: 0.5,
+            fillOpacity: 0.5
+          });//向地图上添加面
           this.map.addOverLay(polygon);
+          // for(let i=0;i<polygonThirdArr.length;i++){
+          //   this.map.addOverLay(polygonThirdArr[i]);
+          // }
+
+
+
+
+          console.log(b)
+
+          // let arr = this.areaArr.filter(item=>{
+          //   item.lat != a
+          // })
+          // this.pointList = a;
+          // //创建面对象
+          // polygon = new T.Polygon(this.pointList,{strokeColor:"#ffffff", strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
+          // this.map.addOverLay(polygon);
         });
       },
       getThirdGps(id){
-        this.thirdCategoryId = id
+        this.thirdCategoryId = id;
         this.categoryId = id;
         getGps({category_id:id}).then(res=>{
+          this.map.clearOverLays();
+
           let a = res.data.map(item=>{
             return new T.LngLat(item.log, item.lat);
-          })
-          this.pointList = a;
-          this.map.clearOverLays();
-          //创建面对象
-          polygon = new T.Polygon(this.pointList,{strokeColor:"red", strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
+          });
+
+          console.log(this.areaArr);
+          let b = this.areaArr.filter(item=>item.id!=id)
+          let c = this.areaArr.filter(item=>item.id==id)
+          for(let i=0; i<b.length;i++) {
+            if(b[i].level == 1){
+              polygon = new T.Polygon(b[i].arr, {
+                strokeColor: "#f19e9b",
+                fillColor: "#ffffff",
+                strokeWeight: 20,
+                strokeOpacity: 0.5,
+                fillOpacity: 0.5
+              });//向地图上添加面
+            }else{
+              polygon = new T.Polygon(b[i].arr, {
+                strokeColor: "#f19e9b",
+                fillColor: "#f34821",
+                strokeWeight: 20,
+                strokeOpacity: 0.5,
+                fillOpacity: 0.5
+              });//向地图上添加面
+            }
+
+            this.map.addOverLay(polygon);
+          }
+          // for(let i=0;i<polygonThirdArr.length;i++){
+          //   this.map.addOverLay(polygonThirdArr[i]);
+          // }
+          polygon = new T.Polygon(c[0].arr, {
+            strokeColor: "#f19e9b",
+            fillColor: "#04c348",
+            strokeWeight: 20,
+            strokeOpacity: 0.5,
+            fillOpacity: 0.5
+          });//向地图上添加面
           this.map.addOverLay(polygon);
+
+
+
+          console.log(b)
+
+          // let arr = this.areaArr.filter(item=>{
+          //   item.lat != a
+          // })
+          // this.pointList = a;
+          // //创建面对象
+          // polygon = new T.Polygon(this.pointList,{strokeColor:"#ffffff", strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
+          // this.map.addOverLay(polygon);
         });
       },
       getFirstCategory(){
@@ -170,8 +304,14 @@
       getCategoryList(id){
         getCategoryList({parent_ids:id}).then(res=>{
           // const { id, province, city, area, principal, mobile,} = res.data;
+          this.map.clearOverLays();
           this.secondCategory = res.data;
-          this.getGps(id);
+          this.getGps(id);//获取二级地图
+          //
+          // for(let i=0;i<res.data.length;i++){
+          //   this.getParentGap(res.data[i].id)//获取三级地图
+          // }
+
         });
       },
 
@@ -262,11 +402,16 @@
         // if(polygon!=''){
         //   this.map.removeOverLay(polygon);
         // }
-        polygonTool.close();
+        if(polygonTool == 'undefined'){
+          console.log(polygonTool)
+          polygonTool.close();
+        }
+
         if (this.editMap==true){
           polygon.disableEdit();
           this.editMap=false;
         }
+        console.log(2222)
         console.log(this.pointList);
         if(this.pointList.length!=0){
           // for(let i=0;i<this.pointList.length;i++){
