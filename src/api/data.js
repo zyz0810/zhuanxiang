@@ -10,6 +10,28 @@ export function getGps(data) {
     data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
   })
 }
+
+/* 获取一级GPS路线
+ * category_id 网格对象ID
+ */
+export function getFirstGap(data) {
+  return request({
+    url: `/admin/map_category/getFirstGap`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+
+/* 获取二级GPS路线
+ * category_id 网格对象ID
+ */
+export function getParentGap(data) {
+  return request({
+    url: `/admin/map_category/getParentGap`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
 /* 画地图添加Gps
  * category_id 网格对象ID
  * type 类型1、街道-社区   2、执法中队   3、市容道路环卫 4、市政道路养护\n5、市政绿化养护 6、河道养护'
@@ -20,7 +42,8 @@ export function addGps(data) {
   return request({
     url: `/admin/map_category/addGps`,
     method: 'post',
-    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+    // data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+    data:data
   })
 }
 /* 获取网格一级分类
@@ -38,6 +61,15 @@ export function getFirstCategory(data) {
 export function getCategoryList(data) {
   return request({
     url: `/admin/map_category/getCategoryList`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+/* 获取网格详情
+ */
+export function getCategoryDetail(data) {
+  return request({
+    url: `/admin/map_category/getCategoryDetail`,
     method: 'post',
     data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
   })

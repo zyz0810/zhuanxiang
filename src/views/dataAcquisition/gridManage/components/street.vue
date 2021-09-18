@@ -5,7 +5,7 @@
     width="50%"
     @close="close"
     top="15vh"
-    title="新建街道"
+    title="二级"
     class="dialogContainer"
     @open="open"
   >
@@ -35,14 +35,14 @@
       </el-form-item>
       <el-form-item label="" class="text-right">
         <el-button @click="showDialog = false">取 消</el-button>
-        <el-button type="primary" class="btn_blue02" @click="onSubmit">保 存</el-button>
+        <el-button type="primary" class="btn_blue02" @click="viewData.operatorType ==='create'?createData():updateData()">保 存</el-button>
       </el-form-item>
     </el-form>
   </myDialog>
 </template>
 
 <script>
-  import {addChildCategory, getFirstCategory} from '@/api/data'
+  import {addChildCategory, getFirstCategory, getCategoryDetail,editChildCategory, addGps} from '@/api/data'
   import {allDepartmentTreeList,departmentAllList,departmentList} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
@@ -66,7 +66,8 @@
         type: Object,
         default: {
           option: {},
-          operatorType: "view",
+          parentId:'',
+          operatorType: "create",
           id: ""
         }
       }
@@ -140,14 +141,26 @@
         });
       },
       open(){
-        if(this.viewData.id == 1 || this.viewData.id == 2){
+        if(this.viewData.parentId == 1 || this.viewData.parentId == 2){
           this.type=1;
         }else {
           this.type=2;
         }
         this.getFirstCategory();
         this.getFirstDepartment();
-        this.temp.parent_ids = this.viewData.id;
+        console.log(this.viewData.option)
+        this.temp.parent_ids = this.viewData.parentId;
+        if(this.viewData.operatorType != 'create'){
+          this.getView();
+        }
+      },
+      getView(){
+        getCategoryDetail({category_id:this.viewData.id}).then(res=>{
+          const {id,duty_depart,name,table_code,description,service_start_time,service_end_time,} = res.data
+          let parent_ids = this.viewData.parentId;
+          // let duty_depart = Number(res.data.duty_depart);
+          this.temp = {id,duty_depart,name,table_code,description,service_start_time,service_end_time,parent_id:1,parent_ids}
+        });
       },
       close(){
         this.type=1;
@@ -166,7 +179,7 @@
         this.departmentList=[];
 
       },
-      onSubmit() {
+      createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.paraLoading = true;
@@ -175,10 +188,40 @@
             //     return item;
             //   }
             // })
-            var temp = Object.assign({},  this.temp);
+            let temp = Object.assign({},  this.temp);
             // temp.name = parentObj[0].name;
             temp.duty_depart =   temp.duty_depart[temp.duty_depart.length - 1]
             addChildCategory(temp).then((res) => {
+              setTimeout(()=>{
+                this.paraLoading = false
+              },1000)
+              if(res.code == 1) {
+                this.showViewDialog = false;
+                this.$emit('insertList');
+                this.$message({
+                  message: res.message,
+                  type: 'success'
+                });
+              }
+            }).catch(() => {
+              this.paraLoading = false;
+            });
+          }
+        })
+      },
+      updateData() {
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            this.paraLoading = true;
+            // let parentObj = this.firstCategory.filter(item=>{
+            //   if(this.temp.parent_ids == item.id){
+            //     return item;
+            //   }
+            // })
+            let temp = Object.assign({},  this.temp);
+            // temp.name = parentObj[0].name;
+            temp.duty_depart =   temp.duty_depart[temp.duty_depart.length - 1]
+            editChildCategory(temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)

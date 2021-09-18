@@ -5,7 +5,7 @@
     width="50%"
     @close="close"
     top="15vh"
-    title="新建街道"
+    title="三级"
     class="dialogContainer"
     @open="open"
   >
@@ -64,14 +64,14 @@
 
       <el-form-item label="" class="text-right">
         <el-button @click="showDialog = false">取 消</el-button>
-        <el-button type="primary" class="btn_blue02" @click="onSubmit">保 存</el-button>
+        <el-button type="primary" class="btn_blue02" @click="viewData.operatorType ==='create'?createData():updateData()">保 存</el-button>
       </el-form-item>
     </el-form>
   </myDialog>
 </template>
 
 <script>
-  import {addChildCategory, getFirstCategory} from '@/api/data'
+  import {addChildCategory, getCategoryDetail, getFirstCategory,editChildCategory} from '@/api/data'
   import {allDepartmentTreeList,departmentAllList,departmentList} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
@@ -94,9 +94,14 @@
         required: true,
         type: Object,
         default: {
-          option: {},
-          operatorType: "view",
-          id: ""
+          // option: {},
+          // operatorType: "view",
+          // id: ""
+          parentId:'=',
+          firstId:'',
+          id:'',
+          operatorType:'view',
+          option:{}
         }
       }
     },
@@ -176,9 +181,9 @@
         });
       },
       open(){
-        if(this.viewData.option.firstId == 1 || this.viewData.option.firstId == 2){
+        if(this.viewData.firstId == 1 || this.viewData.firstId == 2){
           this.type=1;
-        }else if(this.viewData.option.firstId == 6){
+        }else if(this.viewData.firstId == 6){
           this.type=1;
         }else {
           this.type=2;
@@ -186,6 +191,17 @@
         this.getFirstCategory();
         this.getFirstDepartment();
         this.temp.parent_ids = this.viewData.id;
+
+        if(this.viewData.operatorType != 'create'){
+          this.getView();
+        }
+      },
+      getView(){
+        getCategoryDetail({category_id:this.viewData.id}).then(res=>{
+          const {id,duty_depart,name,table_code,address,length,width,area,price,type,description,service_start_time,service_end_time,} = res.data
+          let parent_ids = this.viewData.parentId;
+          this.temp = {id,duty_depart,name,table_code,address,length,width,area,price,type,description,service_start_time,service_end_time,parent_id:2,parent_ids}
+        });
       },
       close(){
         this.type=1;
@@ -209,7 +225,7 @@
         };
         this.departmentList=[];
       },
-      onSubmit() {
+      createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.paraLoading = true;
@@ -218,10 +234,40 @@
             //     return item;
             //   }
             // })
-            var temp = Object.assign({},  this.temp);
+            let temp = Object.assign({},  this.temp);
             // temp.name = parentObj[0].name;
             temp.duty_depart =   temp.duty_depart[temp.duty_depart.length - 1]
             addChildCategory(temp).then((res) => {
+              setTimeout(()=>{
+                this.paraLoading = false
+              },1000)
+              if(res.code == 1) {
+                this.showViewDialog = false;
+                this.$emit('insertList');
+                this.$message({
+                  message: res.message,
+                  type: 'success'
+                });
+              }
+            }).catch(() => {
+              this.paraLoading = false;
+            });
+          }
+        })
+      },
+      updateData() {
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            this.paraLoading = true;
+            // let parentObj = this.firstCategory.filter(item=>{
+            //   if(this.temp.parent_ids == item.id){
+            //     return item;
+            //   }
+            // })
+            let temp = Object.assign({},  this.temp);
+            // temp.name = parentObj[0].name;
+            temp.duty_depart =   temp.duty_depart[temp.duty_depart.length - 1]
+            editChildCategory(temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)

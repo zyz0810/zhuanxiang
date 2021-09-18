@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  import {authStatus, roleList} from '@/api/system'
+  import {roleStatus, roleList} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -135,7 +135,7 @@
             //NProgress.start();
             console.log(row)
             let para = {id:row.id,status:2}
-            authStatus(para).then((res) => {
+            roleStatus(para).then((res) => {
               this.listLoading = false;
               if (res.code == 1) {
                 this.getList();
@@ -155,7 +155,7 @@
             this.listLoading = true;
             //NProgress.start();
             let para = {id:row.id,status:1}
-            authStatus(para).then((res) => {
+            roleStatus(para).then((res) => {
               this.listLoading = false;
               if (res.code == 1) {
                 this.getList();

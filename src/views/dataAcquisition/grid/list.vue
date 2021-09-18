@@ -3,8 +3,8 @@
     <div class="bg_white">
       <el-form :inline="true" :model="listQuery" :label="280">
         <el-form-item label="执法中队">
-          <el-select v-model="listQuery.type" placeholder="请选择" clearable>
-            <el-option label="选择一级网格" :value="0"></el-option>
+          <el-select v-model="listQuery.key_word" placeholder="请选择" clearable>
+            <el-option v-for="item in firstCategory" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -14,14 +14,14 @@
       <el-divider></el-divider>
       <div class="mb_10">
         <el-button class="btn_blue02" type="primary"  @click="">导出</el-button>
-        <el-form :inline="true" :model="listQuery" :label="280" class="fr">
-          <el-form-item label="">
-            <el-input v-model="listQuery.productSn" placeholder="" @change="handleFilter" clearable/>
-          </el-form-item>
-          <el-form-item>
-            <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>
-          </el-form-item>
-        </el-form>
+<!--        <el-form :inline="true" :model="listQuery" :label="280" class="fr">-->
+<!--          <el-form-item label="">-->
+<!--            <el-input v-model="listQuery.key_word" placeholder="" @change="handleFilter" clearable/>-->
+<!--          </el-form-item>-->
+<!--          <el-form-item>-->
+<!--            <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>-->
+<!--          </el-form-item>-->
+<!--        </el-form>-->
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  import {tableList} from '@/api/data'
+  import {getFirstCategory, tableList} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -54,11 +54,12 @@
     },
     data() {
       return {
+        firstCategory:[],
         total: 0,
         list: [],
         listLoading: false,
         listQuery: {
-          type:0,
+          key_word:'',
           page: 1,
           pageSize: 10
         },
@@ -92,6 +93,7 @@
         };
       });
       this.getList();
+      this.getFirstCategory();
     },
     methods: {
       handleFilter() {
@@ -102,6 +104,12 @@
         tableList(this.listQuery).then(res => {
           this.list = res.data.data
           this.total = res.data.total
+        });
+      },
+      getFirstCategory(){
+        getFirstCategory().then(res=>{
+          // const { id, province, city, area, principal, mobile,} = res.data;
+          this.firstCategory = res.data;
         });
       },
     }

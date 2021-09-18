@@ -8,18 +8,34 @@
             <el-option v-for="item in firstCategory" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </p>
-        <p class="text-center"><el-button icon="el-icon-plus" class="mb_10 mt_10" @click="handleOne(gridType)">新 建</el-button></p>
+        <p class="text-center"><el-button icon="el-icon-plus" class="mb_10 mt_10" @click="handleOne(gridType,'create','','')">新 建</el-button></p>
         <el-collapse accordion>
-          <el-collapse-item v-for="(item,index) in secondCategory" :key="item.id" class="mb_20" @click="getGps(item.id)">
+          <el-collapse-item v-for="(item,index) in secondCategory" :key="item.id" class="mb_20">
             <template slot="title">
-              <div class="weui-cell gridNav_one f16" @click="getGps(item.id)">
-                <div class="weui-cell__hd"><span class="tag block clr_white">{{index}}</span></div>
-                <div class="weui-cell__bd">{{item.name}}</div>
-                <div class="weui-cell__ft"><i class="el-icon-circle-plus-outline f20 bold" @click.stop="handleCommunity(gridType,item.id)"></i></div>
+              <div class="weui-cell gridNav_one f16" @click="getParentGap(item.id)">
+                <div class="weui-cell__hd"><span class="tag block f14 clr_white">{{index}}</span></div>
+                <div :class="['weui-cell__bd','f14',secondCategoryId == item.id?'baseColor bold':'']">{{item.name}}</div>
+                <div class="weui-cell__ft">
+                  <i class="el-icon-edit-outline f20 bold" @click.stop="handleOne(gridType,'update',item.id,item)"></i>
+                  <i class="el-icon-circle-plus-outline f20 bold" @click.stop="handleCommunity(gridType,item.id,'','create','')"></i>
+<!--                  handleCommunity(firstId,parentId,id,type,option)-->
+                </div>
               </div>
             </template>
             <div class="gridNav_two f14">
-              <p v-for="items in item.list" :key="items.id" @click="getGps(items.id)">{{items.name}}</p>
+
+
+              <div class="weui-cell gridNav_one f16" v-for="items in item.list" :key="items.id" @click="getThirdGps(items.id)">
+                <div :class="['weui-cell__bd','f12',thirdCategoryId == items.id?'baseColor bold':'']">{{items.name}}</div>
+                <div class="weui-cell__ft">
+                  <i class="el-icon-edit-outline f20 bold" @click.stop="handleCommunity(gridType,item.id,items.id,'update',items)"></i>
+                </div>
+              </div>
+
+
+<!--              <p v-for="items in item.list" :key="items.id" @click="getThirdGps(items.id)">{{items.name}}-->
+<!--                <i class="el-icon-edit-outline f20 bold" @click.stop="handleCommunity(gridType,item.id,items.id,'update',items)"></i>-->
+<!--              </p>-->
             </div>
           </el-collapse-item>
         </el-collapse>
@@ -39,14 +55,13 @@
         </div>
       </div>
       <addStreet :showDialog.sync="showStreetDialog" :viewData="viewData" @insertList="getCategoryList(gridType)"></addStreet>
-      <addCommunity :showDialog.sync="showCommunityDialog" :viewData="seconddData" @insertList="getCategoryList(gridType)"></addCommunity>
+      <addCommunity :showDialog.sync="showCommunityDialog" :viewData="secondData" @insertList="getCategoryList(gridType)"></addCommunity>
     </div>
   </div>
 </template>
 
 <script>
-  import {getFirstCategory,getCategoryList, getGps, addGps, lightList,} from '@/api/data'
-
+  import {getFirstCategory,getCategoryList, getGps,getFirstGap,getParentGap, addGps, lightList,} from '@/api/data'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -71,8 +86,10 @@
     },
     data() {
       return {
+        secondCategoryId:'',
+        thirdCategoryId:'',
         categoryId:'',
-        seconddData:{},
+        secondData:{},
         firstCategory:[],
         secondCategory:[],
         viewData:{},
@@ -99,6 +116,36 @@
     },
     methods: {
       getGps(id){
+
+        this.categoryId = id;
+        getFirstGap({category_id:id}).then(res=>{
+          let a = res.data.map(item=>{
+            return new T.LngLat(item.log, item.lat);
+          })
+          this.pointList = a;
+          this.map.clearOverLays();
+          //创建面对象
+          polygon = new T.Polygon(this.pointList,{strokeColor:"red", strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
+          this.map.addOverLay(polygon);
+        });
+      },
+      getParentGap(id){
+        this.secondCategoryId = id;
+        this.thirdCategoryId = '';
+        this.categoryId = id;
+        getParentGap({category_id:id}).then(res=>{
+          let a = res.data.map(item=>{
+            return new T.LngLat(item.log, item.lat);
+          })
+          this.pointList = a;
+          this.map.clearOverLays();
+          //创建面对象
+          polygon = new T.Polygon(this.pointList,{strokeColor:"red", strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
+          this.map.addOverLay(polygon);
+        });
+      },
+      getThirdGps(id){
+        this.thirdCategoryId = id
         this.categoryId = id;
         getGps({category_id:id}).then(res=>{
           let a = res.data.map(item=>{
@@ -128,19 +175,24 @@
         });
       },
 
-      handleOne(type){
+      handleOne(parentId,type,id,option){
         this.showStreetDialog = true;
         this.viewData = {
-          id:type,
+          parentId:parentId,
+          id:type != 'create'?id:'',
+          operatorType:type,
+          option:type != 'create'?option:{}
         }
       },
-      handleCommunity(type,id){
+      // handleCommunity('','',items.id,'update')"
+      handleCommunity(firstId,parentId,id,type,option){
         this.showCommunityDialog = true;
-        this.seconddData={
-          id:id,
-          option:{
-            firstId:type
-          }
+        this.secondData={
+          parentId:parentId,
+          firstId:firstId,
+          id:type != 'create'?id:'',
+          operatorType:type,
+          option:type != 'create'?option:{}
         }
       },
 
@@ -217,12 +269,22 @@
         }
         console.log(this.pointList);
         if(this.pointList.length!=0){
-          for(let i=0;i<this.pointList.length;i++){
-            addGps({category_id:this.categoryId,type:1,lat:this.pointList[i].lat,log:this.pointList[i].lng}).then(res=>{
+          // for(let i=0;i<this.pointList.length;i++){
+          //   addGps({category_id:this.categoryId,lat:this.pointList[i].lat,log:this.pointList[i].lng}).then(res=>{
+          //
+          //   });
+          // }
+          let pointList = this.pointList.map(item=>{
+            let json = {};
+            json={
+              lat:item.lat,
+              log:item.lng
+            }
+            return json;
+          })
+          addGps({category_id:this.categoryId,arr:pointList}).then(res=>{
 
-            });
-          }
-
+          });
           //创建面对象
           polygon = new T.Polygon(this.pointList,{strokeColor:"red", strokeWeight:20, strokeOpacity:0.5, fillOpacity:0.5});//向地图上添加面
           this.map.addOverLay(polygon);
@@ -483,14 +545,13 @@
       border-radius: 5px;
       background: #0a76a4;
       margin-right: 10px;
-      height: 30px;
-      line-height: 30px;
+      height: 27px;
+      line-height: 27px;
     }
   }
   .gridNav_two{
-    padding: 10px 0;
     line-height: 2;
-    padding-left: 40px;
+    padding: 0 45px 0 40px;
   }
 }
 

@@ -3,14 +3,14 @@
     <div class="bg_white p20">
       <div class="mb_10">
         <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
-<!--        <el-form :inline="true" :model="listQuery" :label="280" class="fr">-->
-<!--          <el-form-item label="">-->
-<!--            <el-input v-model="listQuery.productSn" placeholder="" @change="handleFilter" clearable/>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item>-->
-<!--            <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>-->
-<!--          </el-form-item>-->
-<!--        </el-form>-->
+        <el-form :inline="true" :model="listQuery" :label="280" class="fr">
+          <el-form-item label="">
+            <el-input v-model="listQuery.app_name" placeholder="" @change="handleFilter" clearable/>
+          </el-form-item>
+          <el-form-item>
+            <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>
+          </el-form-item>
+        </el-form>
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
@@ -27,7 +27,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
                   @pagination="getList" class="text-right"/>
     </div>
 
@@ -44,8 +44,6 @@
     directives: {waves},
     components: {
       Pagination,
-
-
     },
     data() {
       return {
@@ -53,10 +51,9 @@
         list: [],
         listLoading: false,
         listQuery: {
-          name: '',
-          status: undefined,
+          app_name: '',
           page: 1,
-          limit: 10
+          pageSize: 10
         },
         tableHeight:'100'
       }
@@ -141,7 +138,7 @@
           }).then(() => {
             this.listLoading = true;
             //NProgress.start();
-            let para = {id:row.id,status:2}
+            let para = {id:row.id,status:1}
             authAppStatus(para).then((res) => {
               this.listLoading = false;
               if (res.code == 1) {

@@ -150,7 +150,15 @@ export function roleAll(data) {
 }
 
 
-
+/* 角色管理 -- 角色权限
+ */
+export function menuTreeList(data) {
+  return request({
+    url: `/admin/auth/treeList`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
 
 /* 菜单列表
  * menu_name 菜单名称
@@ -235,7 +243,7 @@ export function menuExport(data) {
  */
 export function authAppList(data) {
   return request({
-    url: `/admin/app_auth/list`,
+    url: `/admin/appAuth/list`,
     method: 'post',
     data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
   })

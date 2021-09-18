@@ -36,7 +36,7 @@
 </template>
 
 <script>
-  import {menuList,roleAdd,roleEdit,roleDetail} from '@/api/system'
+  import {menuTreeList,roleAdd,roleEdit,roleDetail} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import Pagination from "@/components/Pagination/index"; // waves directive
@@ -69,7 +69,7 @@
         checkedMenu:[],
         defaultProps: {
           children: 'childrens',
-          label: 'menu_name'
+          label: 'auth_name'
         },
         paraLoading:false,
         temp: {
@@ -108,8 +108,8 @@
 
       },
       getMenu(){
-        menuList({page:1,pageSize:99999}).then(res => {
-          this.menuList = res.data.data
+        menuTreeList().then(res => {
+          this.menuList = res.data
         });
       },
 
