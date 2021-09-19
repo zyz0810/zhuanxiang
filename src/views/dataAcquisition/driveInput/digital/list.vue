@@ -216,7 +216,7 @@
           const sn = 1111;
           const createTime = 2020;
           if (fileTypes.includes(type)) {
-            importExcel({ file, sn, createTime }).then((res) => {
+            implodeCityManage({ file, }).then((res) => {
               if (res.resp_code == 0) {
                 const current = this.dataList.map((item) => item.skuId);
                 const data = res.data.skuList.filter(

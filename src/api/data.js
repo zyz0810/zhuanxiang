@@ -267,25 +267,25 @@ export function lightList(data) {
 export function implodeCityManage(obj) {
   console.log('7777')
   console.log(obj.file)
-  const file = obj.file;
+  const { file,} = obj;
   const data = new FormData();
-  data.append("file", file);
+  data.append("url", file);
   console.log('导入导2s入')
   console.log(data)
   return request({
     url:'/admin/excel/implodeCityManage',
     method: 'post',
-    data: Qs.stringify(data)
+    data: data
   })
 }
 /* 批量导入采购商品
  */
 export function importExcel(obj) {
-  const { file, sn, createTime } = obj;
+  const { file,} = obj;
   const data = new FormData();
-  data.append("file", file);
-  data.append("sn", sn);
-  data.append("createTime", createTime);
+  data.append("url", file);
+  // data.append("sn", sn);
+  // data.append("createTime", createTime);
   return request({
     url: `/api-product/product/purchase/importExcel`,
     method: "POST",
