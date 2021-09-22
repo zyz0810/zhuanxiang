@@ -198,8 +198,9 @@
       },
       getView(){
         getCategoryDetail({category_id:this.viewData.id}).then(res=>{
-          const {id,duty_depart,name,table_code,address,length,width,area,price,type,description,service_start_time,service_end_time,} = res.data
+          const {duty_depart,name,table_code,address,length,width,area,price,type,description,service_start_time,service_end_time,} = res.data
           let parent_ids = this.viewData.parentId;
+          let id = this.viewData.id;
           this.temp = {id,duty_depart,name,table_code,address,length,width,area,price,type,description,service_start_time,service_end_time,parent_id:2,parent_ids}
         });
       },
