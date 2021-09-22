@@ -4,7 +4,7 @@
       <div class="mb_10">
         <el-button class="btn_purple" type="primary"  @click="handleView('create','parent','')">添加</el-button>
         <el-button class="btn_blue01" type="primary"  @click="">批量导入</el-button>
-        <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
+        <el-button class="btn_blue02" type="primary"  @click="handleExport">批量导出</el-button>
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" row-key="id" :tree-props="{children: 'list'}">
@@ -93,7 +93,31 @@
     },
     methods: {
 
-
+      /** 导出按钮操作 */
+      handleExport () {
+        // let ids = []
+        // this.selectList.forEach((item, index) => {
+        //   ids.push(item.id);
+        // });
+        departmentExport({department_name:this.listQuery.department_name}).then(res => {
+          const blob = new Blob([res]);
+          let myDate = new Date();
+          let timename = myDate
+            .toLocaleDateString()
+            .split("/")
+            .join("-");
+          const str = "组织管理";
+          const fileName = str + timename + ".xls";
+          const linkNode = document.createElement("a");
+          linkNode.download = fileName; //a标签的download属性规定下载文件的名称
+          linkNode.style.display = "none";
+          linkNode.href = URL.createObjectURL(blob); //生成一个Blob URL
+          document.body.appendChild(linkNode);
+          linkNode.click(); //模拟在按钮上的一次鼠标单击
+          URL.revokeObjectURL(linkNode.href); // 释放URL 对象
+          document.body.removeChild(linkNode);
+        });
+      },
       handleFilter() {
         this.listQuery.page = 1;
         this.getList()

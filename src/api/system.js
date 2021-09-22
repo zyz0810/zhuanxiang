@@ -362,9 +362,22 @@ export function departmentExport(data) {
   return request({
     url: `/admin/department/export`,
     method: 'post',
-    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true }),
+    responseType: "blob"
   })
 }
+
+// //导出结算单
+// export function exportBalance(params) {
+//   return request
+//     .post('/api-crm-order//crm/provider/balance/exportBalance', Qs.stringify(params, {
+//       arrayFormat: "indices",
+//       allowDots: true
+//     }), {
+//       responseType: "blob"
+//     })
+// }
+
 /* 类型管理-列表
  * type type ==allList 就没有分页
  */
@@ -555,6 +568,17 @@ export function platAuthStatus(data) {
     url: `/admin/platAuth/editStatus`,
     method: 'post',
     data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+  })
+}
+/* 平台权限-导出
+ * plat_name 平台名称
+ */
+export function platAuthExport(data) {
+  return request({
+    url: `/admin/platAuth/export`,
+    method: 'post',
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true }),
+    responseType: "blob"
   })
 }
 /* 获取所有应用类型
