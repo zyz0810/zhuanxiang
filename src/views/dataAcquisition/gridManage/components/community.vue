@@ -267,7 +267,9 @@
             // })
             let temp = Object.assign({},  this.temp);
             // temp.name = parentObj[0].name;
-            temp.duty_depart =   temp.duty_depart[temp.duty_depart.length - 1]
+            if(Array.isArray(temp.duty_depart)){
+              temp.duty_depart =   temp.duty_depart[temp.duty_depart.length - 1]
+            }
             editChildCategory(temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
