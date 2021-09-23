@@ -5,7 +5,7 @@
     width="50%"
     @close="close"
     top="15vh"
-    title="辖区信息"
+    title="角色管理"
     class="dialogContainer"
     @open="open"
   >
@@ -28,7 +28,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()" :loading="paraLoading">确 定</el-button>
-      <el-button type="primary" class="btn_gray" @click="showViewDialog = false">取 消</el-button>
+      <el-button @click="showViewDialog = false">取 消</el-button>
     </div>
 
 
