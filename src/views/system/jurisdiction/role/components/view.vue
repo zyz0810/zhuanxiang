@@ -9,7 +9,7 @@
     class="dialogContainer"
     @open="open"
   >
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" class="p_l_r_20">
+    <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" class="dialog_form">
 
 
 <!--      <el-form-item label="ID" prop="name">-->
@@ -108,7 +108,7 @@
 
       },
       getMenu(){
-        menuTreeList().then(res => {
+        menuTreeList({is_all:1}).then(res => {
           this.menuList = res.data
         });
       },

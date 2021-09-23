@@ -9,7 +9,7 @@
     class="dialogContainer"
     @open="open"
   >
-    <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" >
+    <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" class="dialog_form">
 
       <el-form-item label="父类目" prop="parent_name">
 <!--        <el-select v-model="temp.pid" placeholder="选择父类目">-->
@@ -31,7 +31,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()" :loading="paraLoading">确 定</el-button>
-      <el-button type="primary" class="btn_gray" @click="showViewDialog = false">取 消</el-button>
+      <el-button @click="showViewDialog = false">取 消</el-button>
     </div>
 
 
