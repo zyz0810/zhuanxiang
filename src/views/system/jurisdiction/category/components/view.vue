@@ -9,7 +9,7 @@
     class="dialogContainer"
     @open="open"
   >
-    <el-form ref="dataForm" :inline="true" :rules="rules" :model="temp" label-width="120px" >
+    <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" >
 
       <el-form-item label="父类目" prop="parent_name">
 <!--        <el-select v-model="temp.pid" placeholder="选择父类目">-->
@@ -21,9 +21,13 @@
       <el-form-item label="权限类目名称" prop="auth_name">
         <el-input v-model.trim="temp.auth_name" placeholder="请输入权限类目名称" autocomplete="off" clearable/>
       </el-form-item>
+      <el-form-item label="链接" prop="url">
+        <el-input v-model.trim="temp.url" placeholder="请输入链接" autocomplete="off" clearable/>
+      </el-form-item>
       <el-form-item label="权限类目描述" prop="remark">
         <el-input v-model.trim="temp.remark" placeholder="请输入权限类目描述" autocomplete="off" clearable/>
       </el-form-item>
+
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()" :loading="paraLoading">确 定</el-button>
@@ -71,6 +75,7 @@
         temp: {
           pid:'',
           parent_name:'',
+          url:'',
           auth_name:'',
           remark:'',
         },
@@ -108,6 +113,7 @@
         this.temp= {
           pid:'',
           parent_name:'',
+          url:'',
           auth_name:'',
           remark:'',
         };
@@ -115,8 +121,8 @@
       },
       getView(){
         authDetail({id:this.paraData.id}).then(res=>{
-          const { id, pid, parent_name, auth_name, remark,} = res.data;
-          this.temp = { id, pid, parent_name, auth_name, remark,}
+          const { id, pid,url, parent_name, auth_name, remark,} = res.data;
+          this.temp = { id, pid,url, parent_name, auth_name, remark,}
         });
       },
 
