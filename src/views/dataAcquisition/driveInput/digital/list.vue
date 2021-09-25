@@ -35,7 +35,40 @@
       </el-tab-pane>
       <el-tab-pane label="基础数据导入">
         <div class="mb_10">
-          <el-button class="btn_blue02" type="primary" @click="importFile">导入</el-button>
+          <!--<el-button class="btn_blue02" type="primary" @click="importFile">导入</el-button>-->
+
+
+          <!--<el-upload-->
+            <!--class="upload-demo"-->
+            <!--action="https://jsonplaceholder.typicode.com/posts/"-->
+            <!--:on-preview="handlePreview"-->
+            <!--:on-remove="handleRemove"-->
+            <!--:before-remove="beforeRemove"-->
+            <!--multiple-->
+            <!--:limit="3"-->
+            <!--:on-exceed="handleExceed"-->
+            <!--:file-list="fileList">-->
+            <!--&lt;!&ndash;<el-button size="small" type="primary">导入</el-button>&ndash;&gt;-->
+            <!--<el-button class="btn_blue02" type="primary" @click="importFile">导入</el-button>-->
+          <!--</el-upload>-->
+          <el-upload
+            class="upload-demo fl"
+            ref="upload"
+            :show-file-list="false"
+            action
+            :multiple="false"
+            name="files"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :file-list="fileList"
+            v-loading="loading"
+            :http-request="uploadFile"
+          >
+            <!--:disabled="protocolRebate.protocolFileUrl != ''"  protocolFileName -->
+            <el-button slot="trigger" class="btn_blue02" type="primary">导入</el-button>
+
+          </el-upload>
+
           <el-form :inline="true" :model="listQuery" :label="280" class="fr">
             <el-form-item label="">
               <el-input v-model="listQuery.productSn" placeholder="智能检索" @change="handleFilter" clearable/>
@@ -114,6 +147,7 @@
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
+  import {uploadImg} from '@/api/upload'
   import Pagination from "@/components/Pagination/index"; // waves directive
   import paraView from "./components/view";
   import historyList from "./components/history";
@@ -157,6 +191,8 @@
           red_detail: '',
           input_time: '',
         },
+        loading:false,
+        fileList:[],
         listOne:[],
         listTwo:[],
         rules: {
@@ -204,7 +240,74 @@
       this.getListTwo();
     },
     methods: {
-      importFile () {
+      uploadFile(e) {
+        const file = e.file;
+        // if (file.type != "application/pdf") {
+        //   this.$message({ message: "附件仅支持PDF格式", type: "warning" });
+        //   this.fileList = [];
+        //   return;
+        // }
+        // if (!(file.size / 1024 / 1024 / 2 <= 1)) {
+        //   this.$message({
+        //     message: "上传文件大小不能超过 2MB!",
+        //     type: "warning",
+        //   });
+        //   this.fileList = [];
+        //   return;
+        // }
+        this.loading = true;
+        uploadImg(file)
+          .then((res) => {
+            // this.fileList = [{ url: res.images, name: file.name }];
+            this.fileList.push({ url: res.images, name: file.name });
+            this.loading = false;
+            // this.$message({ message:res.message, type: "success" });
+            implodeCityManage({ url:this.fileList[0].url }).then((res) => {
+              if (res.code == 1) {
+
+
+                this.$message({ message: "导入成功", type: "success" });
+                this.getListOne();
+              } else {
+                this.$alert(res.resp_code, "提示", {
+                  confirmButtonText: "确定",
+                  type: "warning",
+                });
+              }
+              e.target.value = "";
+            });
+          })
+          .catch((e) => {
+            this.loading = false;
+            this.$message({ message: "上传附件失败", type: "warning" });
+          });
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      // 文件删除
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+        this.fileList = fileList
+        this.temp.url = this.fileList.map(item=>{ return item.url}).join(',')
+        // this.temp.url = "";
+      },
+      importFile (e) {
+
+        uploadImg(file)
+          .then((res) => {
+            // this.fileList = [{ url: res.images, name: file.name }];
+            this.fileList.push({ url: res.images, name: file.name });
+            console.log(this.fileList)
+            this.temp.url = this.fileList.map(item=>{ return item.url}).join(',')
+            this.loading = false;
+            this.$message({ message:res.message, type: "success" });
+          })
+          .catch((e) => {
+            this.loading = false;
+            this.$message({ message: "上传附件失败", type: "warning" });
+          });
+
         document.getElementById("fileImport").click();
       },
       fileChange (e) {
