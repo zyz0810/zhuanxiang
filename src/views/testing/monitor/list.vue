@@ -4,9 +4,9 @@
       <el-form :inline="true" :model="listQuery" :label="280">
         <el-form-item label="选择类型">
           <el-select v-model="listQuery.type" placeholder="请选择" clearable>
-            <el-option label="AI视频" :value="0"></el-option>
-            <el-option label="河道视频" :value="1"></el-option>
-            <el-option label="普通视频" :value="2"></el-option>
+            <el-option label="AI视频" :value="1"></el-option>
+            <el-option label="河道视频" :value="2"></el-option>
+            <el-option label="普通视频" :value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>

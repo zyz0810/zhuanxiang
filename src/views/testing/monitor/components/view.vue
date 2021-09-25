@@ -11,20 +11,28 @@
   >
 
     <el-form ref="dataForm" :rules="rules" :inline="true" :model="temp" label-width="120px" class="dialog_form">
-
+      <!--// 'depart_id'=>'区域',-->
+      <!--// 'is_importance'=>'是否重点  1、是   2、否',-->
+      <!--// 'community_id'=>'来源',-->
+      <!--// 'class'=>'监控类型',-->
       <el-form-item label="监控点编码" prop="index_code">
-        <el-input v-model.trim="index_code" placeholder="请输入监控点编码" autocomplete="off" :disabled="true" clearable/>
+        <el-input v-model.trim="temp.index_code" placeholder="请输入监控点编码" autocomplete="off" :disabled="true" clearable/>
       </el-form-item>
       <el-form-item label="监控点名称" prop="name">
         <el-input v-model.trim="temp.name" placeholder="请输入监控点名称" autocomplete="off" :disabled="true" clearable/>
       </el-form-item>
-      <el-form-item label="111监控类型" prop="">
-        <el-input v-model.trim="temp.name" placeholder="请输入监控类型" autocomplete="off" :disabled="true" clearable/>
+      <el-form-item label="监控类型" prop="class">
+        <!--<el-input v-model.trim="temp.class" placeholder="请输入监控类型" autocomplete="off" :disabled="true" clearable/>-->
+        <el-select v-model.trim="temp.class" placeholder="请选择监控类型" autocomplete="off" clearable>
+          <el-option label="AI视频" :value="1"></el-option>
+          <el-option label="河道视频" :value="2"></el-option>
+          <el-option label="普通视频" :value="3"></el-option>
+        </el-select>
       </el-form-item>
 <!--      <el-form-item label="111视频型号" prop="name">-->
 <!--        <el-input v-model.trim="temp.name" placeholder="请输入视频型号" autocomplete="off" :disabled="true" clearable/>-->
 <!--      </el-form-item>-->
-      <el-form-item label="111归属区域" prop="depart_id">
+      <el-form-item label="归属区域" prop="depart_id">
         <el-select v-model="temp.depart_id" placeholder="请选择" clearable>
 <!--          浦沿中队，长河中队，西兴中队-->
           <el-option label="浦沿中队" :value="1"></el-option>
@@ -38,8 +46,8 @@
           <el-option v-for="item in communityList" :label="item.name" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="是否重点" prop="is_importment">
-        <el-select v-model="temp.is_importment" placeholder="请选择" clearable>
+      <el-form-item label="是否重点" prop="is_importance">
+        <el-select v-model="temp.is_importance" placeholder="请选择" clearable>
           <el-option label="是" :value="1"></el-option>
           <el-option label="否" :value="2"></el-option>
         </el-select>
@@ -89,11 +97,18 @@
       return {
         paraLoading:false,
         communityList:[],
+        // 'depart_id'=>'区域',
+        // 'is_importance'=>'是否重点  1、是   2、否',
+        // 'community_id'=>'来源',
+        // 'class'=>'监控类型',
         temp: {
           id:'',
+          index_code:'',
+          name:'',
           depart_id:'',
-          is_importment:'',
-          community_id:''
+          is_importance:'',
+          community_id:'',
+          class:''
         },
         rules: {
           // name: [{ required: true, message: '请输入名称', trigger: 'change' }],
@@ -122,6 +137,16 @@
         this.temp.id = this.paraData.id;
         this.getView();
         this.getList();
+        // id:'',
+        //   index_code:'',
+        //   name:'',
+        //   depart_id:'',
+        //   is_importance:'',
+        //   community_id:'',
+        //   class:''
+        let {id,index_code,name,depart_id,is_importance,community_id,} = this.paraData.option;
+        let classA = this.paraData.option.class
+        this.temp={id,index_code,name,depart_id,is_importance,community_id,class:classA};
       },
       getList() {
         communityList({page:1,pageSize:99999}).then(res => {
