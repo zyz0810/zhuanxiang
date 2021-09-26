@@ -335,6 +335,33 @@ export function letterList(data) {
     data: Qs.stringify(data)
   })
 }
+/* 驾驶舱录入-信访投诉-基础数据导入
+ */
+export function implodeLetter(data) {
+  return request({
+    url:'/admin/excel/implodeLetter',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 驾驶舱录入-信访投诉-重复数据导入
+ */
+export function implodeRepLetter(data) {
+  return request({
+    url:'/admin/excel/implodeRepLetter',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+// /* 驾驶舱录入-信访投诉-行政审批导入
+//  */
+// export function implodeCheck(data) {
+//   return request({
+//     url:'/admin/excel/implodeCheck',
+//     method: 'post',
+//     data: Qs.stringify(data)
+//   })
+// }
 /* 店铺列表
  */
 export function storeList(data) {

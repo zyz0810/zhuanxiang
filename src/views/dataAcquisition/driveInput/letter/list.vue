@@ -46,7 +46,24 @@
       </el-tab-pane>
       <el-tab-pane label="基础数据导入">
         <div class="mb_10">
-          <el-button class="btn_blue02" type="primary"  @click="">导入</el-button>
+          <!--<el-button class="btn_blue02" type="primary"  @click="">导入</el-button>-->
+
+          <el-upload
+            class="upload-demo fl"
+            ref="upload"
+            :show-file-list="false"
+            action
+            :multiple="false"
+            name="files"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :file-list="fileList"
+            v-loading="loading"
+            :http-request="uploadFile"
+          >
+            <el-button slot="trigger" class="btn_blue02" type="primary">导入</el-button>
+          </el-upload>
+
           <el-form :inline="true" :model="listQuery" :label="280" class="fr">
             <el-form-item label="">
               <el-input v-model="listQuery.productSn" placeholder="智能检索" @change="handleFilter" clearable/>
@@ -83,7 +100,25 @@
       </el-tab-pane>
       <el-tab-pane label="重复件导入">
         <div class="mb_10">
-          <el-button class="btn_blue02" type="primary"  @click="">导入</el-button>
+          <!--<el-button class="btn_blue02" type="primary"  @click="">导入</el-button>-->
+
+
+          <el-upload
+            class="upload-demo fl"
+            ref="upload"
+            :show-file-list="false"
+            action
+            :multiple="false"
+            name="files"
+            :on-preview="handlePreviewRep"
+            :on-remove="handleRemoveRep"
+            :file-list="fileListRep"
+            v-loading="loading"
+            :http-request="uploadFileRep"
+          >
+            <el-button slot="trigger" class="btn_blue02" type="primary">导入</el-button>
+          </el-upload>
+
           <el-form :inline="true" :model="listQuery" :label="280" class="fr">
             <el-form-item label="">
               <el-input v-model="listQuery.productSn" placeholder="智能检索" @change="handleFilter" clearable/>
@@ -121,7 +156,8 @@
 </template>
 
 <script>
-  import {addDigital, addLetter, letterAskList, letterRepAskList,} from '@/api/data'
+  import {addDigital, addLetter, letterAskList, letterRepAskList,implodeLetter,implodeRepLetter} from '@/api/data'
+  import {uploadImg} from '@/api/upload'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -137,6 +173,7 @@
     },
     data() {
       return {
+        loading:false,
         showHistoryDialog:false,
         historyData:{},
         paraLoading:false,
@@ -153,6 +190,8 @@
           limit: 10
         },
         totalTwo:0,
+        fileListRep:[],
+        fileList:[],
         temp: {
           month_deal_num: '',
           basis_direction: 1,
@@ -209,6 +248,110 @@
       this.getListTwo();
     },
     methods: {
+      uploadFile(e) {
+        const file = e.file;
+        console.log(e)
+        // if (file.type != "application/pdf") {
+        //   this.$message({ message: "附件仅支持PDF格式", type: "warning" });
+        //   this.fileList = [];
+        //   return;
+        // }
+        // if (!(file.size / 1024 / 1024 / 2 <= 1)) {
+        //   this.$message({
+        //     message: "上传文件大小不能超过 2MB!",
+        //     type: "warning",
+        //   });
+        //   this.fileList = [];
+        //   return;
+        // }
+        this.loading = true;
+        uploadImg(file)
+          .then((res) => {
+            // this.fileList = [{ url: res.images, name: file.name }];
+            this.fileList.push({ url: res.images, name: file.name });
+            this.loading = false;
+            // this.$message({ message:res.message, type: "success" });
+            implodeLetter({ url:this.fileList[0].url }).then((res) => {
+              if (res.code == 1) {
+
+
+                this.$message({ message: "导入成功", type: "success" });
+                this.getListOne();
+              } else {
+                this.$alert(res.resp_code, "提示", {
+                  confirmButtonText: "确定",
+                  type: "warning",
+                });
+              }
+              e.target.value = "";
+            });
+          })
+          .catch((e) => {
+            this.loading = false;
+            this.$message({ message: "上传附件失败", type: "warning" });
+          });
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      // 文件删除
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+        this.fileList = fileList
+        this.temp.url = this.fileList.map(item=>{ return item.url}).join(',')
+        // this.temp.url = "";
+      },
+      uploadFileRep(e) {
+        const file = e.file;
+        console.log(e)
+        // if (file.type != "application/pdf") {
+        //   this.$message({ message: "附件仅支持PDF格式", type: "warning" });
+        //   this.fileList = [];
+        //   return;
+        // }
+        // if (!(file.size / 1024 / 1024 / 2 <= 1)) {
+        //   this.$message({
+        //     message: "上传文件大小不能超过 2MB!",
+        //     type: "warning",
+        //   });
+        //   this.fileList = [];
+        //   return;
+        // }
+        this.loading = true;
+        uploadImg(file)
+          .then((res) => {
+            // this.fileList = [{ url: res.images, name: file.name }];
+            this.fileListRep.push({ url: res.images, name: file.name });
+            this.loading = false;
+            // this.$message({ message:res.message, type: "success" });
+            implodeRepLetter({ url:this.fileListRep[0].url }).then((res) => {
+              if (res.code == 1) {
+
+
+                this.$message({ message: "导入成功", type: "success" });
+                this.getListTwo();
+              } else {
+                this.$alert(res.resp_code, "提示", {
+                  confirmButtonText: "确定",
+                  type: "warning",
+                });
+              }
+              e.target.value = "";
+            });
+          })
+          .catch((e) => {
+            this.loading = false;
+            this.$message({ message: "上传附件失败", type: "warning" });
+          });
+      },
+      handlePreviewRep(file) {
+        console.log(file);
+      },
+      // 文件删除
+      handleRemoveRep(file, fileList) {
+        console.log(file, fileList);
+        this.fileListRep = fileList
+      },
       handleFilter() {
         this.listQuery.page = 1;
         this.getList()

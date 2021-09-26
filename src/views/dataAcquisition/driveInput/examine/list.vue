@@ -3,7 +3,22 @@
     <el-tabs type="border-card" class="height_100">
       <el-tab-pane label="基础数据导入">
         <div class="mb_10">
-          <el-button class="btn_blue02" type="primary"  @click="">导入</el-button>
+          <!--<el-button class="btn_blue02" type="primary"  @click="">导入</el-button>-->
+          <el-upload
+            class="upload-demo fl mr_10"
+            ref="upload"
+            :show-file-list="false"
+            action
+            :multiple="false"
+            name="files"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :file-list="fileList"
+            v-loading="loading"
+            :http-request="uploadFile"
+          >
+            <el-button slot="trigger" class="btn_blue02" type="primary">导入</el-button>
+          </el-upload>
           <el-button class="btn_blue01" type="primary"  @click="">刷新</el-button>
           <el-form :inline="true" :model="listQuery" :label="280" class="fr">
             <el-form-item label="">
@@ -43,7 +58,8 @@
 </template>
 
 <script>
-  import {administrativeCheckList} from '@/api/data'
+  import {administrativeCheckList,implodeCheck} from '@/api/data'
+  import {uploadImg} from '@/api/upload'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -58,6 +74,8 @@
     },
     data() {
       return {
+        fileList:[],
+        loading:false,
         total: 0,
         list: [],
         listLoading: false,
@@ -119,7 +137,59 @@
           this.total = res.data.total
         });
       },
+      uploadFile(e) {
+        const file = e.file;
+        console.log(e)
+        // if (file.type != "application/pdf") {
+        //   this.$message({ message: "附件仅支持PDF格式", type: "warning" });
+        //   this.fileList = [];
+        //   return;
+        // }
+        // if (!(file.size / 1024 / 1024 / 2 <= 1)) {
+        //   this.$message({
+        //     message: "上传文件大小不能超过 2MB!",
+        //     type: "warning",
+        //   });
+        //   this.fileList = [];
+        //   return;
+        // }
+        this.loading = true;
+        uploadImg(file)
+          .then((res) => {
+            // this.fileList = [{ url: res.images, name: file.name }];
+            this.fileList.push({ url: res.images, name: file.name });
+            this.loading = false;
+            // this.$message({ message:res.message, type: "success" });
+            implodeCheck({ url:this.fileList[0].url }).then((res) => {
+              if (res.code == 1) {
 
+
+                this.$message({ message: "导入成功", type: "success" });
+                this.getListOne();
+              } else {
+                this.$alert(res.resp_code, "提示", {
+                  confirmButtonText: "确定",
+                  type: "warning",
+                });
+              }
+              e.target.value = "";
+            });
+          })
+          .catch((e) => {
+            this.loading = false;
+            this.$message({ message: "上传附件失败", type: "warning" });
+          });
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      // 文件删除
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+        this.fileList = fileList
+        this.temp.url = this.fileList.map(item=>{ return item.url}).join(',')
+        // this.temp.url = "";
+      },
 
 
     }
