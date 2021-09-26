@@ -3,7 +3,7 @@
     <div class="bg_white">
       <div class="mb_10">
         <el-button class="btn_purple" type="primary"  @click="handleView('create','parent','')">添加</el-button>
-        <el-button class="btn_blue01" type="primary"  @click="">批量导入</el-button>
+        <!--<el-button class="btn_blue01" type="primary"  @click="">批量导入</el-button>-->
         <el-button class="btn_blue02" type="primary"  @click="handleExport">批量导出</el-button>
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"

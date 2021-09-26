@@ -14,14 +14,14 @@
       <el-divider></el-divider>
       <div class="mb_10">
         <el-button class="btn_purple" type="primary"  @click="handleView('create','parent')">添加</el-button>
-        <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
+        <el-button class="btn_blue02" type="primary"  @click="handleExport">批量导出</el-button>
         <el-form :inline="true" :model="listQuery" :label="280" class="fr">
-<!--          <el-form-item label="">-->
-<!--            <el-input v-model="listQuery.productSn" placeholder="" @change="handleFilter" clearable/>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item>-->
-<!--            <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>-->
-<!--          </el-form-item>-->
+          <el-form-item label="">
+            <el-input v-model="listQuery.menu_name" placeholder="" clearable/>
+          </el-form-item>
+          <el-form-item>
+            <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>
+          </el-form-item>
         </el-form>
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
@@ -76,6 +76,7 @@
         listLoading: false,
         listQuery: {
           app_type: '',
+          menu_name:'',
           page: 1,
           pageSize: 10
         },
@@ -112,6 +113,31 @@
       this.getApp();
     },
     methods: {
+      /** 导出按钮操作 */
+      handleExport () {
+        // let ids = []
+        // this.selectList.forEach((item, index) => {
+        //   ids.push(item.id);
+        // });
+        menuExport({app_type:this.listQuery.app_type,menu_name:this.listQuery.menu_name}).then(res => {
+          const blob = new Blob([res]);
+          let myDate = new Date();
+          let timename = myDate
+            .toLocaleDateString()
+            .split("/")
+            .join("-");
+          const str = "角色管理";
+          const fileName = str + timename + ".xls";
+          const linkNode = document.createElement("a");
+          linkNode.download = fileName; //a标签的download属性规定下载文件的名称
+          linkNode.style.display = "none";
+          linkNode.href = URL.createObjectURL(blob); //生成一个Blob URL
+          document.body.appendChild(linkNode);
+          linkNode.click(); //模拟在按钮上的一次鼠标单击
+          URL.revokeObjectURL(linkNode.href); // 释放URL 对象
+          document.body.removeChild(linkNode);
+        });
+      },
       getApp() {
         APPConstants().then(res => {
           this.APPList = res.data.app_type_list;

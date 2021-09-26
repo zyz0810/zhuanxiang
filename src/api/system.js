@@ -65,7 +65,8 @@ export function authExport(data) {
   return request({
     url: `/admin/auth/export`,
     method: 'post',
-    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true }),
+    responseType: "blob"
   })
 }
 /* 角色列表
@@ -134,7 +135,8 @@ export function roleExport(data) {
   return request({
     url: `/admin/role/export`,
     method: 'post',
-    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true }),
+    responseType: "blob"
   })
 }
 
@@ -230,7 +232,8 @@ export function menuExport(data) {
   return request({
     url: `/admin/menu/export`,
     method: 'post',
-    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true }),
+    responseType: "blob"
   })
 }
 
@@ -264,9 +267,10 @@ export function authAppStatus(data) {
  */
 export function appAuthExport(data) {
   return request({
-    url: `/admin/app_auth/export`,
+    url: `/admin/appAuth/export`,
     method: 'post',
-    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true })
+    data: Qs.stringify(data,{ arrayFormat: 'indices', allowDots: true }),
+    responseType: "blob"
   })
 }
 /* 所有组织架构列表

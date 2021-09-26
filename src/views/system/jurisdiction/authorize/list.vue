@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="bg_white p20">
       <div class="mb_10">
-        <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
+        <el-button class="btn_blue02" type="primary"  @click="handleExport">批量导出</el-button>
         <el-form :inline="true" :model="listQuery" :label="280" class="fr">
           <el-form-item label="">
             <el-input v-model="listQuery.app_name" placeholder="" @change="handleFilter" clearable/>
@@ -87,7 +87,31 @@
       this.getList();
     },
     methods: {
-
+      /** 导出按钮操作 */
+      handleExport () {
+        // let ids = []
+        // this.selectList.forEach((item, index) => {
+        //   ids.push(item.id);
+        // });
+        appAuthExport({app_name:this.listQuery.app_name}).then(res => {
+          const blob = new Blob([res]);
+          let myDate = new Date();
+          let timename = myDate
+            .toLocaleDateString()
+            .split("/")
+            .join("-");
+          const str = "权限类目";
+          const fileName = str + timename + ".xls";
+          const linkNode = document.createElement("a");
+          linkNode.download = fileName; //a标签的download属性规定下载文件的名称
+          linkNode.style.display = "none";
+          linkNode.href = URL.createObjectURL(blob); //生成一个Blob URL
+          document.body.appendChild(linkNode);
+          linkNode.click(); //模拟在按钮上的一次鼠标单击
+          URL.revokeObjectURL(linkNode.href); // 释放URL 对象
+          document.body.removeChild(linkNode);
+        });
+      },
       formatStatus(row, column, cellValue, index) {
         return cellValue == 1
           ? "正常"
