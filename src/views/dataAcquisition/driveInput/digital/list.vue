@@ -131,9 +131,9 @@
         <el-table v-loading="listLoading" :data="listTwo" :height="tableHeight"
                   element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
           <el-table-column label="序号" type="index" align="center"></el-table-column>
-          <el-table-column label="反复发生点位" align="center" prop=""></el-table-column>
-          <el-table-column label="反复发生类型" align="center" prop=""></el-table-column>
-          <el-table-column label="反复发生次数" align="center" prop=""></el-table-column>
+          <el-table-column label="反复发生点位" align="center" prop="description"></el-table-column>
+          <el-table-column label="反复发生类型" align="center" prop="small_category"></el-table-column>
+          <el-table-column label="反复发生次数" align="center" prop="num"></el-table-column>
         </el-table>
         <pagination v-show="totalTwo>0" :total="totalTwo" :page.sync="listQueryTwo.page" :limit.sync="listQueryTwo.pageSize"
                     @pagination="getListTwo" class="text-right"/>
@@ -416,7 +416,7 @@
       },
       getListTwo() {
         cityRepManagementList(this.listQueryTwo).then(res => {
-          this.listTwo = res.data.data
+          this.listTwo = res.data.data;
           this.totalTwo = res.data.total
         });
       },

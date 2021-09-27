@@ -212,7 +212,7 @@ export function cityManagementList(data) {
  */
 export function cityRepManagementList(data) {
   return request({
-    url:'/admin/import_tool/cityRepManagementList',
+    url:'/admin/importTool/cityRepManagementList',
     method: 'post',
     data: Qs.stringify(data)
   })
