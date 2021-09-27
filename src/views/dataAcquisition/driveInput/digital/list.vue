@@ -416,7 +416,7 @@
       },
       getListTwo() {
         cityRepManagementList(this.listQueryTwo).then(res => {
-          this.listTwo = res.data.data;
+          this.listTwo = res.data;
           this.totalTwo = res.data.total
         });
       },
