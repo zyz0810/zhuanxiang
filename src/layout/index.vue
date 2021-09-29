@@ -47,7 +47,8 @@
           hideSidebar: !this.sidebar.opened,
           openSidebar: this.sidebar.opened,
           withoutAnimation: this.sidebar.withoutAnimation,
-          mobile: this.device === 'mobile'
+          mobile: this.device === 'mobile',
+          navHidden: this.$route.path == '/electron/map'
         }
       }
     },
@@ -63,6 +64,14 @@
   @import "~@/styles/mixin.scss";
   @import "~@/styles/variables.scss";
 
+  .navHidden{
+    .sidebar-container{
+      display: none !important;
+    }
+    .main-container{
+      margin-left: 0 !important;
+    }
+  }
   .app-wrapper {
     @include clearfix;
     position: relative;
