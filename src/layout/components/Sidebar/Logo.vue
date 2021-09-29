@@ -36,7 +36,6 @@ export default {
   },
   watch: {
     $route(route) {
-
       // if you go to the redirect page, do not update the breadcrumbs
       if (route.path.startsWith('/redirect/')) {
         return
@@ -53,6 +52,8 @@ export default {
         this.title = '车辆管理'
       } else if((route.path).includes("video")){
         this.title = '视频管理'
+      } else if((route.path).includes("electron")){
+        this.title = '电子地图'
       }
     }
   },

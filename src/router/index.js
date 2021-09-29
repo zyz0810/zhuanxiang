@@ -650,6 +650,28 @@ export const asyncRoutes = [
       },
     ]
   },
+  {
+    path: '/electron',
+    component: Layout,
+    redirect: 'noRedirect',
+    // name: '电子地图',
+    meta: {
+      // title: '电子地图',
+      icon: 'iconfont icon-xiangqing',
+      roles: ['map'],
+    },
+    children: [
+      {
+        path: 'map',
+        component: () => import('@/views/dataAcquisition/gridManage/list'),
+        name: 'gridManageList',
+        meta: {
+          title: '电子地图',
+          roles: ['map'],
+        }
+      }
+    ]
+  },
 ]
 
 const createRouter = () =>

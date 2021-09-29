@@ -69,6 +69,8 @@ router.beforeEach(async(to, from, next) => {
     setRole(['car']);
   } else if((to.path).includes("video")){
     setRole(['video']);
+  } else if((to.path).includes("electron")){
+    setRole(['map']);
   }else{
     setRole(['system']);
   }
