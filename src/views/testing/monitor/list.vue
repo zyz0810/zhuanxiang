@@ -4,9 +4,11 @@
       <el-form :inline="true" :model="listQuery" :label="280">
         <el-form-item label="选择类型">
           <el-select v-model="listQuery.type" placeholder="请选择" clearable>
+            <!--1AI视频、2河道视频、3停车场视频、4普通视频；-->
             <el-option label="AI视频" :value="1"></el-option>
             <el-option label="河道视频" :value="2"></el-option>
-            <el-option label="普通视频" :value="3"></el-option>
+            <el-option label="停车场视频" :value="33"></el-option>
+            <el-option label="普通视频" :value="4"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -35,7 +37,7 @@
 <!--        <el-table-column label="监控类型" align="center" prop="mobile"></el-table-column>-->
         <el-table-column label="归属区域" align="center" prop="depart_name"></el-table-column>
         <el-table-column label="来源区域" align="center" prop="community_name"></el-table-column>
-        <el-table-column label="是否重点视频" align="center" prop="is_important" :formatter="formatImportant"></el-table-column>
+        <el-table-column label="是否重点视频" align="center" prop="is_importance" :formatter="formatImportant"></el-table-column>
         <el-table-column label="安装地址" align="center" prop="install_place"></el-table-column>
         <el-table-column label="是否启用" align="center" prop="point_status">
           <template slot-scope="scope">
@@ -120,7 +122,9 @@
           ? "是"
           : cellValue == 2
             ? "否"
-            : "--";
+            : cellValue == 2
+              ? "--"
+            : "";
       },
       handleState(row){
         // ：active-value得为true
