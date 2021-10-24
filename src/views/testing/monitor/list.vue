@@ -3,11 +3,11 @@
     <div class="bg_white">
       <el-form :inline="true" :model="listQuery" :label="280">
         <el-form-item label="选择类型">
-          <el-select v-model="listQuery.type" placeholder="请选择" clearable>
+          <el-select v-model="listQuery.class" placeholder="请选择" clearable>
             <!--1AI视频、2河道视频、3停车场视频、4普通视频；-->
             <el-option label="AI视频" :value="1"></el-option>
             <el-option label="河道视频" :value="2"></el-option>
-            <el-option label="停车场视频" :value="33"></el-option>
+            <el-option label="停车场视频" :value="3"></el-option>
             <el-option label="普通视频" :value="4"></el-option>
           </el-select>
         </el-form-item>
@@ -82,7 +82,7 @@
         listLoading: false,
         listQuery: {
           name: '',
-          type: '',
+          class: '',
           page: 1,
           pageSize: 10
         },
@@ -122,9 +122,7 @@
           ? "是"
           : cellValue == 2
             ? "否"
-            : cellValue == 2
-              ? "--"
-            : "";
+            : "--";
       },
       handleState(row){
         // ：active-value得为true

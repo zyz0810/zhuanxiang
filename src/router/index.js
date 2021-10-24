@@ -618,7 +618,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'carList',
-        component: () => import('@/views/testing/monitor/list'),
+        component: () => import('@/views/car/list'),
         name: 'carList',
         meta: {
           title: '车辆管理',
