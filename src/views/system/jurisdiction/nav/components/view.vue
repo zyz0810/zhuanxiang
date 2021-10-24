@@ -32,6 +32,15 @@
           <el-option v-for="item in roleList" :key="item.id" :label="item.role_name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="唯一标识" prop="url_key">
+        <el-input v-model.trim="temp.url_key" placeholder="请输入唯一标识" autocomplete="off" clearable/>
+      </el-form-item>
+      <el-form-item label="类型" prop="type">
+        <el-radio-group v-model="temp.type" clearable>
+          <el-radio :label="1">页面</el-radio>
+          <el-radio :label="2">按钮</el-radio>
+        </el-radio-group>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()" :loading="paraLoading">确 定</el-button>
@@ -85,6 +94,8 @@
           role_id:[],
           url:'',
           remark:'',
+          url_key:'',
+          type:1
         },
         dialogStatus: '',
         rules: {
@@ -138,14 +149,16 @@
           role_id:[],
           url:'',
           remark:'',
+          url_key:'',
+          type:1
         };
         this.dialogStatus= '';
       },
       getView(){
         menuDetail({id:this.paraData.id}).then(res=>{
-          const { id, menu_name, sort, url, remark,app_type,} = res.data;
+          const { id, menu_name, sort, url, remark,app_type, url_key, type} = res.data;
           let role_id = res.data.role_id.map(item=>{return Number(item)});
-          this.temp = {  id, menu_name, sort, role_id, url, remark,app_type,};
+          this.temp = {  id, menu_name, sort, role_id, url, remark,app_type,url_key, type};
         });
       },
 
