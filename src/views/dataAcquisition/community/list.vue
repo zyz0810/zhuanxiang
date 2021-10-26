@@ -17,10 +17,10 @@
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
         <el-table-column label="编号" align="center" prop="id"></el-table-column>
-        <el-table-column label="小区名称" align="center" prop="name"></el-table-column>
+        <el-table-column label="小区名称" align="center" prop="name" show-overflow-tooltip></el-table-column>
         <el-table-column label="小区负责人" align="center" prop="linkman"></el-table-column>
         <el-table-column label="负责人电话" align="center" prop="mobile"></el-table-column>
-        <el-table-column label="地址" align="center" prop="address"></el-table-column>
+        <el-table-column label="地址" align="center" prop="address" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
             <el-button class="btn_green" type="primary" @click="handleView('update',scope.row)">更新</el-button>

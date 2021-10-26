@@ -12,7 +12,7 @@
         <el-table-column label="部门电话" align="center" prop="phone"></el-table-column>
         <el-table-column label="主要负责人" align="center" prop="contact"></el-table-column>
         <el-table-column label="负责人电话" align="center" prop="mobile"></el-table-column>
-        <el-table-column label="地址" align="center" prop="address"></el-table-column>
+        <el-table-column label="地址" align="center" prop="address" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
             <el-button class="btn_blue02" type="primary" @click="handleView('update','',scope.row)">编辑</el-button>

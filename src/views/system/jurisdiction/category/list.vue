@@ -27,7 +27,7 @@
       <el-table v-loading="listLoading" :data="list" :height="tableHeight" row-key="id" :tree-props="{children: 'child_list', hasChildren: 'hasChildren'}"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
         <el-table-column label="权限类目名称" align="center" prop="auth_name"></el-table-column>
-        <el-table-column label="权限类目描述" align="center" prop="remark"></el-table-column>
+        <el-table-column label="权限类目描述" align="center" prop="remark" show-overflow-tooltip></el-table-column>
         <el-table-column label="链接" align="center" prop="url"></el-table-column>
         <el-table-column label="状态" align="center" prop="status" :formatter="formatStatus"></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">

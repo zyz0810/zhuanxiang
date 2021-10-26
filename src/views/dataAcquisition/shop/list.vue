@@ -17,10 +17,10 @@
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
         <el-table-column label="编号" type="index" align="center"></el-table-column>
-        <el-table-column label="店铺名称" align="center" prop="shop_name"></el-table-column>
+        <el-table-column label="店铺名称" align="center" prop="shop_name" show-overflow-tooltip></el-table-column>
         <el-table-column label="违章次数" align="center" prop="break_rules_count"></el-table-column>
         <el-table-column label="排查次数" align="center" prop="check_count"></el-table-column>
-        <el-table-column label="地址" align="center" prop="address"></el-table-column>
+        <el-table-column label="地址" align="center" prop="address" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
             <el-button class="btn_green" type="primary" @click="handleView('update',scope.row)">更新</el-button>

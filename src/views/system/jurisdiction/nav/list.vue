@@ -26,9 +26,9 @@
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" row-key="id" :tree-props="{children: 'parent_list'}">
-        <el-table-column label="菜单" align="center" prop="menu_name"></el-table-column>
-        <el-table-column label="菜单链接" align="center" prop="url"></el-table-column>
-        <el-table-column label="角色" align="center" prop="role_name_list"></el-table-column>
+        <el-table-column label="菜单" align="center" prop="menu_name" show-overflow-tooltip></el-table-column>
+        <el-table-column label="菜单链接" align="center" prop="url" show-overflow-tooltip></el-table-column>
+        <el-table-column label="角色" align="center" prop="role_name_list" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
             <el-button class="btn_blue02" type="primary" @click="handleView('update','',scope.row)">编辑</el-button>

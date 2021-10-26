@@ -90,10 +90,10 @@
           <el-table-column label="案件类型" align="center" prop="case_type"></el-table-column>
           <el-table-column label="案件状态" align="center" prop="status"></el-table-column>
           <el-table-column label="上报时间" align="center" prop="register_date"></el-table-column>
-          <el-table-column label="案件描述" align="center" prop="react_content"></el-table-column>
-          <el-table-column label="受理部门" align="center" prop="acceptance_department"></el-table-column>
-          <el-table-column label="承办部门" align="center" prop="deal_department"></el-table-column>
-          <el-table-column label="地址描述" align="center" prop="Illegal_address"></el-table-column>
+          <el-table-column label="案件描述" align="center" prop="react_content" show-overflow-tooltip></el-table-column>
+          <el-table-column label="受理部门" align="center" prop="acceptance_department" show-overflow-tooltip></el-table-column>
+          <el-table-column label="承办部门" align="center" prop="deal_department" show-overflow-tooltip></el-table-column>
+          <el-table-column label="地址描述" align="center" prop="Illegal_address" show-overflow-tooltip></el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
                     @pagination="getListOne" class="text-right"/>
@@ -141,10 +141,10 @@
         <el-table v-loading="listLoading" :data="listTwo" :height="tableHeight"
                   element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
           <el-table-column label="序号" type="index" align="center"></el-table-column>
-          <el-table-column label="重复投诉点位" align="center" prop="point"></el-table-column>
+          <el-table-column label="重复投诉点位" align="center" prop="point" show-overflow-tooltip></el-table-column>
           <el-table-column label="重复投诉类型" align="center" prop="type"></el-table-column>
           <el-table-column label="重复投诉次数" align="center" prop="num"></el-table-column>
-          <el-table-column label="承办单位" align="center" prop="department"></el-table-column>
+          <el-table-column label="承办单位" align="center" prop="department" show-overflow-tooltip></el-table-column>
         </el-table>
         <pagination v-show="totalTwo>0" :total="totalTwo" :page.sync="listQueryTwo.page" :limit.sync="listQueryTwo.pageSize"
                     @pagination="getListTwo" class="text-right"/>

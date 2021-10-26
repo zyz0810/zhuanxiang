@@ -80,9 +80,9 @@
           <el-table-column label="大类名称" align="center" prop="big_category"></el-table-column>
           <el-table-column label="小类名称" align="center" prop="small_category"></el-table-column>
           <el-table-column label="上报时间" align="center" prop="create_at"></el-table-column>
-          <el-table-column label="处置部门" align="center" prop="deal_department"></el-table-column>
-          <el-table-column label="所属街道" align="center" prop="street"></el-table-column>
-          <el-table-column label="问题描述" align="center" prop="description"></el-table-column>
+          <el-table-column label="处置部门" align="center" prop="deal_department" show-overflow-tooltip></el-table-column>
+          <el-table-column label="所属街道" align="center" prop="street" show-overflow-tooltip></el-table-column>
+          <el-table-column label="问题描述" align="center" prop="description" show-overflow-tooltip></el-table-column>
         </el-table>
         <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
                     @pagination="getListOne" class="text-right"/>
@@ -131,9 +131,9 @@
         <el-table v-loading="listLoading" :data="listTwo" :height="tableHeight"
                   element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
           <el-table-column label="序号" type="index" align="center"></el-table-column>
-          <el-table-column label="反复发生点位" align="center" prop="description"></el-table-column>
-          <el-table-column label="反复发生类型" align="center" prop="small_category"></el-table-column>
-          <el-table-column label="反复发生次数" align="center" prop="num"></el-table-column>
+          <el-table-column label="反复发生点位" align="center" prop="description" show-overflow-tooltip></el-table-column>
+          <el-table-column label="反复发生类型" align="center" prop="small_category" show-overflow-tooltip></el-table-column>
+          <el-table-column label="反复发生次数" align="center" prop="num" show-overflow-tooltip></el-table-column>
         </el-table>
         <pagination v-show="totalTwo>0" :total="totalTwo" :page.sync="listQueryTwo.page" :limit.sync="listQueryTwo.pageSize"
                     @pagination="getListTwo" class="text-right"/>

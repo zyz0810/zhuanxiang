@@ -17,14 +17,14 @@
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
         <el-table-column label="编号" type="index" align="center"></el-table-column>
-        <el-table-column label="工地名称" align="center" prop="building_name"></el-table-column>
+        <el-table-column label="工地名称" align="center" prop="building_name" show-overflow-tooltip></el-table-column>
         <el-table-column label="工程类别" align="center" prop="building_type"></el-table-column>
         <el-table-column label="有效期" align="center">
           <template slot-scope="scope">
             {{scope.row.valid_start + ' - ' + scope.row.valid_end}}
           </template>
         </el-table-column>
-        <el-table-column label="地址" align="center" prop="address"></el-table-column>
+        <el-table-column label="地址" align="center" prop="address" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
             <el-button class="btn_green" type="primary" @click="handleView('update',scope.row)">更新</el-button>

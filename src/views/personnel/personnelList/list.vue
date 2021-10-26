@@ -22,10 +22,10 @@
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
         <el-table-column label="序号" type="index" align="center"></el-table-column>
-        <el-table-column label="姓名" align="center" prop="real_name"></el-table-column>
-        <el-table-column label="所属部门" align="center" prop="department_name"></el-table-column>
+        <el-table-column label="姓名" align="center" prop="real_name" show-overflow-tooltip></el-table-column>
+        <el-table-column label="所属部门" align="center" prop="department_name" show-overflow-tooltip></el-table-column>
         <el-table-column label="性别" align="center" prop="gender" :formatter="formatGender"></el-table-column>
-        <el-table-column label="职务" align="center" prop="job_title"></el-table-column>
+        <el-table-column label="职务" align="center" prop="job_title" show-overflow-tooltip></el-table-column>
         <el-table-column label="手机号" align="center" prop="mobile"></el-table-column>
         <el-table-column label="操作" align="center" min-width="250">
           <template slot-scope="scope">

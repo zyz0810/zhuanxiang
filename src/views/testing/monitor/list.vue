@@ -32,13 +32,13 @@
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
         <el-table-column label="序号" align="center" type="index"></el-table-column>
-        <el-table-column label="监控点编码" align="center" prop="index_code"></el-table-column>
-        <el-table-column label="监控点名称" align="center" prop="name"></el-table-column>
+        <el-table-column label="监控点编码" align="center" prop="index_code" show-overflow-tooltip></el-table-column>
+        <el-table-column label="监控点名称" align="center" prop="name" show-overflow-tooltip></el-table-column>
 <!--        <el-table-column label="监控类型" align="center" prop="mobile"></el-table-column>-->
-        <el-table-column label="归属区域" align="center" prop="depart_name"></el-table-column>
-        <el-table-column label="来源区域" align="center" prop="community_name"></el-table-column>
+        <el-table-column label="归属区域" align="center" prop="depart_name" show-overflow-tooltip></el-table-column>
+        <el-table-column label="来源区域" align="center" prop="community_name" show-overflow-tooltip></el-table-column>
         <el-table-column label="是否重点视频" align="center" prop="is_importance" :formatter="formatImportant"></el-table-column>
-        <el-table-column label="安装地址" align="center" prop="install_place"></el-table-column>
+        <el-table-column label="安装地址" align="center" prop="install_place" show-overflow-tooltip></el-table-column>
         <el-table-column label="是否启用" align="center" prop="point_status">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.point_status" active-color="#13ce66" :active-value="1" :inactive-value="2" @change="handleState(scope.row)"></el-switch>
