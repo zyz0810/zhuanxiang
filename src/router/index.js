@@ -94,7 +94,7 @@ export const asyncRoutes = [
     alwaysShow: true,
     meta: {
       title: '组织结构',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-zuzhijiegou',
       roles: [
         'system',
       ]
@@ -129,7 +129,7 @@ export const asyncRoutes = [
     alwaysShow: true,
     meta: {
       title: '权限管理',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-anniuquanxianguanli',
       roles: [
         'system',
       ]
@@ -184,7 +184,7 @@ export const asyncRoutes = [
     // alwaysShow: true,
     meta: {
       title: '日志管理',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-yanfaguanli-rizhiguanli',
       roles: [
         'system',
       ]
@@ -221,7 +221,7 @@ export const asyncRoutes = [
     alwaysShow: true,
     meta: {
       title: '数据字典',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon--zidianbiao',
       roles: [
         'system',
       ]
@@ -255,7 +255,7 @@ export const asyncRoutes = [
     name: '功能设置',
     meta: {
       title: '功能设置',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-shezhixitongshezhigongnengshezhishuxing',
       roles: ['system'],
     },
     children: [
@@ -278,7 +278,7 @@ export const asyncRoutes = [
     alwaysShow: true,
     meta: {
       title: '个人中心',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-gerenzhongxin',
       roles: [
         'system',
       ]
@@ -312,7 +312,7 @@ export const asyncRoutes = [
     name: '案件表达语',
     meta: {
       title: '案件表达语',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-wenzi',
       roles: [
         'system',
       ]
@@ -336,7 +336,7 @@ export const asyncRoutes = [
     // name: '数据交换',
     meta: {
       // title: '数据交换',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-jiaohuan',
       roles: ['dataExchange'],
     },
     children: [
@@ -358,7 +358,7 @@ export const asyncRoutes = [
     // name: '数据交换',
     meta: {
       // title: '数据交换',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-shujukulianjie',
       roles: ['dataExchange'],
     },
     children: [
@@ -381,7 +381,7 @@ export const asyncRoutes = [
     // name: '数据交换',
     meta: {
       // title: '数据交换',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-kaifazhezhongxin',
       roles: ['dataExchange'],
     },
     children: [
@@ -403,7 +403,7 @@ export const asyncRoutes = [
     // name: '数据交换',
     meta: {
       // title: '数据交换',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-rizhi',
       roles: ['dataExchange'],
     },
     children: [
@@ -427,7 +427,7 @@ export const asyncRoutes = [
     // name: '数据交换',
     meta: {
       // title: '数据交换',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-jiankong-jiankongbangding',
       roles: ['dataExchange'],
     },
     children: [
@@ -453,7 +453,7 @@ export const asyncRoutes = [
   // name: '数据交换',
   meta: {
   // title: '数据交换',
-  icon: 'iconfont icon-xiangqing',
+  icon: 'iconfont icon-grid-list',
     roles: ['dataAcquisition'],
 },
   children: [
@@ -476,7 +476,7 @@ export const asyncRoutes = [
     // name: '数据交换',
     meta: {
       // title: '数据交换',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-diliwangge',
       roles: ['dataAcquisition'],
     },
     children: [
@@ -498,7 +498,7 @@ export const asyncRoutes = [
     name: '信息采集',
     meta: {
       title: '信息采集',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-liuliangcaijishebei',
       roles: ['dataAcquisition'],
     },
     children: [
@@ -536,7 +536,7 @@ export const asyncRoutes = [
     // name: '数据交换',
     meta: {
       // title: '数据交换',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-shujuluru',
       roles: ['dataAcquisition'],
     },
     children: [
@@ -589,7 +589,7 @@ export const asyncRoutes = [
     // name: '数据交换',
     meta: {
       // title: '数据交换',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-renyuan',
       roles: ['personnel'],
     },
     children: [
@@ -612,7 +612,7 @@ export const asyncRoutes = [
     // name: '数据交换',
     meta: {
       // title: '数据交换',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon--cheliang',
       roles: ['car'],
     },
     children: [
@@ -635,7 +635,7 @@ export const asyncRoutes = [
     // name: '数据交换',
     meta: {
       // title: '数据交换',
-      icon: 'iconfont icon-xiangqing',
+      icon: 'iconfont icon-shipin',
       roles: ['video'],
     },
     children: [

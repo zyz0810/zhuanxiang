@@ -1,65 +1,142 @@
 {
-  "id": "2712531",
-  "name": "AI",
+  "id": "2724363",
+  "name": "zhuanxiang",
   "font_family": "iconfont",
   "css_prefix_text": "icon-",
-  "description": "",
+  "description": "滨江 -- 专项管理",
   "glyphs": [
     {
-      "icon_id": "2883559",
-      "name": "星星",
-      "font_class": "xingxing",
-      "unicode": "e749",
-      "unicode_decimal": 59209
+      "icon_id": "3545516",
+      "name": "视频",
+      "font_class": "shipin",
+      "unicode": "e603",
+      "unicode_decimal": 58883
     },
     {
-      "icon_id": "7424428",
-      "name": "统计",
-      "font_class": "tongji",
+      "icon_id": "6211879",
+      "name": "6-2车辆",
+      "font_class": "-cheliang",
       "unicode": "e60a",
       "unicode_decimal": 58890
     },
     {
-      "icon_id": "1516893",
-      "name": "导出 #8f8f8f & 14px",
-      "font_class": "daochufffpx",
-      "unicode": "e609",
-      "unicode_decimal": 58889
+      "icon_id": "13014641",
+      "name": "人员",
+      "font_class": "renyuan",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
     },
     {
-      "icon_id": "4294698",
-      "name": "详情",
-      "font_class": "xiangqing",
-      "unicode": "e637",
-      "unicode_decimal": 58935
+      "icon_id": "1813722",
+      "name": "grid-list-网格列表",
+      "font_class": "grid-list",
+      "unicode": "e635",
+      "unicode_decimal": 58933
     },
     {
-      "icon_id": "7395768",
-      "name": "审核",
-      "font_class": "shenhe",
-      "unicode": "e61b",
-      "unicode_decimal": 58907
+      "icon_id": "8651379",
+      "name": "数据录入",
+      "font_class": "shujuluru",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
     },
     {
-      "icon_id": "10550953",
-      "name": "导出",
-      "font_class": "daochu",
-      "unicode": "e602",
-      "unicode_decimal": 58882
+      "icon_id": "8691936",
+      "name": "地理网格",
+      "font_class": "diliwangge",
+      "unicode": "e6f6",
+      "unicode_decimal": 59126
     },
     {
-      "icon_id": "11587416",
-      "name": "导出",
-      "font_class": "daochu1",
-      "unicode": "e98c",
-      "unicode_decimal": 59788
+      "icon_id": "21053729",
+      "name": "流量采集设备",
+      "font_class": "liuliangcaijishebei",
+      "unicode": "e67a",
+      "unicode_decimal": 59002
     },
     {
-      "icon_id": "21217268",
-      "name": "下载",
-      "font_class": "xiazai",
-      "unicode": "e661",
-      "unicode_decimal": 58977
+      "icon_id": "1259944",
+      "name": "开发者中心",
+      "font_class": "kaifazhezhongxin",
+      "unicode": "e70f",
+      "unicode_decimal": 59151
+    },
+    {
+      "icon_id": "1413433",
+      "name": "日志",
+      "font_class": "rizhi",
+      "unicode": "e69a",
+      "unicode_decimal": 59034
+    },
+    {
+      "icon_id": "5243835",
+      "name": "数据库连接",
+      "font_class": "shujukulianjie",
+      "unicode": "e698",
+      "unicode_decimal": 59032
+    },
+    {
+      "icon_id": "9441411",
+      "name": "监控-监控绑定",
+      "font_class": "jiankong-jiankongbangding",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    },
+    {
+      "icon_id": "16516778",
+      "name": "交换",
+      "font_class": "jiaohuan",
+      "unicode": "e6ba",
+      "unicode_decimal": 59066
+    },
+    {
+      "icon_id": "374773",
+      "name": "个人中心",
+      "font_class": "gerenzhongxin",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "5315146",
+      "name": "28-字典表",
+      "font_class": "-zidianbiao",
+      "unicode": "e6bf",
+      "unicode_decimal": 59071
+    },
+    {
+      "icon_id": "6129178",
+      "name": "138设置、系统设置、功能设置、属性",
+      "font_class": "shezhixitongshezhigongnengshezhishuxing",
+      "unicode": "e795",
+      "unicode_decimal": 59285
+    },
+    {
+      "icon_id": "7407673",
+      "name": "文字",
+      "font_class": "wenzi",
+      "unicode": "e69b",
+      "unicode_decimal": 59035
+    },
+    {
+      "icon_id": "17426955",
+      "name": "按钮权限管理",
+      "font_class": "anniuquanxianguanli",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "17729564",
+      "name": "组织结构",
+      "font_class": "zuzhijiegou",
+      "unicode": "e6b6",
+      "unicode_decimal": 59062
+    },
+    {
+      "icon_id": "24161452",
+      "name": "研发管理-日志管理",
+      "font_class": "yanfaguanli-rizhiguanli",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
     }
   ]
 }
