@@ -92,13 +92,7 @@
         disableBtn: true,
         total: 0,
         parameterValueList: [{name: ''}],
-        list: [{
-          id:445,
-          name:'列表1',
-        },{
-          id:232,
-          name:'列表4322',
-        },],
+        list: [],
         listLoading: false,
         listQuery: {
           name: '',
