@@ -15,8 +15,10 @@
         <el-table-column label="地址" align="center" prop="address" show-overflow-tooltip></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
-            <el-button class="btn_blue02" type="primary" @click="handleView('update','',scope.row)">编辑</el-button>
+<!--            <el-button class="btn_blue02" type="primary" @click="handleView('update','',scope.row)">编辑</el-button>-->
             <el-button class="btn_blue01" type="primary" @click="handleView('create','child',scope.row)">新增</el-button>
+            <el-button class="btn_yellow" type="primary" v-if="scope.row.status == 1" @click="handleState(scope.row)">禁用</el-button>
+            <el-button class="btn_green" type="primary" v-if="scope.row.status == 2" @click="handleState(scope.row)">启用</el-button>
             <el-button class="btn_yellow" type="primary" @click="handleUser">人员</el-button>
 <!--            <el-button class="btn_red" type="primary" @click="">删除</el-button>-->
           </template>
@@ -32,7 +34,7 @@
 </template>
 
 <script>
-  import {departmentList,departmentAllList, departmentStatus, departmentExport,} from '@/api/system'
+  import {departmentList, departmentAllList, departmentStatus, departmentExport, roleStatus,} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
@@ -148,39 +150,21 @@
       handleUser(){
         this.$router.push({path:'/personnel/personnelList',query:{}});
       },
-      handleState(val) {
-        console.log(this.rowInfo[0].id)
-        if (val == 0) {
-          this.$confirm('确定禁用此参数吗?', '提示', {
+      handleState(row) {
+        if (row.status == 1) {
+          this.$confirm('确定禁用吗?', '提示', {
             type: 'warning'
           }).then(() => {
             this.listLoading = true;
             //NProgress.start();
-            let tempData = Object.assign({}, this.rowInfo[0]);
-            tempData.status = 0;
-            let para = {id:this.rowInfo[0].id,status:0}
-            this.$delete(tempData,'createTime')
-            this.$delete(tempData,'updateTime')
-            this.$delete(tempData,'createUser')
-            this.$delete(tempData,'updateUser')
-            if(tempData.operatingMode != 2){
-              tempData.parameterValueList = tempData.parameterValueList.map(item=>{
-                let obj = {}
-                obj.id = item.id
-                obj.name = item.name
-                return obj
-              })
-            }else{
-              this.$delete(tempData, 'parameterValueList')
-            }
-            paraUpdate(tempData).then((res) => {
+            console.log(row)
+            let para = {id:row.id,status:2}
+            departmentStatus(para).then((res) => {
               this.listLoading = false;
-              if (res.resp_code == 0) {
-                // this.list.splice(index, 1);
-                //NProgress.done();
+              if (res.code == 1) {
                 this.getList();
                 this.$message({
-                  message: '禁用成功',
+                  message: res.message,
                   type: 'success'
                 });
               }
@@ -189,38 +173,18 @@
 
           });
         } else {
-          this.$confirm('确定启用此参数吗?', '提示', {
+          this.$confirm('确定启用吗?', '提示', {
             type: 'warning'
           }).then(() => {
             this.listLoading = true;
             //NProgress.start();
-            let tempData = Object.assign({}, this.rowInfo[0]);
-            tempData.status = 1;
-            this.$delete(tempData,'createTime')
-            this.$delete(tempData,'updateTime')
-            this.$delete(tempData,'createUser')
-            this.$delete(tempData,'updateUser')
-            if(tempData.operatingMode != 2){
-              if(tempData.parameterValueList){
-                tempData.parameterValueList = tempData.parameterValueList.map(item=>{
-                  let obj = {}
-                  obj.id = item.id
-                  obj.name = item.name
-                  return obj
-                })
-              }
-            }else{
-              this.$delete(tempData, 'parameterValueList')
-            }
-            // let para = {id:this.rowInfo[0].id,status:1}
-            paraUpdate(tempData).then((res) => {
+            let para = {id:row.id,status:1}
+            departmentStatus(para).then((res) => {
               this.listLoading = false;
-              if (res.resp_code == 0) {
-                // this.list.splice(index, 1);
-                //NProgress.done();
+              if (res.code == 1) {
                 this.getList();
                 this.$message({
-                  message: '启用成功',
+                  message: res.message,
                   type: 'success'
                 });
               }
