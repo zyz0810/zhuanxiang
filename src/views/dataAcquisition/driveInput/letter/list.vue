@@ -66,12 +66,13 @@
 
           <el-form :inline="true" :model="listQuery" :label="280" class="fr">
             <el-form-item label="">
-              <el-input v-model="listQuery.productSn" placeholder="智能检索" @change="handleFilter" clearable/>
+              <el-input v-model="listQuery.key_word" placeholder="智能检索" clearable/>
             </el-form-item>
             <el-form-item label="">
               <el-date-picker
-                v-model="listQuery.value1"
-                type="datetimerange"
+                v-model="dateTime"
+                value-format="yyyy-MM-dd"
+                type="daterange"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
@@ -95,7 +96,7 @@
           <el-table-column label="承办部门" align="center" prop="deal_department" show-overflow-tooltip></el-table-column>
           <el-table-column label="地址描述" align="center" prop="Illegal_address" show-overflow-tooltip></el-table-column>
         </el-table>
-        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+        <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
                     @pagination="getListOne" class="text-right"/>
       </el-tab-pane>
       <el-tab-pane label="重复件导入">
@@ -119,21 +120,22 @@
             <el-button slot="trigger" class="btn_blue02" type="primary">导入</el-button>
           </el-upload>
 
-          <el-form :inline="true" :model="listQuery" :label="280" class="fr">
+          <el-form :inline="true" :model="listQueryTwo" :label="280" class="fr">
             <el-form-item label="">
-              <el-input v-model="listQuery.productSn" placeholder="智能检索" @change="handleFilter" clearable/>
+              <el-input v-model="listQueryTwo.key_word" placeholder="智能检索" clearable/>
             </el-form-item>
             <el-form-item label="">
               <el-date-picker
-                v-model="listQuery.value1"
-                type="datetimerange"
+                v-model="dateTimeTwo"
+                value-format="yyyy-MM-dd"
+                type="daterange"
                 range-separator="至"
                 start-placeholder="开始日期"
                 end-placeholder="结束日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item>
-              <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>
+              <el-button class="btn_blue02" type="primary" @click="handleFilterTwo">搜索</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -181,13 +183,19 @@
         list: [],
         listLoading: false,
         listQuery: {
+          key_word:'',
+          start_time:'',
+          end_time:'',
           page: 1,
-          limit: 10
+          pageSize: 10
         },
         listTwo:[],
         listQueryTwo: {
+          key_word:'',
+          start_time:'',
+          end_time:'',
           page: 1,
-          limit: 10
+          pageSize: 10
         },
         totalTwo:0,
         fileListRep:[],
@@ -223,6 +231,42 @@
       ...mapState({
         roles: state => state.user.roles,
       }),
+      dateTime: {
+        get() {
+          if (this.listQuery.start_time && this.listQuery.end_time) {
+            return [this.listQuery.start_time, this.listQuery.end_time];
+          } else {
+            return [];
+          }
+        },
+        set(v) {
+          if (v) {
+            this.listQuery.start_time = v[0];
+            this.listQuery.end_time = v[1];
+          } else {
+            this.listQuery.start_time = "";
+            this.listQuery.end_time = "";
+          }
+        },
+      },
+      dateTimeTwo: {
+        get() {
+          if (this.listQueryTwo.start_time && this.listQueryTwo.end_time) {
+            return [this.listQueryTwo.start_time, this.listQueryTwo.end_time];
+          } else {
+            return [];
+          }
+        },
+        set(v) {
+          if (v) {
+            this.listQueryTwo.start_time = v[0];
+            this.listQueryTwo.end_time = v[1];
+          } else {
+            this.listQueryTwo.start_time = "";
+            this.listQueryTwo.end_time = "";
+          }
+        },
+      },
     },
     mounted() {
       this.$nextTick(function() {
@@ -276,7 +320,7 @@
 
 
                 this.$message({ message: "导入成功", type: "success" });
-                this.getListOne();
+                this.handleFilter();
               } else {
                 this.$alert(res.resp_code, "提示", {
                   confirmButtonText: "确定",
@@ -329,7 +373,7 @@
 
 
                 this.$message({ message: "导入成功", type: "success" });
-                this.getListTwo();
+                this.handleFilterTwo();
               } else {
                 this.$alert(res.resp_code, "提示", {
                   confirmButtonText: "确定",
@@ -354,7 +398,11 @@
       },
       handleFilter() {
         this.listQuery.page = 1;
-        this.getList()
+        this.getListOne()
+      },
+      handleFilterTwo() {
+        this.listQueryTwo.page = 1;
+        this.getListTwo()
       },
       getListOne() {
         letterAskList(this.listQuery).then(res => {
@@ -388,18 +436,6 @@
           }
         })
       },
-      resetList() {
-        this.listQuery = {
-          name: '',
-          status: undefined,
-          page: 1,
-          limit: 10
-        }
-        this.getList();
-      },
-
-
-
 
       resetTemp() {
         this.temp = {
