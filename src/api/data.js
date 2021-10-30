@@ -587,3 +587,86 @@ export function tableList(data) {
     data: Qs.stringify(data)
   })
 }
+
+/* 获取井盖列表
+ * page
+ * pageSize
+ * type  allList 没有分页
+ * key_word
+ */
+export function wellLidList(data) {
+  return request({
+    url:'/admin/well_lid/allList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 添加井盖
+ */
+export function addWellLid(data) {
+  return request({
+    url:'/admin/well_lid/addWellLid',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 修改井盖
+ */
+export function editWellLid(data) {
+  return request({
+    url:'/admin/well_lid/editWellLid',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 导入井盖列表
+ * 	url
+ */
+export function implodeWellLid(data) {
+  return request({
+    url:'/admin/excel/implodeWellLid',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 获取养护单位列表
+ * page
+ * pageSize
+ * type  allList 没有分页
+ * key_word
+ */
+export function conserveList(data) {
+  return request({
+    url:'/admin/Conserve/allList',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 添加养护单位
+ */
+export function addConserve(data) {
+  return request({
+    url:'/admin/Conserve/addConserve',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 编辑养护单位
+ */
+export function editConserve(data) {
+  return request({
+    url:'/admin/Conserve/editConserve',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+/* 导入养护单位列表
+ * 	url
+ */
+export function implodeConserve(data) {
+  return request({
+    url:'/admin/excel/implodeConserve',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}

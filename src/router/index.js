@@ -526,6 +526,22 @@ export const asyncRoutes = [
           title: '示范小区',
           roles: ['dataAcquisition'],
         }
+      },{
+        path: 'manhole',
+        component: () => import('@/views/dataAcquisition/manhole/list'),
+        name: 'manholeList',
+        meta: {
+          title: '智能井盖',
+          roles: ['dataAcquisition'],
+        }
+      },{
+        path: 'company',
+        component: () => import('@/views/dataAcquisition/company/list'),
+        name: 'manholeList',
+        meta: {
+          title: '养护单位',
+          roles: ['dataAcquisition'],
+        }
       }
     ]
   },
