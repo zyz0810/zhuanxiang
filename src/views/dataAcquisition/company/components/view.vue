@@ -15,8 +15,8 @@
       </el-form-item>
       <el-form-item label="类型" prop="type">
         <el-select v-model="temp.type" placeholder="请选择类型" :disabled="isCanView" clearable>
-          <el-option label="河道养护" :value="1"></el-option>
-          <el-option label="道路保洁" :value="2"></el-option>
+          <el-option label="河道养护单位" value="河道养护单位"></el-option>
+          <el-option label="道路保洁单位" value="道路保洁单位"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="联系人" prop="link_man">
@@ -106,7 +106,7 @@
           city: [{ required: true, message: '请选择市', trigger: 'change' }],
           area: [{ required: true, message: '请选择区', trigger: 'change' }],
           principal: [{ required: true, message: '请输入负责人', trigger: 'change' }],
-          mobile: [{ required: true, message: '请输入手机号', trigger: 'change' }],
+          // mobile: [{ required: true, message: '请输入手机号', trigger: 'change' }],
         },
       }
     },
