@@ -1,6 +1,6 @@
 import { login, logout, getInfo } from '@/api/user'
 import { findMenuByRole } from '@/api/menu'
-import { getToken, setToken, removeToken,getRole,removeRole,setId,removeId,getName,setName,removeName,getMobile,setMobile,removeMobile,setCity,removeCity,setCitySelected,removeCitySelected} from '@/utils/auth'
+import { getToken, setToken, removeToken,getRole,removeRole,setId,removeId,getName,setName,removeName,getMobile,setMobile,removeMobile,setCity,removeCity,setCitySelected,removeCitySelected,getRealName,setRealName,removeRealName} from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 import store from '@/store'
@@ -9,6 +9,7 @@ import axios from 'axios'
 const state = {
   token: getToken(),
   name: '',
+  real_name:'',
   avatar: '',
   introduction: '',
   roles: [],
@@ -42,6 +43,9 @@ const mutations = {
   },
   SET_CITYSELECTED: (state, citySelected) => {
     state.citySelected = citySelected
+  },
+  SET_REALNAME: (state, real_name) => {
+    state.real_name = real_name
   },
 }
 
@@ -79,13 +83,19 @@ const actions = {
         if(res.code == 1){
           commit('SET_NAME', res.data.user_name);
           setName(res.data.name);
+          commit('SET_REALNAME', res.data.real_name);
+          setRealName(res.data.real_name);
         }else{
           commit('SET_NAME', '');
           removeName();
+          commit('SET_REALNAME', '');
+          removeRealName();
         }
       }).catch(error => {
           commit('SET_NAME', '');
           removeName();
+        commit('SET_REALNAME', '');
+        removeRealName();
         })
       commit('SET_ROLES', role);
       resolve(role);
@@ -150,6 +160,8 @@ const actions = {
         commit('SET_MOBILE', '');
         commit('SET_CITY', []);
         commit('SET_CITYSELECTED', '');
+        commit('SET_REALNAME', '');
+        removeRealName();
         removeCitySelected();
         removeCity();
         removeToken();
@@ -170,6 +182,8 @@ const actions = {
         commit('SET_NAME', '');
         commit('SET_MOBILE', '');
         commit('SET_CITY', []);
+        commit('SET_REALNAME', '');
+        removeRealName();
         removeToken();
         removeCitySelected();
         removeCity();
@@ -192,6 +206,8 @@ const actions = {
       // commit('SET_ID', '');
       commit('SET_NAME', '');
       commit('SET_CITY', []);
+      commit('SET_REALNAME', '');
+      removeRealName();
       removeToken();
       removeCity();
       removeCitySelected();

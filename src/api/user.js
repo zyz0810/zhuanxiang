@@ -29,7 +29,7 @@ export function logout(data) {
 // }
 export function getInfo(data) {
   return request({
-    url: `/admin/user/detail`,
+    url: `/admin/user/current`,
     method: 'post',
     data: Qs.stringify(data)
   })
@@ -83,6 +83,17 @@ export function userAdd(data) {
 export function userEdit(data) {
   return request({
     url:'/admin/user/edit',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
+
+
+/* 当前登录人员-详情
+ */
+export function userCurrent(data) {
+  return request({
+    url:'/admin/user/current',
     method: 'post',
     data: Qs.stringify(data)
   })

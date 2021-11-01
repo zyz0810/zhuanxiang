@@ -26,7 +26,11 @@
         <el-table-column label="案件编码" align="center" prop="code"></el-table-column>
         <el-table-column label="海康上报小类" align="center" prop="hk_category"></el-table-column>
         <el-table-column label="所属部门" align="center" prop="department_name"></el-table-column>
-        <el-table-column label="处置时限" align="center" prop="send_time"></el-table-column>
+        <el-table-column label="处置时限" align="center" prop="send_time">
+          <template slot-scope="scope">
+          <span>{{Number(scope.row.send_time)/Number(3600)}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="启用状态" align="center" prop="status">
           <template slot-scope="scope">
             <el-switch v-model="scope.row.status" active-color="#13ce66" :active-value="1" :inactive-value="2" @change="handelState(scope.$index, scope.row)"></el-switch>

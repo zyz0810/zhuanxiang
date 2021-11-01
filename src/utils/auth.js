@@ -51,6 +51,18 @@ export function setName(token) {
 export function removeName() {
   return Cookies.remove(NameKey)
 }
+const RealName = 'real_name';
+export function getRealName() {
+  return Cookies.get(RealName)
+}
+
+export function setRealName(real_name) {
+  return Cookies.set(RealName, real_name)
+}
+
+export function removeRealName() {
+  return Cookies.remove(RealName)
+}
 const Role = 'role';
 export function getRole() {
   return JSON.parse(localStorage.getItem(Role))

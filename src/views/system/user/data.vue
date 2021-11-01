@@ -25,13 +25,13 @@
         </el-select>
       </el-form-item>
       <el-form-item label="职务" prop="job_title">
-        <el-input v-model.trim="temp.job_title" placeholder="请输入部门名称" autocomplete="off" clearable/>
+        <el-input v-model.trim="temp.job_title" placeholder="请输入职务" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="手机号码" prop="mobile">
-        <el-input v-model.trim="temp.mobile" placeholder="请输入职务" autocomplete="off" clearable/>
+        <el-input v-model.trim="temp.mobile" placeholder="请输入手机号码" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="出生日期" prop="birthday">
-        <el-date-picker v-model="temp.birthday" type="date" value-format="yyyy-MM-dd" placeholder="选择日期"></el-date-picker>
+        <el-date-picker v-model="temp.birthday" type="date" value-format="yyyy-MM-dd" placeholder="请选择日期"></el-date-picker>
       </el-form-item>
       <el-form-item label="胸牌编号" prop="user_code">
         <el-input v-model.trim="temp.user_code" placeholder="请输入胸牌编号" autocomplete="off" clearable/>
@@ -43,20 +43,20 @@
       </el-form-item>
       <el-form-item label="是否党员" prop="is_party_member">
         <el-select v-model="temp.is_party_member">
-          <el-option label="未定义" :value="0"></el-option>
+<!--          <el-option label="未定义" :value="0"></el-option>-->
           <el-option label="是" :value="1"></el-option>
           <el-option label="否" :value="2"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="参加工作时间" prop="first_work_time">
-        <el-date-picker v-model="temp.first_work_time" value-format="yyyy-MM-dd" type="date" placeholder="选择日期"></el-date-picker>
+        <el-date-picker v-model="temp.first_work_time" value-format="yyyy-MM-dd" type="date" placeholder="请选择日期"></el-date-picker>
 <!--        <el-input v-model.trim="temp.first_work_time" placeholder="请输入身份" autocomplete="off" clearable/>-->
       </el-form-item>
       <el-form-item label="籍贯" prop="origin">
         <el-input v-model.trim="temp.origin" placeholder="请输入籍贯" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="人员身份" prop="social_title">
-        <el-input v-model.trim="temp.social_title" placeholder="请输入籍贯" autocomplete="off" clearable/>
+        <el-input v-model.trim="temp.social_title" placeholder="请输入人员身份" autocomplete="off" clearable/>
       </el-form-item>
 
       <el-form-item label="家庭电话" prop="phone">
@@ -65,7 +65,7 @@
 
       <el-form-item label="是否驾驶员" prop="is_driver">
         <el-select v-model="temp.is_driver">
-          <el-option label="未定义" :value="0"></el-option>
+<!--          <el-option label="未定义" :value="0"></el-option>-->
           <el-option label="是" :value="1"></el-option>
           <el-option label="否" :value="2"></el-option>
         </el-select>
@@ -93,7 +93,7 @@
 
 <script>
   import { getId} from '@/utils/auth'
-  import {userEdit, userConstants, userDetail} from '@/api/user';
+  import {userEdit, userConstants, userDetail,userCurrent} from '@/api/user';
   import {departmentAllList,roleList} from '@/api/system';
   import SingleImage from "@/components/Upload/SingleImage.vue";
   export default {
@@ -143,7 +143,7 @@
     },
     methods: {
       getView(){
-        userDetail().then(res=>{
+        userCurrent().then(res=>{
           const { id, department_id, real_name, user_name, role_id, gender,job_title,mobile,birthday,user_code,education,is_party_member,first_work_time,origin,
             social_title,phone,is_driver,address,remark,head_image} = res.data;
           this.temp = { id, department_id, real_name, user_name, role_id, gender,job_title,mobile,birthday,user_code,education,is_party_member,first_work_time,origin,

@@ -23,7 +23,7 @@
         <el-input v-model.trim="temp.hk_category" placeholder="请输入海康上报小类" autocomplete="off" clearable/>
       </el-form-item>
       <el-form-item label="处理时限" prop="send_time">
-        <el-input v-model.trim="temp.send_time" placeholder="请输入处理时限" autocomplete="off" clearable/>
+        <el-input v-model.trim="temp.send_time" placeholder="请输入处理时限" autocomplete="off" clearable/> 时
       </el-form-item>
       <el-form-item label="处置部门" prop="depart_id">
         <el-select v-model="temp.depart_id" placeholder="请选择" clearable>
@@ -159,7 +159,8 @@
         // });
 
 
-        const {id,parent_id,parent_name,name,code,hk_category,send_time,depart_id,status} = this.paraData.option;
+        const {id,parent_id,parent_name,name,code,hk_category,depart_id,status} = this.paraData.option;
+        let send_time = Number(this.paraData.option.send_time) / Number(3600);
         this.temp={id,parent_id,parent_name,name,code,hk_category,send_time,depart_id,status};
       },
 
@@ -167,7 +168,10 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.paraLoading = true
-            categoryAdd(this.temp).then((res) => {
+            // send_time
+            let temp = JSON.parse(JSON.stringify(this.temp));
+            temp.send_time = temp.send_time * 3600;
+            categoryAdd(temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)
@@ -189,7 +193,9 @@
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
             this.paraLoading = true
-            categoryEdit(this.temp).then((res) => {
+            let temp = JSON.parse(JSON.stringify(this.temp));
+            temp.send_time = temp.send_time * 3600;
+            categoryEdit(temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)
