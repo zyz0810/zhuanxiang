@@ -21,7 +21,7 @@
 
 <script>
   import { getId,removeId,} from '@/utils/auth'
-  import {editPassword} from '@/api/user'
+  import {getInfo,editPassword} from '@/api/user'
 
   export default {
     name: 'password',
@@ -46,7 +46,15 @@
 
       }
     },
+    mounted(){
+      this.getCurrent();
+    },
     methods: {
+      getCurrent(){
+        getInfo().then((res) => {
+          this.temp.user_id = res.data.id
+        })
+      },
       onSubmit() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
