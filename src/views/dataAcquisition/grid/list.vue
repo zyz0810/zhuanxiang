@@ -25,7 +25,11 @@
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}" >
-        <el-table-column label="编号" type="index" align="center"></el-table-column>
+        <el-table-column label="编号" width="80" align="center">
+          <template slot-scope="scope">
+            {{(listQuery.page - 1) * listQuery.pageSize + scope.$index + 1}}
+          </template>
+        </el-table-column>
         <el-table-column label="网格名称" align="center" prop="table_name"></el-table-column>
         <el-table-column label="责任部门" align="center" prop="department_name"></el-table-column>
         <el-table-column label="网格代码" align="center" prop="table_code"></el-table-column>
