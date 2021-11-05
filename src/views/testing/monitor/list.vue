@@ -5,10 +5,7 @@
         <el-form-item label="选择类型">
           <el-select v-model="listQuery.class" placeholder="请选择" clearable>
             <!--1AI视频、2河道视频、3停车场视频、4普通视频；-->
-            <el-option label="AI视频" :value="1"></el-option>
-            <el-option label="河道视频" :value="2"></el-option>
-            <el-option label="停车场视频" :value="3"></el-option>
-            <el-option label="普通视频" :value="4"></el-option>
+            <el-option v-for="item in videoCategory" :label="item.name" :value="item.value"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -69,6 +66,7 @@
   import { mapState } from 'vuex'
   import Pagination from "@/components/Pagination/index"; // waves directive
   import paraView from "./components/view";
+  import {allDictionary} from "@/api/data";
   export default {
     name: 'monitorList',
     directives: {waves},
@@ -90,7 +88,8 @@
           page: 1,
           pageSize: 10
         },
-        tableHeight:'100'
+        tableHeight:'100',
+        videoCategory:[],
       }
     },
     computed: {
@@ -119,8 +118,14 @@
         };
       });
       this.getList();
+      this.getVideoCategory();
     },
     methods: {
+      getVideoCategory(){
+        allDictionary({key:'videoType'}).then((res) => {
+          this.videoCategory = res.data
+        })
+      },
       formatImportant(row, column, cellValue, index) {
         return cellValue == 1
           ? "是"

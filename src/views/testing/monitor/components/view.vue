@@ -24,9 +24,10 @@
       <el-form-item label="监控类型" prop="class">
         <!--<el-input v-model.trim="temp.class" placeholder="请输入监控类型" autocomplete="off" :disabled="true" clearable/>-->
         <el-select v-model.trim="temp.class" placeholder="请选择监控类型" autocomplete="off" clearable>
-          <el-option label="AI视频" :value="1"></el-option>
-          <el-option label="河道视频" :value="2"></el-option>
-          <el-option label="普通视频" :value="3"></el-option>
+<!--          <el-option label="AI视频" :value="1"></el-option>-->
+<!--          <el-option label="河道视频" :value="2"></el-option>-->
+<!--          <el-option label="普通视频" :value="3"></el-option>-->
+          <el-option v-for="item in videoCategory" :label="item.name" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
 <!--      <el-form-item label="111视频型号" prop="name">-->
@@ -68,7 +69,7 @@
 
 <script>
   import {editPoint} from '@/api/monitor'
-  import {communityList} from "@/api/data"; // waves directive
+  import {allDictionary, communityList} from "@/api/data"; // waves directive
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   export default {
@@ -110,6 +111,7 @@
           community_id:'',
           class:''
         },
+        videoCategory:[],
         rules: {
           // name: [{ required: true, message: '请输入名称', trigger: 'change' }],
         },
@@ -137,6 +139,7 @@
         this.temp.id = this.paraData.id;
         this.getView();
         this.getList();
+        this.getVideoCategory();
         // id:'',
         //   index_code:'',
         //   name:'',
@@ -152,6 +155,11 @@
         communityList({page:1,pageSize:99999}).then(res => {
           this.communityList = res.data.data
         });
+      },
+      getVideoCategory(){
+        allDictionary({key:'videoType'}).then((res) => {
+          this.videoCategory = res.data
+        })
       },
       getView() {
        const {id,depart_id,is_importment,community_id} = this.paraData.option;
