@@ -238,8 +238,11 @@
       },
       getView(){
         userDetail({id:this.paraData.id}).then(res=>{
-          const { id, department_id, real_name, user_name, role_id, gender,job_title,mobile,birthday,user_code,education,is_party_member,first_work_time,origin,
-            social_title,phone,is_driver,address,remark,head_image} = res.data;
+          const { id, department_id, real_name, user_name, role_id, gender,job_title,mobile,birthday,user_code,first_work_time,origin,
+            social_title,phone,address,remark,head_image} = res.data;
+          let education = Number(res.data.education);
+          let is_party_member = Number(res.data.is_party_member);
+          let is_driver = Number(res.data.is_driver);
           this.temp = { id, department_id, real_name, user_name, role_id, gender,job_title,mobile,birthday,user_code,education,is_party_member,first_work_time,origin,
             social_title,phone,is_driver,address,remark,head_image}
         });
