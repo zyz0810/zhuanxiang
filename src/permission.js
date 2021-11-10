@@ -86,8 +86,8 @@ router.beforeEach(async(to, from, next) => {
       next({ path: '/' })
       NProgress.done()
     } else {
-      const hasRoles = store.getters.roles && store.getters.roles.length > 0 &&(store.getters.roles.sort().toString() == getRole().sort().toString())
-      // const hasRoles = store.getters.roles && store.getters.roles.length > 0
+      // const hasRoles = store.getters.roles && store.getters.roles.length > 0 &&(store.getters.roles.sort().toString() == getRole().sort().toString())
+      const hasRoles = store.getters.roles && store.getters.roles.length > 0
       if (hasRoles) {
         next()
       } else {
