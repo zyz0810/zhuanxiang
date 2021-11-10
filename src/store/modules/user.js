@@ -1,6 +1,28 @@
 import { login, logout, getInfo } from '@/api/user'
 import { findMenuByRole } from '@/api/menu'
-import { getToken, setToken, removeToken,getRole,removeRole,setId,removeId,getName,setName,removeName,getMobile,setMobile,removeMobile,setCity,removeCity,setCitySelected,removeCitySelected,getRealName,setRealName,removeRealName} from '@/utils/auth'
+import {
+  getToken,
+  setToken,
+  removeToken,
+  getRole,
+  removeRole,
+  setId,
+  removeId,
+  getName,
+  setName,
+  removeName,
+  getMobile,
+  setMobile,
+  removeMobile,
+  setCity,
+  removeCity,
+  setCitySelected,
+  removeCitySelected,
+  getRealName,
+  setRealName,
+  removeRealName,
+  setRole
+} from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 import store from '@/store'
@@ -78,27 +100,62 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      let role = getRole()
+
       getInfo().then(res => {
         if(res.code == 1){
+          let role = [];
+          console.log('权限')
+          console.log(role)
           commit('SET_NAME', res.data.user_name);
           setName(res.data.name);
           commit('SET_REALNAME', res.data.real_name);
           setRealName(res.data.real_name);
+          if(res.data.user_name == 'admin'){
+            // role = getRole()
+            if(getRole() == 'system'){
+              setRole(['systemAdmin']);
+              role = ['systemAdmin'];
+            }
+            console.log('zengjia')
+            console.log(role)
+          }else{
+            role = getRole()
+          }
+
+          commit('SET_ROLES', role);
+          resolve(role);
         }else{
+          let role = getRole();
+
           commit('SET_NAME', '');
           removeName();
           commit('SET_REALNAME', '');
           removeRealName();
+          // commit('SET_ROLES', role);
+          // resolve(role);
+          resolve([]);
         }
       }).catch(error => {
-          commit('SET_NAME', '');
-          removeName();
+        commit('SET_ID', '');
+        commit('SET_TOKEN', '');
+        commit('SET_ROLES', []);
+        commit('SET_NAME', '');
+        commit('SET_MOBILE', '');
+        commit('SET_CITY', []);
         commit('SET_REALNAME', '');
         removeRealName();
+        removeToken();
+        removeCitySelected();
+        removeCity();
+        removeRole();
+        sessionStorage.setItem("Admin-Token", '');
+        resetRouter();
+        removeId();
+        removeName();
+        removeMobile();
+        reject(error)
         })
-      commit('SET_ROLES', role);
-      resolve(role);
+
       // getInfo().then(response => {
       //   if(response.resp_code == 0){
       //     // commit('SET_ID', response.data.id);

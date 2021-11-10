@@ -97,6 +97,7 @@ export const asyncRoutes = [
       icon: 'iconfont icon-zuzhijiegou',
       roles: [
         'system',
+        'systemAdmin',
       ]
     },
     children: [{
@@ -107,6 +108,7 @@ export const asyncRoutes = [
         title: '组织管理',
         roles: [
           'system',
+          'systemAdmin',
         ]
       }
     },{
@@ -117,6 +119,7 @@ export const asyncRoutes = [
         title: '分平台管理',
         roles: [
           'system',
+          'systemAdmin',
         ]
       }
     }],
@@ -131,7 +134,7 @@ export const asyncRoutes = [
       title: '权限管理',
       icon: 'iconfont icon-anniuquanxianguanli',
       roles: [
-        'system',
+        'systemAdmin',
       ]
     },
     children: [{
@@ -141,7 +144,7 @@ export const asyncRoutes = [
       meta: {
         title: '权限类目',
         roles: [
-          'system',
+          'systemAdmin',
         ]
       }
     },{
@@ -151,7 +154,7 @@ export const asyncRoutes = [
       meta: {
         title: '角色管理',
         roles: [
-          'system',
+          'systemAdmin',
         ]
       }
     },{
@@ -161,7 +164,7 @@ export const asyncRoutes = [
       meta: {
         title: '菜单管理',
         roles: [
-          'system',
+          'systemAdmin',
         ]
       }
     },{
@@ -171,7 +174,7 @@ export const asyncRoutes = [
       meta: {
         title: '应用授权',
         roles: [
-          'system',
+          'systemAdmin',
         ]
       }
     }],
@@ -187,6 +190,7 @@ export const asyncRoutes = [
       icon: 'iconfont icon-yanfaguanli-rizhiguanli',
       roles: [
         'system',
+        'systemAdmin',
       ]
     },
     children: [{
@@ -197,6 +201,7 @@ export const asyncRoutes = [
         title: '日志管理',
         roles: [
           'system',
+          'systemAdmin',
         ]
       }
     },
@@ -223,7 +228,7 @@ export const asyncRoutes = [
       title: '数据字典',
       icon: 'iconfont icon--zidianbiao',
       roles: [
-        'system',
+        'systemAdmin',
       ]
     },
     children: [{
@@ -233,7 +238,7 @@ export const asyncRoutes = [
       meta: {
         title: '数据字典',
         roles: [
-          'system',
+          'systemAdmin',
         ]
       }
     },{
@@ -243,7 +248,7 @@ export const asyncRoutes = [
       meta: {
         title: '类型管理',
         roles: [
-          'system',
+          'systemAdmin',
         ]
       }
     }],
@@ -256,7 +261,7 @@ export const asyncRoutes = [
     meta: {
       title: '功能设置',
       icon: 'iconfont icon-shezhixitongshezhigongnengshezhishuxing',
-      roles: ['system'],
+      roles: ['system', 'systemAdmin',],
     },
     children: [
       {
@@ -265,7 +270,7 @@ export const asyncRoutes = [
         name: 'functionSet',
         meta: {
           title: '功能设置',
-          roles: ['system'],
+          roles: ['system', 'systemAdmin',],
         }
       }
     ]
@@ -281,6 +286,7 @@ export const asyncRoutes = [
       icon: 'iconfont icon-gerenzhongxin',
       roles: [
         'system',
+        'systemAdmin',
       ]
     },
     children: [{
@@ -291,6 +297,7 @@ export const asyncRoutes = [
         title: '个人资料',
         roles: [
           'system',
+          'systemAdmin',
         ]
       }
     },{
@@ -301,6 +308,7 @@ export const asyncRoutes = [
         title: '修改密码',
         roles: [
           'system',
+          'systemAdmin',
         ]
       }
     }],
@@ -315,6 +323,7 @@ export const asyncRoutes = [
       icon: 'iconfont icon-wenzi',
       roles: [
         'system',
+        'systemAdmin',
       ]
     },
     children: [{
@@ -325,6 +334,7 @@ export const asyncRoutes = [
         title: '案件表达语',
         roles: [
           'system',
+          'systemAdmin',
         ]
       }
     }],

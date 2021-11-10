@@ -87,15 +87,19 @@ router.beforeEach(async(to, from, next) => {
       NProgress.done()
     } else {
       const hasRoles = store.getters.roles && store.getters.roles.length > 0 &&(store.getters.roles.sort().toString() == getRole().sort().toString())
+      // const hasRoles = store.getters.roles && store.getters.roles.length > 0
       if (hasRoles) {
         next()
       } else {
         try {
           const roles = await store.dispatch('user/getInfo')
+          console.log('获取')
+          console.log(roles)
           const accessRoutes = await store.dispatch(
             'permission/generateRoutes',
             roles
           )
+          console.log(accessRoutes)
           router.addRoutes(accessRoutes)
           // set the replace: true, so the navigation will not leave a history record
           next({ ...to, replace: true })
