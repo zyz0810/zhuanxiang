@@ -115,6 +115,8 @@ const actions = {
             if(getRole() == 'system'){
               setRole(['systemAdmin']);
               role = ['systemAdmin'];
+            }else{
+              role = getRole()
             }
             console.log('zengjia')
             console.log(role)
