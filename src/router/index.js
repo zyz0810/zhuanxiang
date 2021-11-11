@@ -142,7 +142,7 @@ export const asyncRoutes = [
       component: () => import('@/views/system/jurisdiction/category/list'),
       name: 'categoryList',
       meta: {
-        title: '权限类目',
+        title: '首页管理',
         roles: [
           'systemAdmin',
         ]

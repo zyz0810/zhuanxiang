@@ -5,38 +5,27 @@
     width="50%"
     @close="close"
     top="15vh"
-    title="菜单管理"
+    title="权限类"
     class="dialogContainer"
     @open="open"
   >
     <el-form ref="dataForm" :rules="rules" :model="temp" label-width="120px" class="dialog_form">
 
-      <el-form-item label="菜单名称" prop="name">
-        <el-input v-model.trim="temp.name" placeholder="请输入菜单名称" autocomplete="off" clearable/>
+      <el-form-item label="父类目" prop="parent_name">
+<!--        <el-select v-model="temp.pid" placeholder="选择父类目">-->
+<!--          <el-option v-for="option in arr" :label="option.name" :value="option.name"></el-option>-->
+<!--        </el-select>-->
+        <el-input v-model.trim="temp.parent_name" placeholder="" autocomplete="off" :disabled="true" clearable/>
       </el-form-item>
-      <el-form-item label="菜单链接" prop="url">
-        <el-input v-model.trim="temp.url" placeholder="请输入菜单链接" autocomplete="off" clearable/>
+
+      <el-form-item label="权限类目名称" prop="auth_name">
+        <el-input v-model.trim="temp.auth_name" placeholder="请输入权限类目名称" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="菜单顺序" prop="sort">
-        <el-input v-model.trim="temp.sort" placeholder="请输入数字" autocomplete="off" clearable/>
+      <el-form-item label="链接" prop="url">
+        <el-input v-model.trim="temp.url" placeholder="请输入链接" autocomplete="off" clearable/>
       </el-form-item>
-      <el-form-item label="菜单类型" prop="type">
-        <el-select v-model="temp.type">
-          <el-option v-for="item in menuTypeList" :label="item.name" :value="item.value"></el-option>
-<!--          // 1、管理平台   2、业务平台  3、BaseData-->
-<!--          <el-option label="管理平台" :value="1"></el-option>-->
-<!--          <el-option label="业务平台" :value="2"></el-option>-->
-<!--          <el-option label="BaseData" :value="3"></el-option>-->
-        </el-select>
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-radio-group v-model="temp.status">
-          <el-radio :label="1">正常</el-radio>
-          <el-radio :label="2">禁用</el-radio>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="图标" prop="ico_images">
-        <SingleImage :tempUrl="temp.ico_images" v-on:imgSrc="hasImgSrc"></SingleImage>
+      <el-form-item label="权限类目描述" prop="remark">
+        <el-input v-model.trim="temp.remark" placeholder="请输入权限类目描述" autocomplete="off" clearable/>
       </el-form-item>
 
     </el-form>
@@ -54,14 +43,13 @@
   import {authDetail,authAdd,authEdit} from '@/api/system'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
-  import SingleImage from "@/components/Upload/SingleImage.vue";
-  import {allDictionary} from "@/api/data";
+  import Pagination from "@/components/Pagination/index"; // waves directive
   export default {
     name: 'categoryView',
     directives: { waves },
     components: {
       draggable,
-      SingleImage
+      Pagination
     },
     props: {
       showDialog: {
@@ -85,16 +73,13 @@
         paraLoading:false,
         arr:[],
         temp: {
-          name:'',
+          pid:'',
+          parent_name:'',
           url:'',
-          sort:'',
-          type:'',
-          status:'',
-          ico_images:'',
+          auth_name:'',
+          remark:'',
         },
-        menuTypeList:[],
         dialogStatus: '',
-        images:'',
         rules: {
           province: [{ required: true, message: '请选择省', trigger: 'change' }],
           city: [{ required: true, message: '请选择市', trigger: 'change' }],
@@ -116,7 +101,6 @@
     },
     methods: {
       open(){
-        this.getType();
         this.dialogStatus = this.paraData.operatorType;
         this.temp.pid = this.paraData.pid;
         this.temp.parent_name = this.paraData.pidName;
@@ -127,40 +111,26 @@
       close(){
         this.paraLoading=false;
         this.temp= {
-          name:'',
+          pid:'',
+          parent_name:'',
           url:'',
-          sort:'',
-          type:'',
-          status:'',
-          ico_images:'',
+          auth_name:'',
+          remark:'',
         };
         this.dialogStatus= '';
       },
       getView(){
         authDetail({id:this.paraData.id}).then(res=>{
-          const { id, name,url, sort, type, status,} = res.data;
-          this.images = res.data.ico_images;
-          let ico_images = res.data.ico_images_url;
-          this.temp = { id, name,url, sort, type, status,ico_images}
+          const { id, pid,url, parent_name, auth_name, remark,} = res.data;
+          this.temp = { id, pid,url, parent_name, auth_name, remark,}
         });
       },
-      getType(){
-        allDictionary({key:'indexMenuType'}).then((res) => {
-          this.menuTypeList = res.data
-        })
-      },
-      hasImgSrc(val) {
-        this.temp.ico_images = val.url;
-        this.images = val.images;
-        console.log(this.images)
-      },
+
       createData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            let temp = JSON.parse(JSON.stringify(this.temp));
-            temp.ico_images = this.images;
             this.paraLoading = true
-            authAdd(temp).then((res) => {
+            authAdd(this.temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)
@@ -181,10 +151,8 @@
       updateData() {
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            let temp = JSON.parse(JSON.stringify(this.temp));
-            temp.ico_images = this.images;
             this.paraLoading = true
-            authEdit(temp).then((res) => {
+            authEdit(this.temp).then((res) => {
               setTimeout(()=>{
                 this.paraLoading = false
               },1000)

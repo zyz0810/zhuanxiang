@@ -69,7 +69,7 @@
         checkedMenu:[],
         defaultProps: {
           children: 'childrens',
-          label: 'auth_name'
+          label: 'name'
         },
         paraLoading:false,
         temp: {

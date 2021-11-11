@@ -536,6 +536,15 @@ export function dicList(data) {
     data: Qs.stringify(data)
   })
 }
+/* 添加数据字典一级
+ */
+export function dicAdd(data) {
+  return request({
+    url:'/admin/dictionary/addDictionary',
+    method: 'post',
+    data: Qs.stringify(data)
+  })
+}
 /* 修改数据字典
  */
 export function dicEdit(data) {

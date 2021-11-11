@@ -26,21 +26,21 @@
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight" row-key="id" :tree-props="{children: 'child_list', hasChildren: 'hasChildren'}"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
-        <el-table-column label="权限类目名称" align="center" prop="auth_name"></el-table-column>
-        <el-table-column label="权限类目描述" align="center" prop="remark" show-overflow-tooltip></el-table-column>
-        <el-table-column label="链接" align="center" prop="url"></el-table-column>
+        <el-table-column label="权限类目名称" align="center" prop="name"></el-table-column>
+        <el-table-column label="菜单链接" align="center" prop="url" show-overflow-tooltip></el-table-column>
+        <el-table-column label="菜单类型" align="center" prop="type" :formatter="formatType" show-overflow-tooltip></el-table-column>
         <el-table-column label="状态" align="center" prop="status" :formatter="formatStatus"></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
             <el-button class="btn_blue02" type="primary" @click="handleView('update','',scope.row)">编辑</el-button>
-            <el-button class="btn_blue01" type="primary" @click="handleView('create','child',scope.row)">添加</el-button>
+<!--            <el-button class="btn_blue01" type="primary" @click="handleView('create','child',scope.row)">添加</el-button>-->
             <el-button class="btn_yellow" type="primary" v-if="scope.row.status == 1" @click="handleState(scope.row)">禁用</el-button>
             <el-button class="btn_green" type="primary" v-if="scope.row.status == 2" @click="handleState(scope.row)">启用</el-button>
 <!--            <el-button class="btn_red" type="primary" @click="handleDelete(scope.row)">删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>
-      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit"
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
                   @pagination="getList" class="text-right"/>
     </div>
 
@@ -79,7 +79,7 @@
         listQuery: {
           auth_name: '',
           page: 1,
-          limit: 10
+          pageSize: 10
         },
         tableHeight:'100'
       }
@@ -143,6 +143,16 @@
           : cellValue == 2
             ? "禁用"
               : "";
+      },
+      // 1、管理平台   2、业务平台  3、BaseData
+      formatType(row, column, cellValue, index) {
+        return cellValue == 1
+          ? "管理平台"
+          : cellValue == 2
+            ? "业务平台"
+            : cellValue == 3
+              ? "BaseData"
+            : "";
       },
       handleFilter() {
         this.listQuery.page = 1;

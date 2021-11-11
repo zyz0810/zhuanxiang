@@ -21,7 +21,7 @@
         <el-table-column label="角色状态" align="center" prop="status" :formatter="formatStatus"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-<!--            <el-button class="btn_blue02" type="primary" @click="handleView('update',scope.row)">编辑</el-button>-->
+            <el-button class="btn_blue02" type="primary" @click="handleView('update',scope.row)">编辑</el-button>
             <el-button class="btn_yellow" type="primary" v-if="scope.row.status == 1" @click="handleState(scope.row)">禁用</el-button>
             <el-button class="btn_green" type="primary" v-if="scope.row.status == 2" @click="handleState(scope.row)">启用</el-button>
           </template>
