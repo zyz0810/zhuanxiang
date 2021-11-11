@@ -28,7 +28,7 @@
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
         <el-table-column label="权限类目名称" align="center" prop="name"></el-table-column>
         <el-table-column label="菜单链接" align="center" prop="url" show-overflow-tooltip></el-table-column>
-        <el-table-column label="菜单类型" align="center" prop="type" :formatter="formatType" show-overflow-tooltip></el-table-column>
+        <el-table-column label="菜单类型" align="center" prop="dictionary_type" show-overflow-tooltip></el-table-column>
         <el-table-column label="状态" align="center" prop="status" :formatter="formatStatus"></el-table-column>
         <el-table-column label="操作" align="center" min-width="160">
           <template slot-scope="scope">
