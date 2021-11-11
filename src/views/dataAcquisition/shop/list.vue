@@ -7,7 +7,7 @@
         <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
         <el-form :inline="true" :model="listQuery" :label="280" class="fr">
           <el-form-item label="">
-            <el-input v-model="listQuery.productSn" placeholder="" @change="handleFilter" clearable/>
+            <el-input v-model="listQuery.key_word" placeholder="" @change="handleFilter" clearable/>
           </el-form-item>
           <el-form-item>
             <el-button class="btn_blue02" type="primary" @click="handleFilter">搜索</el-button>
@@ -70,8 +70,7 @@
         list: [],
         listLoading: false,
         listQuery: {
-          name: '',
-          status: undefined,
+          key_word:'',
           page: 1,
           pageSize: 10
         },
