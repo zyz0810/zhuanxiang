@@ -307,14 +307,12 @@
             this.fileList.push({ url: res.images, name: file.name });
             this.loading = false;
             // this.$message({ message:res.message, type: "success" });
-            implodeCityManage({ url:this.fileList[0].url }).then((res) => {
-              if (res.code == 1) {
-
-
+            implodeCityManage({ url:res.images }).then((resChild) => {
+              if (resChild.code == 1) {
                 this.$message({ message: "导入成功", type: "success" });
                 this.handleFilter();
               } else {
-                this.$alert(res.resp_code, "提示", {
+                this.$alert(resChild.message, "提示", {
                   confirmButtonText: "确定",
                   type: "warning",
                 });
@@ -360,14 +358,12 @@
             this.fileListRep.push({ url: res.images, name: file.name });
             this.loading = false;
             // this.$message({ message:res.message, type: "success" });
-            implodeRepCityManage({ url:this.fileListRep[0].url }).then((res) => {
-              if (res.code == 1) {
-
-
+            implodeRepCityManage({ url:res.images }).then((resChild) => {
+              if (resChild.code == 1) {
                 this.$message({ message: "导入成功", type: "success" });
                 this.getListTwo();
               } else {
-                this.$alert(res.resp_code, "提示", {
+                this.$alert(resChild.message, "提示", {
                   confirmButtonText: "确定",
                   type: "warning",
                 });
