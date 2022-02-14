@@ -25,11 +25,13 @@
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
         <el-table-column label="序号" type="index" align="center"></el-table-column>
-        <el-table-column label="用户" align="center" prop="nick_name"></el-table-column>
+        <el-table-column label="用户" align="center" prop="ua"></el-table-column>
+        <el-table-column label="id" align="center" prop="id"></el-table-column>
         <el-table-column label="请求接口" align="center" prop="request_uri"></el-table-column>
-        <el-table-column label="请求时间" align="center" prop="request_time"></el-table-column>
-        <el-table-column label="用时" align="center" prop="request_cost"></el-table-column>
-        <el-table-column label="操作结果" align="center" prop="response_code" :formatter="formatterCode"></el-table-column>
+        <el-table-column label="请求方式" align="center" prop="method"></el-table-column>
+        <el-table-column label="请求时间" align="center" prop="addtime" :formatter="formatTime"></el-table-column>
+        <el-table-column label="用时" align="center" prop="time"></el-table-column>
+        <el-table-column label="操作结果" align="center" prop="status"></el-table-column>
       </el-table>
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
                   @pagination="getList" class="text-right"/>
@@ -104,7 +106,7 @@
     mounted() {
       this.$nextTick(function() {
         // this.$refs.filter-container.offsetHeight
-        let height = window.innerHeight - this.$refs.tableList.$el.offsetTop - 260;
+        let height = window.innerHeight - this.$refs.tableList.$el.offsetTop - 200;
         if(height>100){
           this.tableHeight = height
         }else{
@@ -113,7 +115,7 @@
         // 监听窗口大小变化
         const self = this;
         window.onresize = function() {
-          let height = window.innerHeight - self.$refs.tableList.$el.offsetTop - 260;
+          let height = window.innerHeight - self.$refs.tableList.$el.offsetTop - 200;
           if(height>100){
             self.tableHeight = height
           }else{
@@ -125,11 +127,16 @@
     },
     methods: {
       formatterCode(row, column, cellValue, index) {
-        return cellValue == 0
+        return cellValue != 200
           ? "失败"
-          : cellValue == 1
+          : cellValue == 200
             ? "成功"
                     : "--";
+      },
+      formatTime (row, column, cellValue, index) {
+        return cellValue
+          ? this.$moment(Number(cellValue)*1000).format("YYYY-MM-DD HH:mm:ss")
+          : "暂无";
       },
       handleFilter() {
         this.listQuery.page = 1;
@@ -138,7 +145,7 @@
       getList() {
         logList(this.listQuery).then(res => {
           this.list = res.data.data
-          this.total = res.data.count
+          this.total = res.data.total
         });
       },
 
