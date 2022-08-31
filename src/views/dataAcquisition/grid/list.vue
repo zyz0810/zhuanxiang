@@ -13,7 +13,7 @@
       </el-form>
       <el-divider></el-divider>
       <div class="mb_10">
-        <el-button class="btn_blue02" type="primary"  @click="">导出</el-button>
+        <el-button class="btn_blue02" type="primary"  @click="handleExport">导出</el-button>
 <!--        <el-form :inline="true" :model="listQuery" :label="280" class="fr">-->
 <!--          <el-form-item label="">-->
 <!--            <el-input v-model="listQuery.key_word" placeholder="" @change="handleFilter" clearable/>-->
@@ -37,6 +37,7 @@
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
                   @pagination="getList" class="text-right"/>
     </div>
+    <a v-show="false" :href="downLoadUrl" id="fileDownload"></a>
   </div>
 </template>
 
@@ -67,7 +68,8 @@
           page: 1,
           pageSize: 10
         },
-        tableHeight:'100'
+        tableHeight:'100',
+        downLoadUrl:'',
       }
     },
 
@@ -100,6 +102,14 @@
       this.getFirstCategory();
     },
     methods: {
+      // 导出
+      getUrl(){
+        this.downLoadUrl= this.global.domainName + 'admin/Export/tableList?key_word='+this.listQuery.key_word+'&page='+this.listQuery.page + '&pageSize='+this.listQuery.pageSize;
+      },
+      async handleExport(){
+        await this.getUrl();
+        document.getElementById("fileDownload").click();
+      },
       handleFilter() {
         this.listQuery.page = 1;
         this.getList()

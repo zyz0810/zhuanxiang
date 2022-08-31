@@ -63,7 +63,7 @@
           >
             <el-button slot="trigger" class="btn_blue02" type="primary">导入</el-button>
           </el-upload>
-
+          <el-button type="primary" class="btn_blue02 ml_10" @click="handleExport">导出</el-button>
           <el-form :inline="true" :model="listQuery" :label="280" class="fr">
             <el-form-item label="">
               <el-input v-model="listQuery.key_word" placeholder="智能检索" clearable/>
@@ -119,7 +119,7 @@
           >
             <el-button slot="trigger" class="btn_blue02" type="primary">导入</el-button>
           </el-upload>
-
+          <el-button type="primary" class="btn_blue02 ml_10" @click="handleExportTwo">导出</el-button>
           <el-form :inline="true" :model="listQueryTwo" :label="280" class="fr">
             <el-form-item label="">
               <el-input v-model="listQueryTwo.key_word" placeholder="智能检索" clearable/>
@@ -154,6 +154,7 @@
     </el-tabs>
 
     <historyList :showDialog.sync="showHistoryDialog" :historyData="historyData"></historyList>
+    <a v-show="false" :href="downLoadUrl" id="fileDownload"></a>
   </div>
 </template>
 
@@ -214,7 +215,8 @@
         rules: {
           name: [{required: true, message: '请输入名称', trigger: 'change'}],
         },
-        tableHeight:'100'
+        tableHeight:'100',
+        downLoadUrl:'',
       }
     },
     filters: {
@@ -292,6 +294,23 @@
       this.getListTwo();
     },
     methods: {
+      // 导出
+      getUrl(){
+        this.downLoadUrl= this.global.domainName + 'admin/Export/letterAskList?key_word='+this.listQuery.key_word+'&start_time='+this.listQuery.start_time+'&end_time='+this.listQuery.end_time
+          + '&page='+this.listQuery.page + '&pageSize='+this.listQuery.pageSize;
+      },
+      async handleExport(){
+        await this.getUrl();
+        document.getElementById("fileDownload").click();
+      },
+      getUrlTwo(){
+        this.downLoadUrl= this.global.domainName + 'admin/Export/letterRepAskList?key_word='+this.listQuery.key_word+'&start_time='+this.listQuery.start_time+'&end_time='+this.listQuery.end_time
+          + '&page='+this.listQuery.page + '&pageSize='+this.listQuery.pageSize;
+      },
+      async handleExportTwo(){
+        await this.getUrlTwo();
+        document.getElementById("fileDownload").click();
+      },
       uploadFile(e) {
         const file = e.file;
         console.log(e)

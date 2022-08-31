@@ -20,7 +20,7 @@
       </el-form>
       <el-divider></el-divider>
       <div class="mb_10">
-        <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
+<!--        <el-button class="btn_blue02" type="primary"  @click="handleExport">批量导出</el-button>-->
       </div>
       <el-table v-loading="listLoading" :data="list" :height="tableHeight"
                 element-loading-text="拼命加载中" fit border ref="tableList" :header-cell-style="{background:'rgb(245,245,253)',}">
@@ -36,7 +36,7 @@
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
                   @pagination="getList" class="text-right"/>
     </div>
-
+    <a v-show="false" :href="downLoadUrl" id="fileDownload"></a>
 
   </div>
 </template>
@@ -67,7 +67,8 @@
           page: 1,
           pageSize: 10
         },
-        tableHeight:'100'
+        tableHeight:'100',
+        downLoadUrl:'',
       }
     },
     filters: {
@@ -126,6 +127,14 @@
       this.getList();
     },
     methods: {
+      getUrl(){
+        this.downLoadUrl= this.global.domainName + 'admin/Export/list?start_time='+this.listQuery.start_time+'&end_time='+this.listQuery.end_time+'&request_uri='+this.listQuery.request_uri
+          +'&page='+this.listQuery.page + '&pageSize='+this.listQuery.pageSize;
+      },
+      async handleExport(){
+        await this.getUrl();
+        document.getElementById("fileDownload").click();
+      },
       formatterCode(row, column, cellValue, index) {
         return cellValue != 200
           ? "失败"

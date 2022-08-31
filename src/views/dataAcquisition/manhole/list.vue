@@ -19,7 +19,7 @@
         >
           <el-button slot="trigger" class="btn_blue02" type="primary">批量导入</el-button>
         </el-upload>
-        <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
+        <el-button class="btn_blue02" type="primary"  @click="handleExport">批量导出</el-button>
         <el-form :inline="true" :model="listQuery" :label="280" class="fr">
           <el-form-item label="">
             <el-input v-model="listQuery.key_word" placeholder="" @change="handleFilter" clearable/>
@@ -55,6 +55,7 @@
     </div>
 
     <paraView :showDialog.sync="showViewDialog" :paraData="viewData" @insertList="getList"></paraView>
+    <a v-show="false" :href="downLoadUrl" id="fileDownload"></a>
   </div>
 </template>
 
@@ -89,7 +90,8 @@
           page: 1,
           pageSize: 10
         },
-        tableHeight:'100'
+        tableHeight:'100',
+        downLoadUrl:'',
       }
     },
     computed: {
@@ -120,6 +122,14 @@
       this.getList();
     },
     methods: {
+      // 导出
+      getUrl(){
+        this.downLoadUrl= this.global.domainName + 'admin/Export/welllidList?key_word='+this.listQuery.key_word+ '&page='+this.listQuery.page + '&pageSize='+this.listQuery.pageSize;
+      },
+      async handleExport(){
+        await this.getUrl();
+        document.getElementById("fileDownload").click();
+      },
       formatStatus(row, column, cellValue, index) {
         // 1正常 2异常
         return cellValue == 1

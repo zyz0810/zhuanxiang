@@ -19,6 +19,7 @@
           >
             <el-button slot="trigger" class="btn_blue02" type="primary">导入</el-button>
           </el-upload>
+          <el-button type="primary" class="btn_blue02 ml_10" @click="handleExport">导出</el-button>
           <el-button class="btn_blue01" type="primary"  @click="handleFilter">刷新</el-button>
           <el-form :inline="true" :model="listQuery" :label="280" class="fr">
             <el-form-item label="">
@@ -55,6 +56,7 @@
                     @pagination="getList" class="text-right"/>
       </el-tab-pane>
     </el-tabs>
+    <a v-show="false" :href="downLoadUrl" id="fileDownload"></a>
   </div>
 </template>
 
@@ -87,7 +89,8 @@
           page: 1,
           pageSize: 10
         },
-        tableHeight:'100'
+        tableHeight:'100',
+        downLoadUrl:'',
       }
     },
     computed: {
@@ -136,7 +139,15 @@
       this.getList();
     },
     methods: {
-
+      // 导出
+      getUrl(){
+        this.downLoadUrl= this.global.domainName + 'admin/imExport/administrativeCheckList?key_word='+this.listQuery.key_word
+          + '&start_time='+this.listQuery.start_time+ '&end_time='+this.listQuery.end_time+ '&page='+this.listQuery.page + '&pageSize='+this.listQuery.pageSize;
+      },
+      async handleExport(){
+        await this.getUrl();
+        document.getElementById("fileDownload").click();
+      },
       handleFilter() {
         this.listQuery.page = 1;
         this.getList()

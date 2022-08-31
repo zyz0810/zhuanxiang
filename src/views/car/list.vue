@@ -17,7 +17,7 @@
       <!--</el-form>-->
       <!--<el-divider></el-divider>-->
       <div class="mb_10">
-        <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
+        <el-button class="btn_blue02" type="primary"  @click="handleExport">批量导出</el-button>
         <el-form :inline="true" :model="listQuery" :label="280" class="fr">
           <el-form-item label="">
             <el-input v-model="listQuery.key_word" placeholder="" clearable/>
@@ -41,15 +41,18 @@
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.pageSize"
                   @pagination="getList" class="text-right"/>
     </div>
+    <a v-show="false" :href="downLoadUrl" id="fileDownload"></a>
   </div>
 </template>
 
 <script>
-  import {carList} from '@/api/car'
+  import {carList,carListExport} from '@/api/car'
   import draggable from 'vuedraggable'
   import waves from '@/directive/waves'
   import { mapState } from 'vuex'
-  import Pagination from "@/components/Pagination/index"; // waves directive
+  import Pagination from "@/components/Pagination/index";
+  import {cityManagementListExport} from "@/api/data";
+  import store from "@/store"; // waves directive
   export default {
     name: 'monitorList',
     directives: {waves},
@@ -69,7 +72,8 @@
           page: 1,
           pageSize: 10
         },
-        tableHeight:'100'
+        tableHeight:'100',
+        downLoadUrl:'',
       }
     },
     computed: {
@@ -100,6 +104,14 @@
       this.getList();
     },
     methods: {
+      // 导出
+      getUrl(){
+        this.downLoadUrl= this.global.domainName + 'admin/Export/carList?key_word='+this.listQuery.key_word + '&page='+this.listQuery.page + '&pageSize='+this.listQuery.pageSize;
+      },
+      async handleExport(){
+        await this.getUrl();
+        document.getElementById("fileDownload").click();
+      },
       formatType(row, column, cellValue, index) {
         return cellValue == 1
           ? "洒水车"

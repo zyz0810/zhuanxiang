@@ -16,7 +16,7 @@
       <div class="mb_10">
 <!--        <el-button class="btn_purple" type="primary"  @click="handleView('create','')">添加</el-button>-->
         <el-button class="btn_blue01" type="primary"  @click="">批量导入</el-button>
-        <el-button class="btn_blue02" type="primary"  @click="">批量导出</el-button>
+        <el-button class="btn_blue02" type="primary"  @click="handleExport">批量导出</el-button>
         <el-form :inline="true" :model="listQuery" :label="280" class="fr">
           <el-form-item label="">
             <el-input v-model="listQuery.key_word" placeholder="" clearable/>
@@ -56,6 +56,7 @@
     </div>
 
     <paraView :showDialog.sync="showViewDialog" :paraData="viewData" @insertList="getList"></paraView>
+    <a v-show="false" :href="downLoadUrl" id="fileDownload"></a>
   </div>
 </template>
 
@@ -91,6 +92,7 @@
         },
         tableHeight:'100',
         videoCategory:[],
+        downLoadUrl:'',
       }
     },
     computed: {
@@ -122,6 +124,15 @@
       this.getVideoCategory();
     },
     methods: {
+      // 导出
+      getUrl(){
+        this.downLoadUrl= this.global.domainName + 'admin/Export/pointList?key_word='+this.listQuery.key_word+'&name='+this.listQuery.name+'&class='+this.listQuery.class
+          + '&page='+this.listQuery.page + '&pageSize='+this.listQuery.pageSize;
+      },
+      async handleExport(){
+        await this.getUrl();
+        document.getElementById("fileDownload").click();
+      },
       getVideoCategory(){
         allDictionary({key:'videoType'}).then((res) => {
           this.videoCategory = res.data

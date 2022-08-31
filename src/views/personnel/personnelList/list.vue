@@ -9,7 +9,7 @@
       <el-divider></el-divider>
       <div class="mb_10">
         <el-button class="btn_purple" type="primary"  @click="handleView('create','')">添加</el-button>
-        <el-button class="btn_blue02" type="primary"  @click="">导出</el-button>
+        <el-button class="btn_blue02" type="primary"  @click="handleExport">导出</el-button>
         <el-form :inline="true" :model="listQuery" :label="280" class="fr">
           <el-form-item label="">
             <el-input v-model="listQuery.real_name" placeholder="" clearable/>
@@ -46,6 +46,7 @@
     </div>
 
     <paraView :showDialog.sync="showViewDialog" :paraData="viewData" @insertList="getList"></paraView>
+    <a v-show="false" :href="downLoadUrl" id="fileDownload"></a>
   </div>
 </template>
 
@@ -91,7 +92,8 @@
           pageSize: 10
         },
         departmentList:[],
-        tableHeight:'100'
+        tableHeight:'100',
+        downLoadUrl:'',
       }
     },
 
@@ -124,6 +126,15 @@
       this.getFirstDepartment();
     },
     methods: {
+      // 导出
+      getUrl(){
+        this.downLoadUrl= this.global.domainName + 'admin/Export/userList?department='+this.listQuery.department+'&real_name='+this.listQuery.real_name+'&department_id='+this.listQuery.department_id
+          +'&page='+this.listQuery.page + '&pageSize='+this.listQuery.pageSize;
+      },
+      async handleExport(){
+        await this.getUrl();
+        document.getElementById("fileDownload").click();
+      },
       changeDepartment(val){
         this.listQuery.department_id = val[val.length-1];
 this.handleFilter();

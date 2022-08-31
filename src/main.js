@@ -31,14 +31,17 @@ import '@/styles/reset.css'
 
 import moment from 'moment'
 Vue.prototype.$moment = moment
-
+import constant from './utils/const.js'
+Vue.use(constant);
 Vue.use(commonComponents)
 Vue.use(VueQuillEditor)
 Vue.use(directive)
 Vue.use(Element, {
   size: Cookies.get('size') || 'small' // set element-ui default size 	medium / small / mini
 })
-
+import axios from 'axios'
+//其他vue组件中就可以this.$axios调用使用
+Vue.prototype.$axios = axios
 
 // register global utility filters
 Object.keys(filters).forEach(key => {

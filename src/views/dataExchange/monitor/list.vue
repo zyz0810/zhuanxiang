@@ -23,7 +23,7 @@
       <el-divider></el-divider>
       <div class="mb_10">
         <div class="fl monitor_num f14"><span class="inlineBlock mr_20">成功：0</span><span class="inlineBlock mr_20">失败：0</span><span class="inlineBlock mr_20">平均响应时间：0</span></div>
-        <el-button class="btn_blue02" type="primary"  @click="">导出</el-button>
+<!--        <el-button class="btn_blue02" type="primary"  @click="">导出</el-button>-->
         <el-form :inline="true" :model="listQuery" :label="280" class="fr">
           <el-form-item label="">
             <el-input v-model="listQuery.productSn" placeholder="" @change="handleFilter" clearable/>

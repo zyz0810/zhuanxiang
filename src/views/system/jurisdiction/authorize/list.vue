@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="bg_white p20">
       <div class="mb_10">
-        <el-button class="btn_blue02" type="primary"  @click="handleExport">批量导出</el-button>
+<!--        <el-button class="btn_blue02" type="primary"  @click="handleExport">批量导出</el-button>-->
         <el-form :inline="true" :model="listQuery" :label="280" class="fr">
           <el-form-item label="">
             <el-input v-model="listQuery.app_name" placeholder="" @change="handleFilter" clearable/>
