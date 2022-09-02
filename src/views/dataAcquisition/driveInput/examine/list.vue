@@ -141,7 +141,7 @@
     methods: {
       // 导出
       getUrl(){
-        this.downLoadUrl= this.global.domainName + 'admin/imExport/administrativeCheckList?key_word='+this.listQuery.key_word
+        this.downLoadUrl= this.global.domainName + 'admin/Export/administrativeCheckList?key_word='+this.listQuery.key_word
           + '&start_time='+this.listQuery.start_time+ '&end_time='+this.listQuery.end_time+ '&page='+this.listQuery.page + '&pageSize='+this.listQuery.pageSize;
       },
       async handleExport(){
